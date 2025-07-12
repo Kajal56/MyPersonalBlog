@@ -1,7 +1,13 @@
-// In-memory storage for Vercel deployment
-// Note: This resets on each deployment, but works for demo purposes
-// For production, you'd want to use a database like Vercel KV, Supabase, or MongoDB
+import fs from 'fs'
+import path from 'path'
 
+// Check if we're in development or production
+const isDevelopment = process.env.NODE_ENV === 'development'
+
+// File-based storage for development
+const dataDir = path.join(process.cwd(), 'data')
+
+// In-memory storage for production (Vercel)
 let inMemoryData = {
   movies: [
     {
@@ -53,10 +59,42 @@ let inMemoryData = {
   ]
 }
 
+// File-based functions for development
+const initializeDataFile = (filename, defaultData = []) => {
+  if (!isDevelopment) return
+  
+  if (!fs.existsSync(dataDir)) {
+    fs.mkdirSync(dataDir, { recursive: true })
+  }
+  
+  const filePath = path.join(dataDir, filename)
+  if (!fs.existsSync(filePath)) {
+    fs.writeFileSync(filePath, JSON.stringify(defaultData, null, 2))
+  }
+}
+
+// Initialize all data files in development
+if (isDevelopment) {
+  ['movies.json', 'books.json', 'trips.json', 'restaurants.json'].forEach(file => {
+    initializeDataFile(file)
+  })
+}
+
 // Generic functions to read and write data
 export const readData = (type) => {
   try {
-    return inMemoryData[type] || []
+    if (isDevelopment) {
+      // Development: read from files
+      const filePath = path.join(dataDir, `${type}.json`)
+      if (fs.existsSync(filePath)) {
+        const data = fs.readFileSync(filePath, 'utf8')
+        return JSON.parse(data)
+      }
+      return []
+    } else {
+      // Production: read from memory
+      return inMemoryData[type] || []
+    }
   } catch (error) {
     console.error(`Error reading ${type} data:`, error)
     return []
@@ -65,8 +103,16 @@ export const readData = (type) => {
 
 export const writeData = (type, data) => {
   try {
-    inMemoryData[type] = data
-    return true
+    if (isDevelopment) {
+      // Development: write to files
+      const filePath = path.join(dataDir, `${type}.json`)
+      fs.writeFileSync(filePath, JSON.stringify(data, null, 2))
+      return true
+    } else {
+      // Production: write to memory
+      inMemoryData[type] = data
+      return true
+    }
   } catch (error) {
     console.error(`Error writing ${type} data:`, error)
     return false

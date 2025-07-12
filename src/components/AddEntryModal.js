@@ -79,8 +79,8 @@ export default function AddEntryModal({ type, onClose }) {
 
       if (response.ok) {
         onClose()
-        // Force page refresh to show new data
-        window.location.reload()
+        // Use Next.js router refresh instead of window reload
+        router.refresh()
       } else {
         setError(result.error || 'Failed to add entry')
         console.error('Failed to add entry:', result)
