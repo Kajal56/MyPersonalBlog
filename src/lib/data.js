@@ -1,32 +1,62 @@
-import fs from 'fs'
-import path from 'path'
+// In-memory storage for Vercel deployment
+// Note: This resets on each deployment, but works for demo purposes
+// For production, you'd want to use a database like Vercel KV, Supabase, or MongoDB
 
-const dataDir = path.join(process.cwd(), 'data')
-
-// Ensure data directory exists
-if (!fs.existsSync(dataDir)) {
-  fs.mkdirSync(dataDir, { recursive: true })
+let inMemoryData = {
+  movies: [
+    {
+      id: '1',
+      title: 'Inception',
+      rating: 9,
+      favoriteAspect: 'The mind-bending plot and amazing cinematography',
+      dateWatched: '2024-12-01',
+      tags: ['sci-fi', 'thriller', 'mind-bending'],
+      dateAdded: new Date().toISOString()
+    }
+  ],
+  books: [
+    {
+      id: '1',
+      title: 'Atomic Habits',
+      author: 'James Clear',
+      rating: 8,
+      keyTakeaway: 'Small habits compound into remarkable results over time',
+      dateRead: '2024-11-15',
+      tags: ['self-help', 'productivity', 'habits'],
+      dateAdded: new Date().toISOString()
+    }
+  ],
+  trips: [
+    {
+      id: '1',
+      title: 'Weekend in Paris',
+      destination: 'Paris, France',
+      startDate: '2024-10-15',
+      endDate: '2024-10-17',
+      highlight: 'Visiting the Eiffel Tower at sunset was magical',
+      tags: ['europe', 'city-break', 'culture'],
+      dateAdded: new Date().toISOString()
+    }
+  ],
+  restaurants: [
+    {
+      id: '1',
+      name: 'The Local Bistro',
+      location: 'Downtown',
+      cuisine: 'French',
+      rating: 8,
+      favoriteDish: 'Coq au Vin',
+      dateVisited: '2024-12-05',
+      tags: ['french', 'cozy', 'date-night'],
+      dateAdded: new Date().toISOString()
+    }
+  ]
 }
-
-// Initialize empty data files if they don't exist
-const initializeDataFile = (filename, defaultData = []) => {
-  const filePath = path.join(dataDir, filename)
-  if (!fs.existsSync(filePath)) {
-    fs.writeFileSync(filePath, JSON.stringify(defaultData, null, 2))
-  }
-}
-
-// Initialize all data files
-['movies.json', 'books.json', 'trips.json', 'restaurants.json'].forEach(file => {
-  initializeDataFile(file)
-})
 
 // Generic functions to read and write data
 export const readData = (type) => {
   try {
-    const filePath = path.join(dataDir, `${type}.json`)
-    const data = fs.readFileSync(filePath, 'utf8')
-    return JSON.parse(data)
+    return inMemoryData[type] || []
   } catch (error) {
     console.error(`Error reading ${type} data:`, error)
     return []
@@ -35,8 +65,7 @@ export const readData = (type) => {
 
 export const writeData = (type, data) => {
   try {
-    const filePath = path.join(dataDir, `${type}.json`)
-    fs.writeFileSync(filePath, JSON.stringify(data, null, 2))
+    inMemoryData[type] = data
     return true
   } catch (error) {
     console.error(`Error writing ${type} data:`, error)

@@ -41,6 +41,7 @@ export default function AddEntryModal({ type, onClose }) {
   const router = useRouter()
   const [formData, setFormData] = useState({})
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [error, setError] = useState('')
 
   const fields = formFields[type] || []
 
@@ -54,6 +55,7 @@ export default function AddEntryModal({ type, onClose }) {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setIsSubmitting(true)
+    setError('')
 
     try {
       // Process tags
@@ -61,6 +63,8 @@ export default function AddEntryModal({ type, onClose }) {
       if (processedData.tags) {
         processedData.tags = processedData.tags.split(',').map(tag => tag.trim()).filter(Boolean)
       }
+
+      console.log('Submitting data:', processedData) // Debug log
 
       const response = await fetch(`/api/${type}`, {
         method: 'POST',
@@ -70,13 +74,19 @@ export default function AddEntryModal({ type, onClose }) {
         body: JSON.stringify(processedData),
       })
 
+      const result = await response.json()
+      console.log('Response:', result) // Debug log
+
       if (response.ok) {
         onClose()
-        router.refresh()
+        // Force page refresh to show new data
+        window.location.reload()
       } else {
-        console.error('Failed to add entry')
+        setError(result.error || 'Failed to add entry')
+        console.error('Failed to add entry:', result)
       }
     } catch (error) {
+      setError('Network error. Please try again.')
       console.error('Error adding entry:', error)
     } finally {
       setIsSubmitting(false)
@@ -100,6 +110,12 @@ export default function AddEntryModal({ type, onClose }) {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
+            {error && (
+              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                {error}
+              </div>
+            )}
+            
             {fields.map((field) => (
               <div key={field.name}>
                 <label className="block text-sm font-medium text-gray-700 mb-2">

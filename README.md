@@ -116,3 +116,20 @@ This is a personal project, but feel free to fork it and make it your own!
 ## License
 
 This project is open source and available under the [MIT License](LICENSE).
+
+## ⚠️ Important Note About Data Storage
+
+**For the current demo deployment**: The blog uses in-memory storage, which means:
+- ✅ You can add, edit, and delete entries
+- ⚠️ Data resets when the app redeploys (when you push new code)
+- 🎯 Perfect for testing and demo purposes
+
+**For permanent data storage**, you can easily upgrade to:
+- **Vercel KV** (Redis-based, free tier available)
+- **Supabase** (PostgreSQL, free tier available) 
+- **MongoDB Atlas** (NoSQL, free tier available)
+- **Airtable** (Spreadsheet-like database)
+
+The current setup gives you a fully functional blog to test and customize before choosing a permanent database solution.
+
+---
