@@ -1,0 +1,17 @@
+{
+  "name": "personal-blog-backend", 
+  "version": "1.0.0",
+  "main": "server.js",
+  "watch": [
+    "server.js",
+    "routes/",
+    "services/",
+    "prisma/"
+  ],
+  "ext": "js json",
+  "ignore": [
+    "node_modules/",
+    "data/",
+    "*.log"
+  ]
+}

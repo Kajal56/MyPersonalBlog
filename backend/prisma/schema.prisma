@@ -1,0 +1,66 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Movie {
+  id             String   @id @default(cuid())
+  title          String
+  rating         Int
+  favoriteAspect String
+  dateWatched    DateTime
+  tags           String[]
+  dateAdded      DateTime @default(now())
+  
+  @@map("movies")
+}
+
+model Book {
+  id          String   @id @default(cuid())
+  title       String
+  author      String
+  rating      Int
+  keyTakeaway String
+  dateRead    DateTime
+  tags        String[]
+  dateAdded   DateTime @default(now())
+  
+  @@map("books")
+}
+
+model Trip {
+  id          String   @id @default(cuid())
+  title       String
+  destination String
+  startDate   DateTime
+  endDate     DateTime
+  highlight   String
+  tags        String[]
+  dateAdded   DateTime @default(now())
+  
+  @@map("trips")
+}
+
+model Restaurant {
+  id           String   @id @default(cuid())
+  name         String
+  location     String
+  cuisine      String
+  rating       Int
+  favoriteDish String
+  dateVisited  DateTime
+  tags         String[]
+  dateAdded    DateTime @default(now())
+  
+  @@map("restaurants")
+}

@@ -1,18 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const databaseService = require('../services/databaseService');
+const dataService = require('../services/dataService');
 
 // GET /api/trips
-router.get('/', async (req, res) => {
+router.get('/', (req, res) => {
   try {
-    const trips = await databaseService.getAllTrips();
+    const trips = dataService.getAllEntries('trips');
     res.json({
       success: true,
       data: trips,
       count: trips.length
     });
   } catch (error) {
-    console.error('Error fetching trips:', error);
     res.status(500).json({
       success: false,
       error: 'Failed to fetch trips'
@@ -21,7 +20,7 @@ router.get('/', async (req, res) => {
 });
 
 // POST /api/trips
-router.post('/', async (req, res) => {
+router.post('/', (req, res) => {
   try {
     const { title, destination, startDate, endDate, highlight, tags } = req.body;
     
@@ -41,7 +40,7 @@ router.post('/', async (req, res) => {
       tags: tags || []
     };
 
-    const newTrip = await databaseService.addTrip(tripData);
+    const newTrip = dataService.addEntry('trips', tripData);
     
     if (newTrip) {
       res.status(201).json({
@@ -55,7 +54,6 @@ router.post('/', async (req, res) => {
       });
     }
   } catch (error) {
-    console.error('Error adding trip:', error);
     res.status(500).json({
       success: false,
       error: 'Failed to add trip'
@@ -64,9 +62,9 @@ router.post('/', async (req, res) => {
 });
 
 // PUT /api/trips/:id
-router.put('/:id', async (req, res) => {
+router.put('/:id', (req, res) => {
   try {
-    const updatedTrip = await databaseService.updateTrip(req.params.id, req.body);
+    const updatedTrip = dataService.updateEntry('trips', req.params.id, req.body);
     
     if (updatedTrip) {
       res.json({
@@ -80,7 +78,6 @@ router.put('/:id', async (req, res) => {
       });
     }
   } catch (error) {
-    console.error('Error updating trip:', error);
     res.status(500).json({
       success: false,
       error: 'Failed to update trip'
@@ -89,9 +86,9 @@ router.put('/:id', async (req, res) => {
 });
 
 // DELETE /api/trips/:id
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', (req, res) => {
   try {
-    const deleted = await databaseService.deleteTrip(req.params.id);
+    const deleted = dataService.deleteEntry('trips', req.params.id);
     
     if (deleted) {
       res.json({
@@ -105,7 +102,6 @@ router.delete('/:id', async (req, res) => {
       });
     }
   } catch (error) {
-    console.error('Error deleting trip:', error);
     res.status(500).json({
       success: false,
       error: 'Failed to delete trip'

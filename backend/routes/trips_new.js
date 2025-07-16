@@ -2,114 +2,112 @@ const express = require('express');
 const router = express.Router();
 const databaseService = require('../services/databaseService');
 
-// GET /api/books
+// GET /api/trips
 router.get('/', async (req, res) => {
   try {
-    const books = await databaseService.getAllBooks();
+    const trips = await databaseService.getAllTrips();
     res.json({
       success: true,
-      data: books,
-      count: books.length
+      data: trips,
+      count: trips.length
     });
-    console.log('Books fetched successfully:', books);
   } catch (error) {
-    console.error('Error fetching books:', error);
+    console.error('Error fetching trips:', error);
     res.status(500).json({
       success: false,
-      error: 'Failed to fetch books'
+      error: 'Failed to fetch trips'
     });
   }
 });
 
-// POST /api/books
+// POST /api/trips
 router.post('/', async (req, res) => {
   try {
-    const { title, author, rating, keyTakeaway, dateRead, tags } = req.body;
+    const { destination, duration, highlights, dateVisited, tags } = req.body;
     
-    if (!title || !author || !rating || !keyTakeaway || !dateRead) {
+    if (!destination || !duration || !highlights || !dateVisited) {
       return res.status(400).json({
         success: false,
         error: 'Missing required fields'
       });
     }
 
-    const bookData = {
-      title,
-      author,
-      rating: parseInt(rating),
-      keyTakeaway,
-      dateRead,
+    const tripData = {
+      destination,
+      duration,
+      highlights,
+      dateVisited,
       tags: tags || []
     };
 
-    const newBook = await databaseService.addBook(bookData);
+    const newTrip = await databaseService.addTrip(tripData);
     
-    if (newBook) {
+    if (newTrip) {
       res.status(201).json({
         success: true,
-        data: newBook
+        data: newTrip
       });
     } else {
       res.status(500).json({
         success: false,
-        error: 'Failed to add book'
+        error: 'Failed to add trip'
       });
     }
   } catch (error) {
-    console.error('Error adding book:', error);
+    console.error('Error adding trip:', error);
     res.status(500).json({
       success: false,
-      error: 'Failed to add book'
+      error: 'Failed to add trip'
     });
   }
 });
 
-// PUT /api/books/:id
+// PUT /api/trips/:id
 router.put('/:id', async (req, res) => {
   try {
-    const updatedBook = await databaseService.updateBook(req.params.id, req.body);
+    const updatedTrip = await databaseService.updateTrip(req.params.id, req.body);
     
-    if (updatedBook) {
+    if (updatedTrip) {
       res.json({
         success: true,
-        data: updatedBook
+        data: updatedTrip
       });
     } else {
       res.status(404).json({
         success: false,
-        error: 'Book not found'
+        error: 'Trip not found'
       });
     }
   } catch (error) {
-    console.error('Error updating book:', error);
+    console.error('Error updating trip:', error);
     res.status(500).json({
       success: false,
-      error: 'Failed to update book'
+      error: 'Failed to update trip'
     });
   }
 });
 
-// DELETE /api/books/:id
+// DELETE /api/trips/:id
 router.delete('/:id', async (req, res) => {
   try {
-    const deleted = await databaseService.deleteBook(req.params.id);
+    const deleted = await databaseService.deleteTrip(req.params.id);
     
     if (deleted) {
       res.json({
         success: true,
-        message: 'Book deleted successfully'
+        message: 'Trip deleted successfully'
       });
     } else {
       res.status(404).json({
         success: false,
-        error: 'Book not found'
+        error: 'Trip not found'
       });
     }
   } catch (error) {
-    console.error('Error deleting book:', error);
+    console.error('Error deleting trip:', error);
     res.status(500).json({
       success: false,
-      error: 'Failed to delete book'
+      error: 'Failed to delete trip'
     });
   }
 });

@@ -11,7 +11,6 @@ router.get('/', async (req, res) => {
       data: books,
       count: books.length
     });
-    console.log('Books fetched successfully:', books);
   } catch (error) {
     console.error('Error fetching books:', error);
     res.status(500).json({
@@ -24,9 +23,9 @@ router.get('/', async (req, res) => {
 // POST /api/books
 router.post('/', async (req, res) => {
   try {
-    const { title, author, rating, keyTakeaway, dateRead, tags } = req.body;
+    const { title, author, rating, favoriteQuote, dateRead, tags } = req.body;
     
-    if (!title || !author || !rating || !keyTakeaway || !dateRead) {
+    if (!title || !author || !rating || !favoriteQuote || !dateRead) {
       return res.status(400).json({
         success: false,
         error: 'Missing required fields'
@@ -37,7 +36,7 @@ router.post('/', async (req, res) => {
       title,
       author,
       rating: parseInt(rating),
-      keyTakeaway,
+      favoriteQuote,
       dateRead,
       tags: tags || []
     };

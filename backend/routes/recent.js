@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const dataService = require('../services/dataService');
+const databaseService = require('../services/databaseService');
 
 // GET /api/recent - Get recent entries from all categories
 router.get('/', async (req, res) => {
   try {
     const limit = parseInt(req.query.limit) || 5;
-    const recentEntries = dataService.getRecentEntries(limit);
+    const recentEntries = await databaseService.getRecentEntries(limit);
     res.json(recentEntries);
   } catch (error) {
     console.error('Error fetching recent entries:', error);

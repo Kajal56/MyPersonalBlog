@@ -1,19 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const databaseService = require('../services/databaseService');
+const dataService = require('../services/dataService');
 
 // GET /api/books
-router.get('/', async (req, res) => {
+router.get('/', (req, res) => {
   try {
-    const books = await databaseService.getAllBooks();
+    const books = dataService.getAllEntries('books');
     res.json({
       success: true,
       data: books,
       count: books.length
     });
-    console.log('Books fetched successfully:', books);
   } catch (error) {
-    console.error('Error fetching books:', error);
     res.status(500).json({
       success: false,
       error: 'Failed to fetch books'
@@ -22,7 +20,7 @@ router.get('/', async (req, res) => {
 });
 
 // POST /api/books
-router.post('/', async (req, res) => {
+router.post('/', (req, res) => {
   try {
     const { title, author, rating, keyTakeaway, dateRead, tags } = req.body;
     
@@ -42,7 +40,7 @@ router.post('/', async (req, res) => {
       tags: tags || []
     };
 
-    const newBook = await databaseService.addBook(bookData);
+    const newBook = dataService.addEntry('books', bookData);
     
     if (newBook) {
       res.status(201).json({
@@ -56,7 +54,6 @@ router.post('/', async (req, res) => {
       });
     }
   } catch (error) {
-    console.error('Error adding book:', error);
     res.status(500).json({
       success: false,
       error: 'Failed to add book'
@@ -65,9 +62,9 @@ router.post('/', async (req, res) => {
 });
 
 // PUT /api/books/:id
-router.put('/:id', async (req, res) => {
+router.put('/:id', (req, res) => {
   try {
-    const updatedBook = await databaseService.updateBook(req.params.id, req.body);
+    const updatedBook = dataService.updateEntry('books', req.params.id, req.body);
     
     if (updatedBook) {
       res.json({
@@ -81,7 +78,6 @@ router.put('/:id', async (req, res) => {
       });
     }
   } catch (error) {
-    console.error('Error updating book:', error);
     res.status(500).json({
       success: false,
       error: 'Failed to update book'
@@ -90,9 +86,9 @@ router.put('/:id', async (req, res) => {
 });
 
 // DELETE /api/books/:id
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', (req, res) => {
   try {
-    const deleted = await databaseService.deleteBook(req.params.id);
+    const deleted = dataService.deleteEntry('books', req.params.id);
     
     if (deleted) {
       res.json({
@@ -106,7 +102,6 @@ router.delete('/:id', async (req, res) => {
       });
     }
   } catch (error) {
-    console.error('Error deleting book:', error);
     res.status(500).json({
       success: false,
       error: 'Failed to delete book'

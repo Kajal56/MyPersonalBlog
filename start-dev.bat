@@ -7,7 +7,7 @@ taskkill /f /im "node.exe" >nul 2>&1
 
 echo 📦 Starting Backend API (Port 5000)...
 cd backend
-start "Backend API" cmd /k "npm run dev"
+start "Backend API" cmd /k "node server.js"
 
 echo ⏳ Waiting for backend to start...
 timeout /t 3 /nobreak >nul

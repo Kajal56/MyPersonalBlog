@@ -1,17 +1,18 @@
 const express = require('express');
 const router = express.Router();
-const dataService = require('../services/dataService');
+const databaseService = require('../services/databaseService');
 
 // GET /api/restaurants
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   try {
-    const restaurants = dataService.getAllEntries('restaurants');
+    const restaurants = await databaseService.getAllRestaurants();
     res.json({
       success: true,
       data: restaurants,
       count: restaurants.length
     });
   } catch (error) {
+    console.error('Error fetching restaurants:', error);
     res.status(500).json({
       success: false,
       error: 'Failed to fetch restaurants'
@@ -20,7 +21,7 @@ router.get('/', (req, res) => {
 });
 
 // POST /api/restaurants
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   try {
     const { name, location, cuisine, rating, favoriteDish, dateVisited, tags } = req.body;
     
@@ -41,7 +42,7 @@ router.post('/', (req, res) => {
       tags: tags || []
     };
 
-    const newRestaurant = dataService.addEntry('restaurants', restaurantData);
+    const newRestaurant = await databaseService.addRestaurant(restaurantData);
     
     if (newRestaurant) {
       res.status(201).json({
@@ -63,9 +64,9 @@ router.post('/', (req, res) => {
 });
 
 // PUT /api/restaurants/:id
-router.put('/:id', (req, res) => {
+router.put('/:id', async (req, res) => {
   try {
-    const updatedRestaurant = dataService.updateEntry('restaurants', req.params.id, req.body);
+    const updatedRestaurant = await databaseService.updateRestaurant(req.params.id, req.body);
     
     if (updatedRestaurant) {
       res.json({
@@ -79,6 +80,7 @@ router.put('/:id', (req, res) => {
       });
     }
   } catch (error) {
+    console.error('Error updating restaurant:', error);
     res.status(500).json({
       success: false,
       error: 'Failed to update restaurant'
@@ -87,9 +89,9 @@ router.put('/:id', (req, res) => {
 });
 
 // DELETE /api/restaurants/:id
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
-    const deleted = dataService.deleteEntry('restaurants', req.params.id);
+    const deleted = await databaseService.deleteRestaurant(req.params.id);
     
     if (deleted) {
       res.json({
@@ -103,6 +105,7 @@ router.delete('/:id', (req, res) => {
       });
     }
   } catch (error) {
+    console.error('Error deleting restaurant:', error);
     res.status(500).json({
       success: false,
       error: 'Failed to delete restaurant'
