@@ -1,0 +1,22 @@
+{
+  "name": "personal-blog-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Personal Blog with separate frontend and backend",
+  "scripts": {
+    "dev": "npm run dev:frontend",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "cd backend && npm run dev",
+    "build": "cd frontend && npm run build",
+    "build:frontend": "cd frontend && npm run build",
+    "start": "cd frontend && npm start",
+    "start:frontend": "cd frontend && npm start",
+    "install:all": "cd frontend && npm install && cd ../backend && npm install"
+  },
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "author": "Kajal Malik",
+  "license": "MIT"
+}
