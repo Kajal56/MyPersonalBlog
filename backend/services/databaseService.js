@@ -1,8 +1,22 @@
 const { PrismaClient } = require('@prisma/client');
 
+// Global variable to reuse the Prisma instance in serverless environments
+let prisma;
+
 class DatabaseService {
   constructor() {
-    this.prisma = new PrismaClient();
+    // Reuse existing Prisma instance in serverless environments
+    if (!prisma) {
+      prisma = new PrismaClient({
+        log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
+      });
+    }
+    this.prisma = prisma;
+  }
+
+  // Cleanup method for graceful shutdown
+  async disconnect() {
+    await this.prisma.$disconnect();
   }
 
   // Movies

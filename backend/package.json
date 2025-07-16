@@ -5,12 +5,13 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "build": "prisma generate",
+    "build": "prisma generate && prisma db push",
     "dev": "nodemon server.js",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",
     "db:studio": "prisma studio",
+    "postinstall": "prisma generate",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
