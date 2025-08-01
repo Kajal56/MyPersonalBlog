@@ -64,3 +64,16 @@ model Restaurant {
   
   @@map("restaurants")
 }
+
+model Flat {
+  id            String   @id @default(cuid())
+  name          String   // Property/flat name
+  contactNumber String
+  societyName   String
+  googleMapsLink String?
+  rentValue     Int      // Monthly rent
+  remarks       String?
+  dateAdded     DateTime @default(now())
+  
+  @@map("flats")
+}

@@ -132,6 +132,23 @@ class ApiService {
     return this.delete('restaurants', id);
   }
 
+  // Flats
+  async getAllFlats() {
+    return this.getAll('flats');
+  }
+
+  async createFlat(flatData) {
+    return this.create('flats', flatData);
+  }
+
+  async updateFlat(id, flatData) {
+    return this.update('flats', id, flatData);
+  }
+
+  async deleteFlat(id) {
+    return this.delete('flats', id);
+  }
+
   // Health check
   async healthCheck() {
     return this.request('/health');

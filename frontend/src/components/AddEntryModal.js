@@ -34,6 +34,14 @@ const formFields = {
     { name: 'favoriteDish', label: 'Favorite Dish', type: 'text', required: true },
     { name: 'dateVisited', label: 'Date Visited', type: 'date', required: true },
     { name: 'tags', label: 'Tags (comma separated)', type: 'text' }
+  ],
+  flats: [
+    { name: 'name', label: 'Property/Flat Name', type: 'text', required: true },
+    { name: 'contactNumber', label: 'Contact Number', type: 'tel', required: true },
+    { name: 'societyName', label: 'Society Name', type: 'text', required: true },
+    { name: 'googleMapsLink', label: 'Google Maps Link', type: 'url', required: false },
+    { name: 'rentValue', label: 'Monthly Rent (₹)', type: 'number', min: 0, required: true },
+    { name: 'remarks', label: 'Remarks/Notes', type: 'textarea', required: false }
   ]
 }
 
@@ -110,6 +118,9 @@ export default function AddEntryModal({ type, onClose, onEntryAdded, editEntry =
           case 'restaurants':
             result = await apiService.updateRestaurant(editEntry.id, processedData)
             break
+          case 'flats':
+            result = await apiService.updateFlat(editEntry.id, processedData)
+            break
           default:
             throw new Error(`Unknown type: ${type}`)
         }
@@ -127,6 +138,9 @@ export default function AddEntryModal({ type, onClose, onEntryAdded, editEntry =
             break
           case 'restaurants':
             result = await apiService.createRestaurant(processedData)
+            break
+          case 'flats':
+            result = await apiService.createFlat(processedData)
             break
           default:
             throw new Error(`Unknown type: ${type}`)

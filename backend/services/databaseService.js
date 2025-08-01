@@ -240,6 +240,52 @@ class DatabaseService {
       .slice(0, limit);
   }
 
+  // Flats
+  async getAllFlats() {
+    return this.prisma.flat.findMany({
+      orderBy: { dateAdded: 'desc' }
+    });
+  }
+
+  async getFlatById(id) {
+    return this.prisma.flat.findUnique({
+      where: { id }
+    });
+  }
+
+  async createFlat(data) {
+    return this.prisma.flat.create({
+      data: {
+        name: data.name,
+        contactNumber: data.contactNumber,
+        societyName: data.societyName,
+        googleMapsLink: data.googleMapsLink || null,
+        rentValue: parseInt(data.rentValue),
+        remarks: data.remarks || null
+      }
+    });
+  }
+
+  async updateFlat(id, data) {
+    return this.prisma.flat.update({
+      where: { id },
+      data: {
+        name: data.name,
+        contactNumber: data.contactNumber,
+        societyName: data.societyName,
+        googleMapsLink: data.googleMapsLink || null,
+        rentValue: parseInt(data.rentValue),
+        remarks: data.remarks || null
+      }
+    });
+  }
+
+  async deleteFlat(id) {
+    return this.prisma.flat.delete({
+      where: { id }
+    });
+  }
+
   // Clean up connections
   async disconnect() {
     await this.prisma.$disconnect();

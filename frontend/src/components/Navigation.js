@@ -13,6 +13,7 @@ export default function Navigation() {
     { href: '/books', label: 'Books' },
     { href: '/trips', label: 'Trips' },
     { href: '/restaurants', label: 'Restaurants' },
+    { href: '/flats', label: 'Flats' },
   ]
 
   return (

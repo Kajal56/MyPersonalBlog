@@ -9,6 +9,7 @@ const bookRoutes = require('./routes/books');
 const tripRoutes = require('./routes/trips');
 const restaurantRoutes = require('./routes/restaurants');
 const recentRoutes = require('./routes/recent');
+const flatRoutes = require('./routes/flats');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -63,6 +64,7 @@ app.use('/api/books', bookRoutes);
 app.use('/api/trips', tripRoutes);
 app.use('/api/restaurants', restaurantRoutes);
 app.use('/api/recent', recentRoutes);
+app.use('/api/flats', flatRoutes);
 
 // 404 handler
 app.use('*', (req, res) => {
