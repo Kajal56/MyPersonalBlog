@@ -149,6 +149,23 @@ class ApiService {
     return this.delete('flats', id);
   }
 
+  // Feed Posts
+  async getAllFeedPosts() {
+    return this.getAll('feed');
+  }
+
+  async createFeedPost(postData) {
+    return this.create('feed', postData);
+  }
+
+  async updateFeedPost(id, postData) {
+    return this.update('feed', id, postData);
+  }
+
+  async deleteFeedPost(id) {
+    return this.delete('feed', id);
+  }
+
   // Health check
   async healthCheck() {
     return this.request('/health');

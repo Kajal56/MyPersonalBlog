@@ -9,6 +9,7 @@ export default function Navigation() {
 
   const navItems = [
     { href: '/', label: 'Home' },
+    { href: '/feed', label: 'Feed' },
     { href: '/movies', label: 'Movies' },
     { href: '/books', label: 'Books' },
     { href: '/trips', label: 'Trips' },

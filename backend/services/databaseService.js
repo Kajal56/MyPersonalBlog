@@ -286,6 +286,50 @@ class DatabaseService {
     });
   }
 
+  // Feed Posts
+  async getAllFeedPosts() {
+    return this.prisma.feedPost.findMany({
+      orderBy: { dateAdded: 'desc' }
+    });
+  }
+
+  async getFeedPostById(id) {
+    return this.prisma.feedPost.findUnique({
+      where: { id }
+    });
+  }
+
+  async createFeedPost(data) {
+    return this.prisma.feedPost.create({
+      data: {
+        title: data.title || null,
+        content: data.content,
+        mediaType: data.mediaType || null,
+        mediaData: data.mediaData || null,
+        tags: data.tags || []
+      }
+    });
+  }
+
+  async updateFeedPost(id, data) {
+    return this.prisma.feedPost.update({
+      where: { id },
+      data: {
+        title: data.title || null,
+        content: data.content,
+        mediaType: data.mediaType || null,
+        mediaData: data.mediaData || null,
+        tags: data.tags || []
+      }
+    });
+  }
+
+  async deleteFeedPost(id) {
+    return this.prisma.feedPost.delete({
+      where: { id }
+    });
+  }
+
   // Clean up connections
   async disconnect() {
     await this.prisma.$disconnect();

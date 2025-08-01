@@ -77,3 +77,15 @@ model Flat {
   
   @@map("flats")
 }
+
+model FeedPost {
+  id          String   @id @default(cuid())
+  title       String?  // Optional title
+  content     String   // Main content/caption
+  mediaType   String?  // 'image', 'video', or null for text-only
+  mediaData   String?  // Base64 encoded media data
+  tags        String[] // Hashtags/tags
+  dateAdded   DateTime @default(now())
+  
+  @@map("feed_posts")
+}

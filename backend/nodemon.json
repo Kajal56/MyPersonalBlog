@@ -1,7 +1,4 @@
 {
-  "name": "personal-blog-backend", 
-  "version": "1.0.0",
-  "main": "server.js",
   "watch": [
     "server.js",
     "routes/",
@@ -13,5 +10,6 @@
     "node_modules/",
     "data/",
     "*.log"
-  ]
+  ],
+  "exec": "node server.js"
 }
