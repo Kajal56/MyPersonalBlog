@@ -3,12 +3,14 @@
 import { useState, useEffect } from 'react'
 import { apiService } from '../../services/apiService'
 import EntryCard from '../../components/EntryCard'
-import AddEntryButton from '../../components/AddEntryButton'
+import AddEntryModal from '../../components/AddEntryModal'
 
 export default function TripsPage() {
   const [trips, setTrips] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [showAddModal, setShowAddModal] = useState(false)
+  const [editTrip, setEditTrip] = useState(null)
 
   useEffect(() => {
     loadTrips()
@@ -33,7 +35,12 @@ export default function TripsPage() {
 
   const handleEdit = (trip) => {
     console.log('Edit trip:', trip)
-    alert('Edit functionality will be implemented soon!')
+    setEditTrip(trip)
+  }
+
+  const handleCloseModal = () => {
+    setShowAddModal(false)
+    setEditTrip(null)
   }
 
   const handleDelete = async (tripId) => {
@@ -52,7 +59,13 @@ export default function TripsPage() {
           <h1 className="text-3xl font-bold text-gray-900 mb-2">✈️ Trips</h1>
           <p className="text-gray-600">My travel adventures and memories</p>
         </div>
-        <AddEntryButton type="trips" onEntryAdded={handleTripAdded} />
+        <button
+          onClick={() => setShowAddModal(true)}
+          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors flex items-center space-x-2"
+        >
+          <span>+</span>
+          <span>Add Trip</span>
+        </button>
       </div>
 
       {loading ? (
@@ -86,6 +99,16 @@ export default function TripsPage() {
             />
           ))}
         </div>
+      )}
+
+      {/* Add/Edit Modal */}
+      {(showAddModal || editTrip) && (
+        <AddEntryModal
+          type="trips"
+          editEntry={editTrip}
+          onClose={handleCloseModal}
+          onEntryAdded={handleTripAdded}
+        />
       )}
     </div>
   )

@@ -2,12 +2,15 @@
 import { useState, useEffect } from 'react'
 import EntryCard from '../../components/EntryCard'
 import AddEntryButton from '../../components/AddEntryButton'
+import AddEntryModal from '../../components/AddEntryModal'
 import { apiService } from '../../services/apiService'
 
 export default function MoviesPage() {
   const [movies, setMovies] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [showAddModal, setShowAddModal] = useState(false)
+  const [editMovie, setEditMovie] = useState(null)
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -31,7 +34,7 @@ export default function MoviesPage() {
   }, [])
 
   const handleMovieAdded = () => {
-    // Refresh the list when a new movie is added
+    // Refresh the list when a new movie is added or updated
     const fetchMovies = async () => {
       try {
         setLoading(true)
@@ -50,9 +53,13 @@ export default function MoviesPage() {
   }
 
   const handleEdit = (movie) => {
-    // For now, just log - you can implement edit modal later
     console.log('Edit movie:', movie)
-    alert('Edit functionality will be implemented soon!')
+    setEditMovie(movie)
+  }
+
+  const handleCloseModal = () => {
+    setShowAddModal(false)
+    setEditMovie(null)
   }
 
   const handleDelete = async (movieId) => {
@@ -76,7 +83,13 @@ export default function MoviesPage() {
           <h1 className="text-3xl font-bold text-gray-900 mb-2">🎬 Movies</h1>
           <p className="text-gray-600">My movie watchlist and reviews</p>
         </div>
-        <AddEntryButton type="movies" onEntryAdded={handleMovieAdded} />
+        <button
+          onClick={() => setShowAddModal(true)}
+          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors flex items-center space-x-2"
+        >
+          <span>+</span>
+          <span>Add Movie</span>
+        </button>
       </div>
 
       {loading ? (
@@ -110,6 +123,16 @@ export default function MoviesPage() {
             />
           ))}
         </div>
+      )}
+
+      {/* Add/Edit Modal */}
+      {(showAddModal || editMovie) && (
+        <AddEntryModal
+          type="movies"
+          editEntry={editMovie}
+          onClose={handleCloseModal}
+          onEntryAdded={handleMovieAdded}
+        />
       )}
     </div>
   )

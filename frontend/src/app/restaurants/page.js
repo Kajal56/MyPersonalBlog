@@ -3,12 +3,14 @@
 import { useState, useEffect } from 'react'
 import { apiService } from '../../services/apiService'
 import EntryCard from '../../components/EntryCard'
-import AddEntryButton from '../../components/AddEntryButton'
+import AddEntryModal from '../../components/AddEntryModal'
 
 export default function RestaurantsPage() {
   const [restaurants, setRestaurants] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [showAddModal, setShowAddModal] = useState(false)
+  const [editRestaurant, setEditRestaurant] = useState(null)
 
   useEffect(() => {
     loadRestaurants()
@@ -33,7 +35,12 @@ export default function RestaurantsPage() {
 
   const handleEdit = (restaurant) => {
     console.log('Edit restaurant:', restaurant)
-    alert('Edit functionality will be implemented soon!')
+    setEditRestaurant(restaurant)
+  }
+
+  const handleCloseModal = () => {
+    setShowAddModal(false)
+    setEditRestaurant(null)
   }
 
   const handleDelete = async (restaurantId) => {
@@ -52,7 +59,13 @@ export default function RestaurantsPage() {
           <h1 className="text-3xl font-bold text-gray-900 mb-2">🍽️ Restaurants</h1>
           <p className="text-gray-600">My culinary discoveries</p>
         </div>
-        <AddEntryButton type="restaurants" onEntryAdded={handleRestaurantAdded} />
+        <button
+          onClick={() => setShowAddModal(true)}
+          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors flex items-center space-x-2"
+        >
+          <span>+</span>
+          <span>Add Restaurant</span>
+        </button>
       </div>
 
       {loading ? (
@@ -88,6 +101,16 @@ export default function RestaurantsPage() {
             />
           ))}
         </div>
+      )}
+
+      {/* Add/Edit Modal */}
+      {(showAddModal || editRestaurant) && (
+        <AddEntryModal
+          type="restaurants"
+          editEntry={editRestaurant}
+          onClose={handleCloseModal}
+          onEntryAdded={handleRestaurantAdded}
+        />
       )}
     </div>
   )

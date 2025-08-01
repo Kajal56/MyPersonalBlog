@@ -3,12 +3,14 @@
 import { useState, useEffect } from 'react'
 import { apiService } from '../../services/apiService'
 import EntryCard from '../../components/EntryCard'
-import AddEntryButton from '../../components/AddEntryButton'
+import AddEntryModal from '../../components/AddEntryModal'
 
 export default function BooksPage() {
   const [books, setBooks] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [showAddModal, setShowAddModal] = useState(false)
+  const [editBook, setEditBook] = useState(null)
 
   useEffect(() => {
     loadBooks()
@@ -33,7 +35,12 @@ export default function BooksPage() {
 
   const handleEdit = (book) => {
     console.log('Edit book:', book)
-    alert('Edit functionality will be implemented soon!')
+    setEditBook(book)
+  }
+
+  const handleCloseModal = () => {
+    setShowAddModal(false)
+    setEditBook(null)
   }
 
   const handleDelete = async (bookId) => {
@@ -52,7 +59,13 @@ export default function BooksPage() {
           <h1 className="text-3xl font-bold text-gray-900 mb-2">📚 Books</h1>
           <p className="text-gray-600">My reading list and key takeaways</p>
         </div>
-        <AddEntryButton type="books" onEntryAdded={handleBookAdded} />
+        <button
+          onClick={() => setShowAddModal(true)}
+          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors flex items-center space-x-2"
+        >
+          <span>+</span>
+          <span>Add Book</span>
+        </button>
       </div>
 
       {loading ? (
@@ -87,6 +100,16 @@ export default function BooksPage() {
             />
           ))}
         </div>
+      )}
+
+      {/* Add/Edit Modal */}
+      {(showAddModal || editBook) && (
+        <AddEntryModal
+          type="books"
+          editEntry={editBook}
+          onClose={handleCloseModal}
+          onEntryAdded={handleBookAdded}
+        />
       )}
     </div>
   )

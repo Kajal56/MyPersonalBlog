@@ -37,12 +37,40 @@ const formFields = {
   ]
 }
 
-export default function AddEntryModal({ type, onClose, onEntryAdded }) {
-  const [formData, setFormData] = useState({})
+export default function AddEntryModal({ type, onClose, onEntryAdded, editEntry = null }) {
+  const [formData, setFormData] = useState(() => {
+    if (editEntry) {
+      // Initialize form with existing entry data
+      const initialData = { ...editEntry }
+      // Convert tags array back to comma-separated string
+      if (initialData.tags && Array.isArray(initialData.tags)) {
+        initialData.tags = initialData.tags.join(', ')
+      }
+      // Format dates for input fields
+      if (initialData.dateWatched) {
+        initialData.dateWatched = new Date(initialData.dateWatched).toISOString().split('T')[0]
+      }
+      if (initialData.dateRead) {
+        initialData.dateRead = new Date(initialData.dateRead).toISOString().split('T')[0]
+      }
+      if (initialData.dateVisited) {
+        initialData.dateVisited = new Date(initialData.dateVisited).toISOString().split('T')[0]
+      }
+      if (initialData.startDate) {
+        initialData.startDate = new Date(initialData.startDate).toISOString().split('T')[0]
+      }
+      if (initialData.endDate) {
+        initialData.endDate = new Date(initialData.endDate).toISOString().split('T')[0]
+      }
+      return initialData
+    }
+    return {}
+  })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState('')
 
   const fields = formFields[type] || []
+  const isEditing = !!editEntry
 
   const handleInputChange = (name, value) => {
     setFormData(prev => ({
@@ -65,23 +93,44 @@ export default function AddEntryModal({ type, onClose, onEntryAdded }) {
 
       console.log('Submitting data:', processedData) // Debug log
 
-      // Use the appropriate API service method based on type
+      // Use the appropriate API service method based on type and operation
       let result
-      switch (type) {
-        case 'movies':
-          result = await apiService.createMovie(processedData)
-          break
-        case 'books':
-          result = await apiService.createBook(processedData)
-          break
-        case 'trips':
-          result = await apiService.createTrip(processedData)
-          break
-        case 'restaurants':
-          result = await apiService.createRestaurant(processedData)
-          break
-        default:
-          throw new Error(`Unknown type: ${type}`)
+      if (isEditing) {
+        // Update existing entry
+        switch (type) {
+          case 'movies':
+            result = await apiService.updateMovie(editEntry.id, processedData)
+            break
+          case 'books':
+            result = await apiService.updateBook(editEntry.id, processedData)
+            break
+          case 'trips':
+            result = await apiService.updateTrip(editEntry.id, processedData)
+            break
+          case 'restaurants':
+            result = await apiService.updateRestaurant(editEntry.id, processedData)
+            break
+          default:
+            throw new Error(`Unknown type: ${type}`)
+        }
+      } else {
+        // Create new entry
+        switch (type) {
+          case 'movies':
+            result = await apiService.createMovie(processedData)
+            break
+          case 'books':
+            result = await apiService.createBook(processedData)
+            break
+          case 'trips':
+            result = await apiService.createTrip(processedData)
+            break
+          case 'restaurants':
+            result = await apiService.createRestaurant(processedData)
+            break
+          default:
+            throw new Error(`Unknown type: ${type}`)
+        }
       }
 
       console.log('Response:', result) // Debug log
@@ -91,8 +140,8 @@ export default function AddEntryModal({ type, onClose, onEntryAdded }) {
         onEntryAdded()
       }
     } catch (error) {
-      setError('Failed to add entry. Please try again.')
-      console.error('Error adding entry:', error)
+      setError(`Failed to ${isEditing ? 'update' : 'add'} entry. Please try again.`)
+      console.error(`Error ${isEditing ? 'updating' : 'adding'} entry:`, error)
     } finally {
       setIsSubmitting(false)
     }
@@ -104,7 +153,7 @@ export default function AddEntryModal({ type, onClose, onEntryAdded }) {
         <div className="p-6">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-bold text-gray-900">
-              Add New {type.slice(0, -1)}
+              {isEditing ? `Edit ${type.slice(0, -1)}` : `Add New ${type.slice(0, -1)}`}
             </h2>
             <button
               onClick={onClose}
@@ -131,6 +180,7 @@ export default function AddEntryModal({ type, onClose, onEntryAdded }) {
                 {field.type === 'textarea' ? (
                   <textarea
                     required={field.required}
+                    value={formData[field.name] || ''}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     rows={3}
                     onChange={(e) => handleInputChange(field.name, e.target.value)}
@@ -141,6 +191,7 @@ export default function AddEntryModal({ type, onClose, onEntryAdded }) {
                     required={field.required}
                     min={field.min}
                     max={field.max}
+                    value={formData[field.name] || ''}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     onChange={(e) => handleInputChange(field.name, e.target.value)}
                   />
@@ -161,7 +212,7 @@ export default function AddEntryModal({ type, onClose, onEntryAdded }) {
                 disabled={isSubmitting}
                 className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
               >
-                {isSubmitting ? 'Adding...' : 'Add Entry'}
+                {isSubmitting ? (isEditing ? 'Updating...' : 'Adding...') : (isEditing ? 'Update Entry' : 'Add Entry')}
               </button>
             </div>
           </form>
