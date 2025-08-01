@@ -1,3 +1,0 @@
-Buildout process is blocked due to the following error(s) faced at/post Ev2 trigger. Currently the attempt status is: FailedOnce and the exception detail is: Test Exception from CosmicRADeploymentWorkflow. Please refer to the exception message and take appropriate actions or reach the boc team for any further assistance. Reference docs:
- For RS: https://eng.ms/docs/products/m365-buildout-standardization/corebuildout/automatedrstrigger/automatedrstriggerintro 
-For RA: https://eng.ms/docs/products/m365-buildout-standardization/servicereadiness/cosmicraartifacts/cosmicraartifacts 

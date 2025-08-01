@@ -59,5 +59,13 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# Temporary/cleanup files
+**/ToBeDeleted*
+**/Tobedeleted*
+**/temp*
+**/tmp*
+*.tmp
+*.temp
+
 # Data files
 /data/*.json
