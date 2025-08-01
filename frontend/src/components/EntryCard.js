@@ -1,8 +1,36 @@
 'use client'
 import { useState } from 'react'
 
-export default function EntryCard({ type, entry, fields }) {
+export default function EntryCard({ type, entry, fields, onEdit, onDelete }) {
   const [isEditing, setIsEditing] = useState(false)
+
+  const handleEdit = () => {
+    if (onEdit) {
+      onEdit(entry)
+    } else {
+      setIsEditing(!isEditing)
+    }
+  }
+
+  const handleDelete = async () => {
+    console.log('Delete button clicked for entry:', entry.id)
+    console.log('onDelete function:', onDelete)
+    
+    if (window.confirm('Are you sure you want to delete this entry?')) {
+      if (onDelete) {
+        try {
+          console.log('Calling onDelete with id:', entry.id)
+          await onDelete(entry.id)
+          console.log('Delete successful')
+        } catch (error) {
+          console.error('Error deleting entry:', error)
+          alert('Failed to delete entry: ' + error.message)
+        }
+      } else {
+        console.log('onDelete function not provided')
+      }
+    }
+  }
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
@@ -12,12 +40,20 @@ export default function EntryCard({ type, entry, fields }) {
         </h3>
         <div className="flex space-x-2">
           <button
-            onClick={() => setIsEditing(!isEditing)}
+            onClick={() => alert('Edit clicked!')}
             className="text-blue-600 hover:text-blue-800 text-sm"
           >
             Edit
           </button>
-          <button className="text-red-600 hover:text-red-800 text-sm">
+          <button 
+            onClick={() => {
+              alert('DELETE BUTTON CLICKED!');
+              console.log('Delete button clicked!');
+              handleDelete();
+            }}
+            className="text-red-600 hover:text-red-800 text-sm"
+            style={{ backgroundColor: 'yellow', padding: '10px' }}
+          >
             Delete
           </button>
         </div>

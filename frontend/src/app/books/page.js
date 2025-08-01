@@ -31,6 +31,20 @@ export default function BooksPage() {
     loadBooks()
   }
 
+  const handleEdit = (book) => {
+    console.log('Edit book:', book)
+    alert('Edit functionality will be implemented soon!')
+  }
+
+  const handleDelete = async (bookId) => {
+    try {
+      await apiService.deleteBook(bookId)
+      setBooks(books.filter(book => book.id !== bookId))
+    } catch (error) {
+      throw error
+    }
+  }
+
   return (
     <div className="max-w-6xl mx-auto">
       <div className="flex justify-between items-center mb-8">
@@ -68,6 +82,8 @@ export default function BooksPage() {
                 { label: 'Key takeaway', value: book.keyTakeaway },
                 { label: 'Date read', value: new Date(book.dateRead).toLocaleDateString() }
               ]}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
             />
           ))}
         </div>

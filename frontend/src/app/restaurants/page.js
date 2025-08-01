@@ -31,6 +31,20 @@ export default function RestaurantsPage() {
     loadRestaurants()
   }
 
+  const handleEdit = (restaurant) => {
+    console.log('Edit restaurant:', restaurant)
+    alert('Edit functionality will be implemented soon!')
+  }
+
+  const handleDelete = async (restaurantId) => {
+    try {
+      await apiService.deleteRestaurant(restaurantId)
+      setRestaurants(restaurants.filter(restaurant => restaurant.id !== restaurantId))
+    } catch (error) {
+      throw error
+    }
+  }
+
   return (
     <div className="max-w-6xl mx-auto">
       <div className="flex justify-between items-center mb-8">
@@ -69,6 +83,8 @@ export default function RestaurantsPage() {
                 { label: 'Favorite dish', value: restaurant.favoriteDish },
                 { label: 'Date visited', value: new Date(restaurant.dateVisited).toLocaleDateString() }
               ]}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
             />
           ))}
         </div>

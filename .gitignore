@@ -23,6 +23,16 @@ dist-ssr
 *.sln
 *.sw?
 
+# Visual Studio
+.vs/
+*.vsidx
+*.vspscc
+*.vsmdi
+*.tmp
+*.user
+*.userosscache
+*.sln.docstates
+
 # Next.js
 .next/
 out/

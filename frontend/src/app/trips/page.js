@@ -31,6 +31,20 @@ export default function TripsPage() {
     loadTrips()
   }
 
+  const handleEdit = (trip) => {
+    console.log('Edit trip:', trip)
+    alert('Edit functionality will be implemented soon!')
+  }
+
+  const handleDelete = async (tripId) => {
+    try {
+      await apiService.deleteTrip(tripId)
+      setTrips(trips.filter(trip => trip.id !== tripId))
+    } catch (error) {
+      throw error
+    }
+  }
+
   return (
     <div className="max-w-6xl mx-auto">
       <div className="flex justify-between items-center mb-8">
@@ -67,6 +81,8 @@ export default function TripsPage() {
                 { label: 'Duration', value: `${trip.startDate} - ${trip.endDate}` },
                 { label: 'Highlight', value: trip.highlight },
               ]}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
             />
           ))}
         </div>

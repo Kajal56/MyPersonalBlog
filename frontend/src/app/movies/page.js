@@ -49,6 +49,26 @@ export default function MoviesPage() {
     fetchMovies()
   }
 
+  const handleEdit = (movie) => {
+    // For now, just log - you can implement edit modal later
+    console.log('Edit movie:', movie)
+    alert('Edit functionality will be implemented soon!')
+  }
+
+  const handleDelete = async (movieId) => {
+    console.log('handleDelete called with movieId:', movieId)
+    try {
+      console.log('Calling apiService.deleteMovie')
+      await apiService.deleteMovie(movieId)
+      console.log('Movie deleted successfully, updating state')
+      // Refresh the list after deletion
+      setMovies(movies.filter(movie => movie.id !== movieId))
+    } catch (error) {
+      console.error('Error in handleDelete:', error)
+      throw error // Re-throw to be handled by EntryCard
+    }
+  }
+
   return (
     <div className="max-w-6xl mx-auto">
       <div className="flex justify-between items-center mb-8">
@@ -85,6 +105,8 @@ export default function MoviesPage() {
                 { label: 'What I liked most', value: movie.favoriteAspect },
                 { label: 'Date watched', value: new Date(movie.dateWatched).toLocaleDateString() }
               ]}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
             />
           ))}
         </div>
