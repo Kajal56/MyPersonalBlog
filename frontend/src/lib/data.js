@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 
-const dataDirectory = path.join(process.cwd(), 'data')
+const dataDirectory = path.join(process.cwd(), '..', 'data')
 
 // Helper function to read JSON file
 export function readJsonFile(filename) {
