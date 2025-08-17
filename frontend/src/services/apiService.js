@@ -1,6 +1,18 @@
 // Frontend API service to communicate with backend
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 
-  (typeof window !== 'undefined' ? '/api' : 'http://localhost:5000/api');
+
+//Condtional backend URLs
+var isProduction = process.env.NODE_ENV === 'production';
+var base_url;
+if (isProduction){
+  base_url = process.env.NEXT_PUBLIC_API_URL || 
+    (typeof window !== 'undefined' ? '/api' : 'http://localhost:5000/api');
+}
+else{
+  base_url = 'http://localhost:5000/api'; // Default base URL for local development
+}
+
+const API_BASE_URL = base_url;
+
 
 class ApiService {
   async request(endpoint, options = {}) {
