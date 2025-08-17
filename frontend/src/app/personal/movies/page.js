@@ -66,11 +66,11 @@ export default function MoviesPage() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto">
+  <div className="max-w-6xl mx-auto">
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">🎬 Movies</h1>
-          <p className="text-gray-600">My movie watchlist and reviews</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">🎬 Movies</h1>
+          <p className="text-gray-600 dark:text-gray-300">My movie watchlist and reviews</p>
         </div>
         <button
           onClick={() => setShowAddModal(true)}
