@@ -3,16 +3,20 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState, useEffect } from 'react'
+import { useAdminMode } from './AdminModeContext'
 
 export default function Navigation() {
   const pathname = usePathname()
-  const [isAdminMode, setIsAdminMode] = useState(false)
+  const { isAdminMode, setIsAdminMode } = useAdminMode()
+  const [showAdminModal, setShowAdminModal] = useState(false)
+  const [adminPassword, setAdminPassword] = useState('')
+  const [adminError, setAdminError] = useState('')
   const [theme, setTheme] = useState('dark')
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      document.body.classList.remove('dark', 'light')
-      document.body.classList.add(theme)
+      document.documentElement.classList.remove('dark', 'light')
+      document.documentElement.classList.add(theme)
     }
   }, [theme])
 
@@ -48,7 +52,13 @@ export default function Navigation() {
           </div>
           <div className="flex items-center space-x-4">
             <button
-              onClick={() => setIsAdminMode(!isAdminMode)}
+              onClick={() => {
+                if (isAdminMode) {
+                  setIsAdminMode(false)
+                } else {
+                  setShowAdminModal(true)
+                }
+              }}
               className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                 isAdminMode
                   ? 'bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 hover:bg-red-200 dark:hover:bg-red-800'
@@ -57,6 +67,44 @@ export default function Navigation() {
             >
               {isAdminMode ? 'Exit Admin' : 'Admin Mode'}
             </button>
+      {showAdminModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+          <div className="bg-white dark:bg-gray-900 rounded-lg shadow-lg p-8 w-full max-w-sm">
+            <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-gray-100">Admin Authentication</h2>
+            <input
+              type="password"
+              value={adminPassword}
+              onChange={e => setAdminPassword(e.target.value)}
+              placeholder="Enter admin password"
+              className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 mb-4"
+            />
+            {adminError && <div className="text-red-500 mb-2 text-sm">{adminError}</div>}
+            <div className="flex justify-end gap-2">
+              <button
+                className="px-4 py-2 rounded-md bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-700"
+                onClick={() => {
+                  setShowAdminModal(false)
+                  setAdminPassword('')
+                  setAdminError('')
+                }}
+              >Cancel</button>
+              <button
+                className="px-4 py-2 rounded-md bg-blue-600 text-white font-semibold hover:bg-blue-700"
+                onClick={() => {
+                  if (adminPassword === 'kajal') {
+                    setIsAdminMode(true)
+                    setShowAdminModal(false)
+                    setAdminPassword('')
+                    setAdminError('')
+                  } else {
+                    setAdminError("Nice Try Diddy!!")
+                  }
+                }}
+              >Authenticate</button>
+            </div>
+          </div>
+        </div>
+      )}
             <button
               onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
               className="px-4 py-2 rounded-md text-sm font-medium transition-colors bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700"

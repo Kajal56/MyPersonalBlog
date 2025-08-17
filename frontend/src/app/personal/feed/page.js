@@ -4,8 +4,10 @@ import { useState, useEffect } from 'react'
 import { apiService } from '../../../services/apiService'
 import FeedPostModal from '../../../components/FeedPostModal'
 import ConfirmDialog from '../../../components/ConfirmDialog'
+import { useAdminMode } from '../../../components/AdminModeContext'
 
 export default function FeedPage() {
+  const { isAdminMode } = useAdminMode()
   const [posts, setPosts] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -75,38 +77,40 @@ export default function FeedPage() {
   }
 
   const renderPost = (post) => (
-    <div key={post.id} className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden">
-      <div className="p-4 border-b border-gray-100">
+  <div key={post.id} className="bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden">
+      <div className="p-4 border-b border-gray-100 dark:border-gray-700">
         <div className="flex justify-between items-start">
           <div className="flex-1">
             {post.title && (
-              <h3 className="text-lg font-semibold text-gray-900 mb-1">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-1">
                 {post.title}
               </h3>
             )}
-            <div className="flex items-center text-sm text-gray-500">
+            <div className="flex items-center text-sm text-gray-500 dark:text-gray-300">
               <span>📅 {formatDate(post.dateAdded)}</span>
             </div>
           </div>
-          <div className="flex space-x-2 ml-4">
-            <button
-              onClick={() => handleEdit(post)}
-              className="text-blue-600 hover:text-blue-800 text-sm font-medium"
-            >
-              ✏️ Edit
-            </button>
-            <button 
-              onClick={() => handleDeleteClick(post)}
-              className="text-red-600 hover:text-red-800 text-sm font-medium"
-            >
-              🗑️ Delete
-            </button>
-          </div>
+          {isAdminMode && (
+            <div className="flex space-x-2 ml-4">
+              <button
+                onClick={() => handleEdit(post)}
+                className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+              >
+                ✏️ Edit
+              </button>
+              <button 
+                onClick={() => handleDeleteClick(post)}
+                className="text-red-600 hover:text-red-800 text-sm font-medium"
+              >
+                🗑️ Delete
+              </button>
+            </div>
+          )}
         </div>
       </div>
       <div className="p-4">
         <div className="prose prose-sm max-w-none">
-          <p className="text-gray-800 whitespace-pre-wrap leading-relaxed">
+          <p className="text-gray-800 dark:text-gray-300 whitespace-pre-wrap leading-relaxed">
             {post.content}
           </p>
         </div>
@@ -128,12 +132,12 @@ export default function FeedPage() {
           </div>
         )}
         {post.tags && post.tags.length > 0 && (
-          <div className="mt-4 pt-3 border-t border-gray-100">
+          <div className="mt-4 pt-3 border-t border-gray-100 dark:border-gray-700">
             <div className="flex flex-wrap gap-2">
               {post.tags.map((tag, index) => (
                 <span
                   key={index}
-                  className="px-2 py-1 bg-gradient-to-r from-blue-100 to-purple-100 text-blue-800 text-xs rounded-full border border-blue-200"
+                  className="px-2 py-1 bg-gradient-to-r from-blue-100 to-purple-100 dark:from-gray-700 dark:to-gray-800 text-blue-800 dark:text-gray-200 text-xs rounded-full border border-blue-200 dark:border-gray-700"
                 >
                   #{tag}
                 </span>
@@ -149,33 +153,33 @@ export default function FeedPage() {
     <div className="max-w-4xl mx-auto">
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            📱 My Feed
-          </h1>
-          <p className="text-gray-600">Your personal Instagram-style timeline</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">📱 My Feed</h1>
+          <p className="text-gray-600 dark:text-gray-300">Your personal Instagram-style timeline</p>
         </div>
-        <button
-          onClick={() => setShowAddModal(true)}
-          className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 flex items-center space-x-2 shadow-lg"
-        >
-          <span>✨</span>
-          <span>Share Something</span>
-        </button>
+        {isAdminMode && (
+          <button
+            onClick={() => setShowAddModal(true)}
+            className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 flex items-center space-x-2 shadow-lg"
+          >
+            <span>✨</span>
+            <span>Share Something</span>
+          </button>
+        )}
       </div>
 
       {loading ? (
         <div className="text-center py-12">
-          <div className="text-lg text-gray-600">Loading your posts...</div>
+          <div className="text-lg text-gray-600 dark:text-gray-300">Loading your posts...</div>
         </div>
       ) : error ? (
         <div className="text-center py-12">
-          <div className="text-lg text-red-600">{error}</div>
+          <div className="text-lg text-red-600 dark:text-red-400">{error}</div>
         </div>
       ) : posts.length === 0 ? (
         <div className="text-center py-12">
           <div className="text-6xl mb-4">📱</div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">Your feed is empty</h3>
-          <p className="text-gray-600 mb-4">Start sharing your thoughts, experiences, or anything that's on your mind!</p>
+          <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">Your feed is empty</h3>
+          <p className="text-gray-600 dark:text-gray-300 mb-4">Start sharing your thoughts, experiences, or anything that's on your mind!</p>
           <button
             onClick={() => setShowAddModal(true)}
             className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300"
@@ -189,7 +193,7 @@ export default function FeedPage() {
         </div>
       )}
 
-      {(showAddModal || editPost) && (
+      {(isAdminMode && (showAddModal || editPost)) && (
         <FeedPostModal
           editPost={editPost}
           onClose={handleCloseModal}

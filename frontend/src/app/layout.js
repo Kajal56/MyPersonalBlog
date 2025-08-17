@@ -1,6 +1,7 @@
 import './globals.css'
 import { Inter } from 'next/font/google'
 import Navigation from '../components/Navigation'
+import { AdminModeProvider } from '../components/AdminModeContext'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -27,12 +28,14 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body className={inter.className}>
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-950 transition-colors duration-300">
-          <Navigation />
-          <main className="container mx-auto px-4 py-8">
-            {children}
-          </main>
-        </div>
+        <AdminModeProvider>
+          <div className="min-h-screen bg-gray-50 dark:bg-gray-950 transition-colors duration-300">
+            <Navigation />
+            <main className="container mx-auto px-4 py-8">
+              {children}
+            </main>
+          </div>
+        </AdminModeProvider>
       </body>
     </html>
   )

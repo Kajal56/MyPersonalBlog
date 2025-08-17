@@ -1,8 +1,10 @@
 'use client'
 import { useState } from 'react'
 import ConfirmDialog from './ConfirmDialog'
+import { useAdminMode } from './AdminModeContext'
 
-export default function EntryCard({ type, entry, fields, onEdit, onDelete }) {
+export default function EntryCard({ type, entry, fields, onEdit, onDelete, cardClassName }) {
+  const { isAdminMode } = useAdminMode()
   const [isEditing, setIsEditing] = useState(false)
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
 
@@ -46,25 +48,27 @@ export default function EntryCard({ type, entry, fields, onEdit, onDelete }) {
 
   return (
     <>
-  <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+      <div className={cardClassName || "bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow"}>
         <div className="flex justify-between items-start mb-4">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 line-clamp-2">
             {entry.title || entry.name}
           </h3>
-          <div className="flex space-x-2">
-            <button
-              onClick={handleEdit}
-              className="text-blue-600 hover:text-blue-800 text-sm"
-            >
-              Edit
-            </button>
-            <button 
-              onClick={handleDeleteClick}
-              className="text-red-600 hover:text-red-800 text-sm"
-            >
-              Delete
-            </button>
-          </div>
+          {isAdminMode && (
+            <div className="flex space-x-2">
+              <button
+                onClick={handleEdit}
+                className="text-blue-600 hover:text-blue-800 text-sm"
+              >
+                Edit
+              </button>
+              <button 
+                onClick={handleDeleteClick}
+                className="text-red-600 hover:text-red-800 text-sm"
+              >
+                Delete
+              </button>
+            </div>
+          )}
         </div>
 
         <div className="space-y-3">

@@ -5,9 +5,11 @@ import EntryCard from '../../../components/EntryCard'
 import AddEntryButton from '../../../components/AddEntryButton'
 import AddEntryModal from '../../../components/AddEntryModal'
 import { apiService } from '../../../services/apiService'
+import { useAdminMode } from '../../../components/AdminModeContext'
 
 export default function MoviesPage() {
   const [movies, setMovies] = useState([])
+  const { isAdminMode } = useAdminMode()
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [showAddModal, setShowAddModal] = useState(false)
@@ -66,19 +68,21 @@ export default function MoviesPage() {
   }
 
   return (
-  <div className="max-w-6xl mx-auto">
+    <div className="max-w-6xl mx-auto">
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">🎬 Movies</h1>
           <p className="text-gray-600 dark:text-gray-300">My movie watchlist and reviews</p>
         </div>
-        <button
-          onClick={() => setShowAddModal(true)}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors flex items-center space-x-2"
-        >
-          <span>+</span>
-          <span>Add Movie</span>
-        </button>
+        {isAdminMode && (
+          <button
+            onClick={() => setShowAddModal(true)}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors flex items-center space-x-2"
+          >
+            <span>+</span>
+            <span>Add Movie</span>
+          </button>
+        )}
       </div>
 
       {loading ? (
@@ -107,14 +111,15 @@ export default function MoviesPage() {
                 { label: 'What I liked most', value: movie.favoriteAspect },
                 { label: 'Date watched', value: new Date(movie.dateWatched).toLocaleDateString() }
               ]}
-              onEdit={handleEdit}
-              onDelete={handleDelete}
+              onEdit={isAdminMode ? handleEdit : undefined}
+              onDelete={isAdminMode ? handleDelete : undefined}
+              isAdminMode={isAdminMode}
             />
           ))}
         </div>
       )}
 
-      {(showAddModal || editMovie) && (
+      {(isAdminMode && (showAddModal || editMovie)) && (
         <AddEntryModal
           type="movies"
           editEntry={editMovie}

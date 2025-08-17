@@ -4,8 +4,10 @@ import { useState, useEffect } from 'react'
 import { apiService } from '../../../services/apiService'
 import EntryCard from '../../../components/EntryCard'
 import AddEntryModal from '../../../components/AddEntryModal'
+import { useAdminMode } from '../../../components/AdminModeContext'
 
 export default function FlatsPage() {
+  const { isAdminMode } = useAdminMode()
   const [flats, setFlats] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -66,13 +68,15 @@ export default function FlatsPage() {
           <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">🏠 Flat Hunting</h1>
           <p className="text-gray-600 dark:text-gray-300">Properties I'm considering for rent</p>
         </div>
-        <button
-          onClick={() => setShowAddModal(true)}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors flex items-center space-x-2"
-        >
-          <span>+</span>
-          <span>Add Flat</span>
-        </button>
+        {isAdminMode && (
+          <button
+            onClick={() => setShowAddModal(true)}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors flex items-center space-x-2"
+          >
+            <span>+</span>
+            <span>Add Flat</span>
+          </button>
+        )}
       </div>
 
       {loading ? (
@@ -90,40 +94,49 @@ export default function FlatsPage() {
           <p className="text-gray-600">Start adding properties you're interested in!</p>
         </div>
       ) : (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {flats.map((flat) => (
-            <EntryCard
-              key={flat.id}
-              type="flats"
-              entry={flat}
-              fields={[
-                { label: 'Contact', value: flat.contactNumber, icon: '📞' },
-                { label: 'Society', value: flat.societyName, icon: '🏢' },
-                { label: 'Monthly Rent', value: formatRent(flat.rentValue), icon: '💰' },
-                ...(flat.googleMapsLink ? [{ 
-                  label: 'Location', 
-                  value: (
-                    <a 
-                      href={flat.googleMapsLink} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="text-blue-600 hover:text-blue-800 underline"
-                    >
-                      View on Maps 🗺️
-                    </a>
-                  ), 
-                  icon: '📍' 
-                }] : []),
-                ...(flat.remarks ? [{ label: 'Remarks', value: flat.remarks, icon: '📝' }] : [])
-              ]}
-              onEdit={handleEdit}
-              onDelete={handleDelete}
-            />
-          ))}
-        </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {flats.map((flat) => (
+              <EntryCard
+                key={flat.id}
+                type="flats"
+                entry={flat}
+                fields={[
+                  { label: 'Contact', value: flat.contactNumber, icon: '📞' },
+                  { label: 'Society', value: flat.societyName, icon: '🏢' },
+                  { label: 'Monthly Rent', value: formatRent(flat.rentValue), icon: '💰' },
+                  ...(flat.googleMapsLink ? [{ 
+                    label: 'Location', 
+                    value: (
+                      <a 
+                        href={flat.googleMapsLink} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:text-blue-800 underline"
+                      >
+                        View on Maps 🗺️
+                      </a>
+                    ), 
+                    icon: '📍' 
+                  }] : []),
+                  ...(flat.remarks ? [{ label: 'Remarks', value: flat.remarks, icon: '📝' }] : [])
+                ]}
+                onEdit={isAdminMode ? handleEdit : undefined}
+                onDelete={isAdminMode ? handleDelete : undefined}
+                cardClassName="bg-white dark:bg-gray-800"
+              />
+            ))}
+          </div>
       )}
 
       {(showAddModal || editFlat) && (
+        <AddEntryModal
+          type="flats"
+          editEntry={editFlat}
+          onClose={handleCloseModal}
+          onEntryAdded={handleFlatAdded}
+        />
+      )}
+      {(isAdminMode && (showAddModal || editFlat)) && (
         <AddEntryModal
           type="flats"
           editEntry={editFlat}
