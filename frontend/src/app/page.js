@@ -35,39 +35,7 @@ export default function Home() {
         </p>
       </div>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-        <Link href="/movies" className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
-          <div className="text-center">
-            <div className="text-3xl mb-3">🎬</div>
-            <h3 className="text-lg font-semibold text-gray-900">Movies</h3>
-            <p className="text-gray-600">My movie watchlist and reviews</p>
-          </div>
-        </Link>
-
-        <Link href="/books" className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
-          <div className="text-center">
-            <div className="text-3xl mb-3">📚</div>
-            <h3 className="text-lg font-semibold text-gray-900">Books</h3>
-            <p className="text-gray-600">Reading list and takeaways</p>
-          </div>
-        </Link>
-
-        <Link href="/trips" className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
-          <div className="text-center">
-            <div className="text-3xl mb-3">✈️</div>
-            <h3 className="text-lg font-semibold text-gray-900">Trips</h3>
-            <p className="text-gray-600">Travel adventures and memories</p>
-          </div>
-        </Link>
-
-        <Link href="/restaurants" className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
-          <div className="text-center">
-            <div className="text-3xl mb-3">🍽️</div>
-            <h3 className="text-lg font-semibold text-gray-900">Restaurants</h3>
-            <p className="text-gray-600">Culinary discoveries</p>
-          </div>
-        </Link>
-      </div>
+  {/* Removed grid of links to tabs. Tabs now only appear under Personal. */}
 
       {loading ? (
         <div className="bg-white rounded-lg shadow-md p-6">
