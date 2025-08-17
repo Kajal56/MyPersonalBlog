@@ -59,12 +59,12 @@ export default function PersonalPage() {
           ) : recentEntries.length > 0 ? (
             <div className="space-y-4">
               {recentEntries.map((entry, index) => (
-                <div key={index} className="border-l-4 border-blue-500 pl-4 bg-white/80 rounded-md py-2 flex flex-col gap-1">
+                <div key={index} className="border-l-4 border-blue-500 pl-4 bg-white/80 dark:bg-gray-800 rounded-md py-2 flex flex-col gap-1">
                   <div className="flex items-center justify-between">
                     <h3 className="font-semibold text-gray-900 dark:text-gray-100">{entry.title}</h3>
                     <span className="text-xs text-blue-500 dark:text-blue-300 capitalize px-2 py-1 rounded-full bg-blue-100/60 dark:bg-blue-900/60">{entry.type}</span>
                   </div>
-                  <p className="text-gray-500 dark:text-gray-300 text-xs">
+                  <p className="text-gray-500 dark:text-gray-100 text-xs">
                     Added {new Date(entry.dateAdded).toLocaleDateString()}
                   </p>
                 </div>
