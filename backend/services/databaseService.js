@@ -4,6 +4,52 @@ const { PrismaClient } = require('@prisma/client');
 let prisma;
 
 class DatabaseService {
+  // Movie Suggestions
+  async getAllMovieSuggestions() {
+    return this.prisma.movieSuggestion.findMany({
+      orderBy: { dateSuggested: 'desc' }
+    });
+  }
+
+  async getMovieSuggestionById(id) {
+    return this.prisma.movieSuggestion.findUnique({
+      where: { id }
+    });
+  }
+
+  async addMovieSuggestion(data) {
+    return this.prisma.movieSuggestion.create({
+      data: {
+        name: data.name || null,
+        itemName: data.itemName || null,
+        message: data.message || '',
+        moment: data.moment || null,
+        dateSuggested: data.dateSuggested ? new Date(data.dateSuggested) : new Date(),
+        isRead: data.isRead || false
+      }
+    });
+  }
+
+  async updateMovieSuggestion(id, data) {
+    return this.prisma.movieSuggestion.update({
+      where: { id },
+      data: {
+        name: data.name,
+        itemName: data.itemName,
+        message: data.message,
+        moment: data.moment,
+        dateSuggested: data.dateSuggested ? new Date(data.dateSuggested) : undefined,
+        isRead: typeof data.isRead === 'boolean' ? data.isRead : undefined
+      }
+    });
+  }
+
+  async deleteMovieSuggestion(id) {
+    return this.prisma.movieSuggestion.delete({
+      where: { id }
+    });
+  }
+
   constructor() {
     // Reuse existing Prisma instance in serverless environments
     if (!prisma) {
@@ -105,6 +151,52 @@ class DatabaseService {
 
   async deleteBook(id) {
     return this.prisma.book.delete({
+      where: { id }
+    });
+  }
+
+  // Book Suggestions
+  async getAllBookSuggestions() {
+    return this.prisma.bookSuggestion.findMany({
+      orderBy: { dateSuggested: 'desc' }
+    });
+  }
+
+  async getBookSuggestionById(id) {
+    return this.prisma.bookSuggestion.findUnique({
+      where: { id }
+    });
+  }
+
+  async addBookSuggestion(data) {
+    return this.prisma.bookSuggestion.create({
+      data: {
+        name: data.name || null,
+        itemName: data.itemName || null,
+        message: data.message || '',
+        moment: data.moment || null,
+        dateSuggested: data.dateSuggested ? new Date(data.dateSuggested) : new Date(),
+        isRead: data.isRead || false
+      }
+    });
+  }
+
+  async updateBookSuggestion(id, data) {
+    return this.prisma.bookSuggestion.update({
+      where: { id },
+      data: {
+        name: data.name,
+        itemName: data.itemName,
+        message: data.message,
+        moment: data.moment,
+        dateSuggested: data.dateSuggested ? new Date(data.dateSuggested) : undefined,
+        isRead: typeof data.isRead === 'boolean' ? data.isRead : undefined
+      }
+    });
+  }
+
+  async deleteBookSuggestion(id) {
+    return this.prisma.bookSuggestion.delete({
       where: { id }
     });
   }

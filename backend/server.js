@@ -7,6 +7,8 @@ require('dotenv').config();
 
 const movieRoutes = require('./routes/movies');
 const bookRoutes = require('./routes/books');
+const bookSuggestionsRoutes = require('./routes/bookSuggestions');
+const movieSuggestionsRoutes = require('./routes/movieSuggestions');
 const tripRoutes = require('./routes/trips');
 const restaurantRoutes = require('./routes/restaurants');
 const recentRoutes = require('./routes/recent');
@@ -64,7 +66,9 @@ app.get('/health', (req, res) => {
 });
 
 // API Routes
+app.use('/api/movies/suggestions', movieSuggestionsRoutes);
 app.use('/api/movies', movieRoutes);
+app.use('/api/books/suggestions', bookSuggestionsRoutes);
 app.use('/api/books', bookRoutes);
 app.use('/api/trips', tripRoutes);
 app.use('/api/restaurants', restaurantRoutes);
