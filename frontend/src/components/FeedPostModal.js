@@ -109,16 +109,16 @@ export default function FeedPostModal({ onClose, onPostAdded, editPost = null })
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-lg max-w-lg w-full max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 bg-black bg-opacity-50 dark:bg-gray-900 dark:bg-opacity-80 flex items-center justify-center p-4 z-50">
+      <div className="bg-white dark:bg-gray-800 rounded-lg max-w-lg w-full max-h-[90vh] overflow-y-auto">
         <div className="p-6">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-bold text-gray-900">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">
               {isEditing ? 'Edit Post' : 'Create New Post'} ✨
             </h2>
             <button
               onClick={onClose}
-              className="text-gray-400 hover:text-gray-600 text-xl"
+              className="text-gray-400 hover:text-gray-600 dark:text-gray-300 dark:hover:text-gray-100 text-xl"
             >
               ✕
             </button>
@@ -126,51 +126,49 @@ export default function FeedPostModal({ onClose, onPostAdded, editPost = null })
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
-              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+              <div className="bg-red-100 dark:bg-red-900 border border-red-400 dark:border-red-700 text-red-700 dark:text-red-200 px-4 py-3 rounded">
                 {error}
               </div>
             )}
-            
             {/* Title - Optional */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
                 Title (Optional)
               </label>
               <input
                 type="text"
                 value={formData.title}
                 placeholder="Give your post a catchy title..."
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 onChange={(e) => handleInputChange('title', e.target.value)}
               />
             </div>
 
             {/* Content - Required */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
                 What's on your mind? <span className="text-red-500">*</span>
               </label>
               <textarea
                 required
                 value={formData.content}
                 placeholder="Share your thoughts, experiences, or anything you want to remember! You can write as much as you like..."
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[120px]"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[120px]"
                 rows={6}
                 onChange={(e) => handleInputChange('content', e.target.value)}
               />
-              <div className="text-sm text-gray-500 mt-1">
+              <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                 💡 Tip: You can write about anything - your day, thoughts, experiences, or random musings!
               </div>
             </div>
 
             {/* Media Upload */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
                 📸 Add Photo or Video (Optional)
               </label>
-              
               {!previewUrl ? (
-                <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-400 transition-colors">
+                <div className="border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg p-6 text-center hover:border-blue-400 dark:hover:border-blue-500 transition-colors bg-white dark:bg-gray-900">
                   <input
                     id="media-upload"
                     type="file"
@@ -183,20 +181,20 @@ export default function FeedPostModal({ onClose, onPostAdded, editPost = null })
                     className="cursor-pointer flex flex-col items-center space-y-2"
                   >
                     <div className="text-4xl">📷</div>
-                    <div className="text-sm text-gray-600">
-                      <span className="font-medium text-blue-600 hover:text-blue-500">
+                    <div className="text-sm text-gray-600 dark:text-gray-300">
+                      <span className="font-medium text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300">
                         Click to upload
                       </span>{' '}
                       or drag and drop
                     </div>
-                    <div className="text-xs text-gray-500">
+                    <div className="text-xs text-gray-500 dark:text-gray-400">
                       PNG, JPG, GIF, MP4 up to 10MB
                     </div>
                   </label>
                 </div>
               ) : (
                 <div className="relative">
-                  <div className="border border-gray-300 rounded-lg overflow-hidden">
+                  <div className="border border-gray-300 dark:border-gray-700 rounded-lg overflow-hidden bg-white dark:bg-gray-900">
                     {previewUrl.includes('video') || previewUrl.includes('data:video') ? (
                       <video 
                         src={previewUrl} 
@@ -221,7 +219,7 @@ export default function FeedPostModal({ onClose, onPostAdded, editPost = null })
                   <div className="mt-2 text-center">
                     <label
                       htmlFor="media-upload"
-                      className="text-sm text-blue-600 hover:text-blue-500 cursor-pointer"
+                      className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300 cursor-pointer"
                     >
                       📸 Change media
                     </label>
@@ -239,17 +237,17 @@ export default function FeedPostModal({ onClose, onPostAdded, editPost = null })
 
             {/* Tags */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
                 Tags/Hashtags
               </label>
               <input
                 type="text"
                 value={formData.tags}
                 placeholder="mood, life, thoughts, random (comma separated)"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 onChange={(e) => handleInputChange('tags', e.target.value)}
               />
-              <div className="text-sm text-gray-500 mt-1">
+              <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                 🏷️ Add tags to categorize your posts (separate with commas)
               </div>
             </div>
@@ -258,14 +256,14 @@ export default function FeedPostModal({ onClose, onPostAdded, editPost = null })
               <button
                 type="button"
                 onClick={onClose}
-                className="flex-1 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+                className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="flex-1 px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-md hover:from-blue-600 hover:to-purple-700 disabled:opacity-50 transition-all"
+                className="flex-1 px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 dark:from-blue-700 dark:to-purple-800 text-white rounded-md hover:from-blue-600 hover:to-purple-700 dark:hover:from-blue-800 dark:hover:to-purple-900 disabled:opacity-50 transition-all"
               >
                 {isSubmitting ? (isEditing ? 'Updating...' : 'Posting...') : (isEditing ? 'Update Post' : 'Share Post')} 
                 {!isSubmitting && ' 🚀'}
