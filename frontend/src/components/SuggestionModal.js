@@ -30,8 +30,8 @@ export default function SuggestionModal({ type, onClose, onSuggestionAdded }) {
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 dark:bg-gray-900 dark:bg-opacity-80 flex items-center justify-center p-4 z-50">
-      <div className="bg-white dark:bg-gray-800 max-w-md w-full max-h-[90vh] overflow-y-auto">
+  <div className="fixed inset-0 bg-black bg-opacity-50 bg-opacity-80 flex items-center justify-center p-4 z-50">
+  <div className="bg-white bg-transparent max-w-md w-full max-h-[90vh] overflow-y-auto">
         <div className="p-6">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">Suggest a {type.slice(0, -1)}</h2>

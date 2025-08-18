@@ -79,7 +79,7 @@ export default function FeedPage() {
   }
 
   const renderPost = (post) => (
-  <div key={post.id} className="bg-white dark:bg-gray-800 shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden">
+  <div key={post.id} className="bg-transparent shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden">
       <div className="p-4 border-b border-gray-100 dark:border-gray-700">
         <div className="flex justify-between items-start">
           <div className="flex-1">

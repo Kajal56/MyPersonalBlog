@@ -13,25 +13,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              try {
-                var theme = localStorage.getItem('theme');
-                if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                  document.documentElement.classList.add('dark');
-                } else {
-                  document.documentElement.classList.remove('dark');
-                }
-              } catch(e) {}
-            `,
-          }}
-        />
-      </head>
-      <body className={inter.className}> {/* Theme is now controlled by <html> class via Navigation toggle */}
+      <head />
+      <body className="min-h-screen w-full text-gray-100 transition-colors duration-500" style={{background: 'linear-gradient(135deg, #000000 0%, #000000 35%, #6600CC 100%)'}}>
         <AdminModeProvider>
-          <div className="min-h-screen bg-gray-50 dark:bg-gray-950 transition-colors duration-300">
+          <div className="min-h-screen flex flex-col">
             <Navigation />
             <main className="container mx-auto px-4 py-8">
               {children}
@@ -40,5 +25,5 @@ export default function RootLayout({ children }) {
         </AdminModeProvider>
       </body>
     </html>
-  )
+  );
 }

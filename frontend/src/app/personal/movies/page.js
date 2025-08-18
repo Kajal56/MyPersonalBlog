@@ -101,7 +101,7 @@ export default function MoviesPage() {
         {isAdminMode ? (
           <button
             onClick={() => setShowAddModal(true)}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors flex items-center space-x-2"
+            className="bg-[#6600CC] hover:bg-[#7D2AE8] text-white px-6 py-3 rounded-lg font-medium transition-colors flex items-center space-x-2"
           >
             <span>+</span>
             <span>Add Movie</span>
@@ -109,7 +109,7 @@ export default function MoviesPage() {
         ) : (
           <button
             onClick={() => setShowSuggestModal(true)}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 font-medium transition-colors flex items-center space-x-2"
+            className="bg-[#6600CC] hover:bg-[#7D2AE8] text-white px-6 py-3 font-medium transition-colors flex items-center space-x-2"
           >
             <span>💡</span>
             <span>Suggest Movie</span>
@@ -178,7 +178,7 @@ export default function MoviesPage() {
           ) : (
             <div className="space-y-4">
               {suggestions.map(suggestion => (
-                <div key={suggestion.id} className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow">
+                <div key={suggestion.id} className="bg-transparent p-4 rounded-lg shadow">
                   <div className="flex justify-between items-center">
                     <div>
                       <div className="font-semibold text-gray-900 dark:text-gray-100">{suggestion.itemName || 'Untitled'}</div>
@@ -191,7 +191,7 @@ export default function MoviesPage() {
                       </span>
                       {!suggestion.isRead && (
                         <button
-                          className="bg-blue-500 hover:bg-blue-600 text-white text-xs px-3 py-1 rounded transition-colors"
+                          className="bg-[#6600CC] hover:bg-[#7D2AE8] text-white text-xs px-3 py-1 rounded transition-colors"
                           onClick={async () => {
                             await apiService.updateSuggestion('movies', suggestion.id, { isRead: true })
                             loadSuggestions()
