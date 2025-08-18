@@ -14,6 +14,7 @@ const restaurantRoutes = require('./routes/restaurants');
 const recentRoutes = require('./routes/recent');
 const flatRoutes = require('./routes/flats');
 const feedRoutes = require('./routes/feed');
+const contactMessagesRoutes = require('./routes/contactMessages');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -75,6 +76,7 @@ app.use('/api/restaurants', restaurantRoutes);
 app.use('/api/recent', recentRoutes);
 app.use('/api/flats', flatRoutes);
 app.use('/api/feed', feedRoutes);
+app.use('/api/contact/messages', contactMessagesRoutes);
 
 // 404 handler
 app.use('*', (req, res) => {

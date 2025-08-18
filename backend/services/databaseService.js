@@ -4,6 +4,23 @@ const { PrismaClient } = require('@prisma/client');
 let prisma;
 
 class DatabaseService {
+  // Contact Messages
+  async addContactMessage(data) {
+    return this.prisma.contactMessage.create({
+      data: {
+        name: data.name || null,
+        email: data.email || null,
+        message: data.message,
+        dateSent: data.dateSent ? new Date(data.dateSent) : new Date(),
+      }
+    })
+  }
+
+  async getAllContactMessages() {
+    return this.prisma.contactMessage.findMany({
+      orderBy: { dateSent: 'desc' }
+    })
+  }
   // Movie Suggestions
   async getAllMovieSuggestions() {
     return this.prisma.movieSuggestion.findMany({

@@ -108,6 +108,17 @@ model MovieSuggestion {
   @@map("movie_suggestions")
 }
 
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String?
+  email     String?
+  message   String
+  dateSent  DateTime @default(now())
+
+  @@map("contact_messages")
+}
+
 model RestaurantSuggestion {
   id            String   @id @default(cuid())
   name          String?
