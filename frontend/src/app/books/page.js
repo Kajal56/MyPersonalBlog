@@ -23,7 +23,7 @@ export default function BooksPage() {
       setBooks(data)
     } catch (err) {
       setError('Failed to load books')
-      console.error('Error loading books:', err)
+      console.error('Error loading books:', err);
     } finally {
       setLoading(false)
     }

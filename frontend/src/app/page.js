@@ -38,14 +38,14 @@ export default function Home() {
   {/* Removed grid of links to tabs. Tabs now only appear under Personal. */}
 
       {loading ? (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+        <div className="bg-white dark:bg-gray-800 shadow-md p-6">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">Recent Updates</h2>
           <div className="text-center py-4">
             <div className="text-gray-600 dark:text-gray-300">Loading recent entries...</div>
           </div>
         </div>
       ) : recentEntries.length > 0 ? (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+        <div className="bg-white dark:bg-gray-800 shadow-md p-6">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">Recent Updates</h2>
           <div className="space-y-4">
             {recentEntries.map((entry, index) => (

@@ -48,7 +48,7 @@ export default function EntryCard({ type, entry, fields, onEdit, onDelete, cardC
 
   return (
     <>
-      <div className={cardClassName || "bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow"}>
+  <div className={cardClassName || "bg-white dark:bg-gray-800 shadow-md p-6 hover:shadow-lg transition-shadow"}>
         <div className="flex justify-between items-start mb-4">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 line-clamp-2">
             {entry.title || entry.name}
@@ -89,7 +89,8 @@ export default function EntryCard({ type, entry, fields, onEdit, onDelete, cardC
               {entry.tags.map((tag, index) => (
                 <span
                   key={index}
-                  className="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs rounded-full"
+                  className="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs"
+                  style={{ borderRadius: 0 }}
                 >
                   {tag}
                 </span>

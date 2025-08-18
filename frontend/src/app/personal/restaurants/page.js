@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { apiService } from '../../../services/apiService'
 import EntryCard from '../../../components/EntryCard'
+import PersonalTabs from '../../../components/PersonalTabs'
 import AddEntryModal from '../../../components/AddEntryModal'
 
 export default function RestaurantsPage() {
@@ -52,6 +53,7 @@ export default function RestaurantsPage() {
 
   return (
     <div className="max-w-6xl mx-auto">
+      <PersonalTabs />
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">🍽️ Restaurants</h1>

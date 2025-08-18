@@ -15,8 +15,13 @@ export default function Navigation() {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      document.documentElement.classList.remove('dark', 'light')
-      document.documentElement.classList.add(theme)
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark')
+        document.documentElement.classList.remove('light')
+      } else {
+        document.documentElement.classList.add('light')
+        document.documentElement.classList.remove('dark')
+      }
     }
   }, [theme])
 
@@ -40,7 +45,7 @@ export default function Navigation() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                className={`px-3 py-2 text-sm font-medium transition-colors ${
                   pathname === item.href
                     ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
                     : 'text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400'
@@ -59,7 +64,7 @@ export default function Navigation() {
                   setShowAdminModal(true)
                 }
               }}
-              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+              className={`px-4 py-2 text-sm font-medium transition-colors ${
                 isAdminMode
                   ? 'bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 hover:bg-red-200 dark:hover:bg-red-800'
                   : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700'
@@ -69,19 +74,19 @@ export default function Navigation() {
             </button>
       {showAdminModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-          <div className="bg-white dark:bg-gray-900 rounded-lg shadow-lg p-8 w-full max-w-sm">
+          <div className="bg-white dark:bg-gray-900 shadow-lg p-8 w-full max-w-sm">
             <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-gray-100">Admin Authentication</h2>
             <input
               type="password"
               value={adminPassword}
               onChange={e => setAdminPassword(e.target.value)}
               placeholder="Enter admin password"
-              className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 mb-4"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 mb-4"
             />
             {adminError && <div className="text-red-500 mb-2 text-sm">{adminError}</div>}
             <div className="flex justify-end gap-2">
               <button
-                className="px-4 py-2 rounded-md bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-700"
+                className="px-4 py-2 bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-700"
                 onClick={() => {
                   setShowAdminModal(false)
                   setAdminPassword('')
@@ -89,7 +94,7 @@ export default function Navigation() {
                 }}
               >Cancel</button>
               <button
-                className="px-4 py-2 rounded-md bg-blue-600 text-white font-semibold hover:bg-blue-700"
+                className="px-4 py-2 bg-blue-600 text-white font-semibold hover:bg-blue-700"
                 onClick={() => {
                   if (adminPassword === 'kajal') {
                     setIsAdminMode(true)
@@ -107,7 +112,7 @@ export default function Navigation() {
       )}
             <button
               onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-              className="px-4 py-2 rounded-md text-sm font-medium transition-colors bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700"
+              className="px-4 py-2 text-sm font-medium transition-colors bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700"
               aria-label="Toggle theme"
             >
               {theme === 'light' ? '🌙 Dark' : '☀️ Light'}

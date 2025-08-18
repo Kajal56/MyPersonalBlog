@@ -1,4 +1,3 @@
-// Frontend API service to communicate with backend
 
 //Condtional backend URLs
 var isProduction = process.env.NODE_ENV === 'production';
@@ -15,9 +14,22 @@ const API_BASE_URL = base_url;
 
 
 class ApiService {
+  // Contact Messages
+  async sendContactMessage(data) {
+    return this.request('/contact/messages', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async getContactMessages() {
+    return this.request('/contact/messages', {
+      method: 'GET',
+    });
+  }
   async request(endpoint, options = {}) {
     const url = `${API_BASE_URL}${endpoint}`;
-    
+    console.log('Making API request to:', url);
     const config = {
       headers: {
         'Content-Type': 'application/json',
@@ -176,6 +188,35 @@ class ApiService {
 
   async deleteFeedPost(id) {
     return this.delete('feed', id);
+  }
+
+  // Suggestions
+  async createSuggestion(type, data) {
+    // type: 'books', 'movies', 'restaurants'
+    console.log('Creating suggestion:', type, data);
+    return this.request(`/${type}/suggestions`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async getSuggestions(type) {
+    return this.request(`/${type}/suggestions`, {
+      method: 'GET',
+    });
+  }
+
+  async updateSuggestion(type, id, data) {
+    return this.request(`/${type}/suggestions/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async deleteSuggestion(type, id) {
+    return this.request(`/${type}/suggestions/${id}`, {
+      method: 'DELETE',
+    });
   }
 
   // Health check

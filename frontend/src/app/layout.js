@@ -13,21 +13,8 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                try {
-                  var theme = localStorage.getItem('theme') || 'dark';
-                  document.documentElement.classList.add(theme);
-                } catch(e) {}
-              })();
-            `,
-          }}
-        />
-      </head>
-      <body className={inter.className}>
+  <head />
+  <body className={inter.className}> {/* Theme is now controlled by <html> class via Navigation toggle */}
         <AdminModeProvider>
           <div className="min-h-screen bg-gray-50 dark:bg-gray-950 transition-colors duration-300">
             <Navigation />
