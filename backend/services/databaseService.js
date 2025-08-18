@@ -4,6 +4,51 @@ const { PrismaClient } = require('@prisma/client');
 let prisma;
 
 class DatabaseService {
+  // Trip Suggestions
+  async getAllTripSuggestions() {
+    return this.prisma.tripSuggestion.findMany({
+      orderBy: { dateSuggested: 'desc' }
+    });
+  }
+
+  async getTripSuggestionById(id) {
+    return this.prisma.tripSuggestion.findUnique({
+      where: { id }
+    });
+  }
+
+  async addTripSuggestion(data) {
+    return this.prisma.tripSuggestion.create({
+      data: {
+        name: data.name || null,
+        itemName: data.itemName || null,
+        message: data.message || '',
+        moment: data.moment || null,
+        dateSuggested: data.dateSuggested ? new Date(data.dateSuggested) : new Date(),
+        isRead: data.isRead || false
+      }
+    });
+  }
+
+  async updateTripSuggestion(id, data) {
+    return this.prisma.tripSuggestion.update({
+      where: { id },
+      data: {
+        name: data.name,
+        itemName: data.itemName,
+        message: data.message,
+        moment: data.moment,
+        dateSuggested: data.dateSuggested ? new Date(data.dateSuggested) : undefined,
+        isRead: typeof data.isRead === 'boolean' ? data.isRead : undefined
+      }
+    });
+  }
+
+  async deleteTripSuggestion(id) {
+    return this.prisma.tripSuggestion.delete({
+      where: { id }
+    });
+  }
   // Contact Messages
   async addContactMessage(data) {
     return this.prisma.contactMessage.create({

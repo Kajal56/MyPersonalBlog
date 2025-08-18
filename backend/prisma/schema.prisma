@@ -96,7 +96,8 @@ model BookSuggestion {
   @@map("book_suggestions")
 }
 
-model MovieSuggestion {
+
+model TripSuggestion {
   id            String   @id @default(cuid())
   name          String?
   itemName      String?
@@ -105,7 +106,7 @@ model MovieSuggestion {
   dateSuggested DateTime @default(now())
   isRead        Boolean  @default(false)
 
-  @@map("movie_suggestions")
+  @@map("trip_suggestions")
 }
 
 
