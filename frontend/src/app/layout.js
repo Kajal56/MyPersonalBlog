@@ -14,11 +14,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head />
-      <body className="min-h-screen w-full text-gray-100 transition-colors duration-500 overflow-x-hidden" style={{background: 'linear-gradient(135deg, #000000 0%, #000000 35%, #6600CC 100%)'}}>
+      <body className="min-h-screen w-full text-gray-100 transition-colors duration-500 overflow-x-hidden" style={{background: 'linear-gradient(135deg, #000000 0%, #000000 35%, #6600CC 100%)', minHeight: '100dvh', paddingBottom: 'env(safe-area-inset-bottom)'}}>
         <AdminModeProvider>
           <div className="min-h-screen flex flex-col w-full">
             <Navigation />
-            <main className="container mx-auto px-4 py-8 w-full min-h-screen" style={{minHeight: '100vh'}}>
+            <main className="container mx-auto px-2 sm:px-4 md:px-8 py-4 sm:py-8 w-full max-w-screen-xl min-h-[80vh]" style={{minHeight: '80dvh'}}>
               {children}
             </main>
           </div>

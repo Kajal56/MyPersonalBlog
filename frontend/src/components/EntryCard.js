@@ -48,7 +48,7 @@ export default function EntryCard({ type, entry, fields, onEdit, onDelete, cardC
 
   return (
     <>
-      <div className={cardClassName || "bg-gradient-to-br from-[#2D0036] to-[#6600CC] shadow-md p-6 hover:shadow-lg transition-shadow"}>
+  <div className={cardClassName || "bg-gradient-to-br from-[#2D0036] to-[#6600CC] shadow-md p-3 sm:p-5 md:p-6 hover:shadow-lg transition-shadow w-full max-w-xs sm:max-w-sm md:max-w-md mx-auto"}>
         <div className="flex justify-between items-start mb-4">
           <h3 className="text-lg font-semibold text-white line-clamp-2">
             {entry.title || entry.name}
@@ -71,25 +71,25 @@ export default function EntryCard({ type, entry, fields, onEdit, onDelete, cardC
           )}
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-2 sm:space-y-3">
           {fields.map((field, index) => (
             <div key={index} className="flex items-start space-x-2">
-              {field.icon && <span className="text-sm mt-0.5 text-purple-300">{field.icon}</span>}
+              {field.icon && <span className="text-xs sm:text-sm mt-0.5 text-purple-300">{field.icon}</span>}
               <div className="flex-1 min-w-0">
-                <span className="text-sm font-medium text-purple-200">{field.label}:</span>
-                <p className="text-sm text-white break-words">{field.value}</p>
+                <span className="text-xs sm:text-sm font-medium text-purple-200">{field.label}:</span>
+                <p className="text-xs sm:text-sm text-white break-words">{field.value}</p>
               </div>
             </div>
           ))}
         </div>
 
         {entry.tags && entry.tags.length > 0 && (
-          <div className="mt-4 pt-4 border-t border-purple-900">
-            <div className="flex flex-wrap gap-2">
+          <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-purple-900">
+            <div className="flex flex-wrap gap-1 sm:gap-2">
               {entry.tags.map((tag, index) => (
                 <span
                   key={index}
-                  className="px-2 py-1 bg-purple-900 text-purple-200 text-xs"
+                  className="px-1 sm:px-2 py-0.5 sm:py-1 bg-purple-900 text-purple-200 text-xs"
                   style={{ borderRadius: 0 }}
                 >
                   {tag}

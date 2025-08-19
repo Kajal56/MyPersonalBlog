@@ -47,11 +47,11 @@ export default function PersonalPage() {
   }, []);
 
   return (
-    <div className="min-h-screen py-6 px-2 sm:py-10 sm:px-4">
-      <div className="max-w-3xl mx-auto">
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-white mb-6 sm:mb-8 text-center">Personal</h1>
+    <div className="min-h-screen py-4 px-2 sm:py-8 sm:px-4" style={{paddingBottom: 'env(safe-area-inset-bottom)'}}>
+      <div className="w-full max-w-screen-lg mx-auto">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white mb-4 sm:mb-6 md:mb-8 text-center">Personal</h1>
         {/* Links to all sections */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8 mt-8 sm:mt-12 mb-8 sm:mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-6 md:gap-8 mt-6 sm:mt-8 md:mt-12 mb-6 sm:mb-10 md:mb-12">
           <Link href="/personal/movies" className="p-5 sm:p-8 transition-all">
             <div className="text-center">
               <div className="text-2xl sm:text-3xl mb-2 sm:mb-3">🎬</div>

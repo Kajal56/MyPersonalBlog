@@ -109,9 +109,9 @@ export default function FeedPostModal({ onClose, onPostAdded, editPost = null })
   }
 
   return (
-  <div className="fixed inset-0 bg-black bg-opacity-50 bg-opacity-80 flex items-center justify-center p-4 z-50">
-  <div className="bg-white bg-transparent rounded-lg max-w-lg w-full max-h-[90vh] overflow-y-auto">
-        <div className="p-6">
+  <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center p-2 sm:p-4 md:p-6 z-50" style={{paddingBottom: 'env(safe-area-inset-bottom)'}}>
+    <div className="bg-white dark:bg-[#0a0011] rounded-lg w-full max-w-[98vw] sm:max-w-md md:max-w-lg max-h-[90dvh] overflow-y-auto" style={{boxSizing: 'border-box'}}>
+      <div className="p-2 sm:p-4 md:p-6">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">
               {isEditing ? 'Edit Post' : 'Create New Post'} ✨
@@ -124,7 +124,7 @@ export default function FeedPostModal({ onClose, onPostAdded, editPost = null })
             </button>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-2 sm:space-y-3 md:space-y-4">
             {error && (
               <div className="bg-red-100 dark:bg-red-900 border border-red-400 dark:border-red-700 text-red-700 dark:text-red-200 px-4 py-3 rounded">
                 {error}
@@ -139,7 +139,7 @@ export default function FeedPostModal({ onClose, onPostAdded, editPost = null })
                 type="text"
                 value={formData.title}
                 placeholder="Give your post a catchy title..."
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-2 sm:px-3 md:px-4 py-2 sm:py-2.5 md:py-3 border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-gray-900 text-xs sm:text-sm md:text-base text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 onChange={(e) => handleInputChange('title', e.target.value)}
               />
             </div>
@@ -153,7 +153,7 @@ export default function FeedPostModal({ onClose, onPostAdded, editPost = null })
                 required
                 value={formData.content}
                 placeholder="Share your thoughts, experiences, or anything you want to remember! You can write as much as you like..."
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[120px]"
+                className="w-full px-2 sm:px-3 md:px-4 py-2 sm:py-2.5 md:py-3 border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-gray-900 text-xs sm:text-sm md:text-base text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[120px]"
                 rows={6}
                 onChange={(e) => handleInputChange('content', e.target.value)}
               />
@@ -244,7 +244,7 @@ export default function FeedPostModal({ onClose, onPostAdded, editPost = null })
                 type="text"
                 value={formData.tags}
                 placeholder="mood, life, thoughts, random (comma separated)"
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-2 sm:px-3 md:px-4 py-2 sm:py-2.5 md:py-3 border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-gray-900 text-xs sm:text-sm md:text-base text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 onChange={(e) => handleInputChange('tags', e.target.value)}
               />
               <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
