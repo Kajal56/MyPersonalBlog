@@ -162,40 +162,40 @@ export default function AddEntryModal({ type, onClose, onEntryAdded, editEntry =
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-lg max-w-md w-full max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center p-4 z-50">
+  <div className="bg-[#0a0011] rounded-lg max-w-md w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-[#181825]">
         <div className="p-6">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-bold text-gray-900">
+            <h2 className="text-xl font-bold text-white">
               {isEditing ? `Edit ${type.slice(0, -1)}` : `Add New ${type.slice(0, -1)}`}
             </h2>
             <button
               onClick={onClose}
-              className="text-gray-400 hover:text-gray-600"
+              className="text-purple-200 hover:text-white"
             >
-              ✕
+              &times;
             </button>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
-              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+              <div className="bg-red-900 border border-red-700 text-red-200 px-4 py-3 rounded">
                 {error}
               </div>
             )}
             
             {fields.map((field) => (
               <div key={field.name}>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-purple-200 mb-2">
                   {field.label}
-                  {field.required && <span className="text-red-500">*</span>}
+                  {field.required && <span className="text-red-400">*</span>}
                 </label>
                 
                 {field.type === 'textarea' ? (
                   <textarea
                     required={field.required}
                     value={formData[field.name] || ''}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 bg-[#191a2e] text-white placeholder-blue-200 rounded-md outline-none focus:ring-2 focus:ring-blue-700"
                     rows={3}
                     onChange={(e) => handleInputChange(field.name, e.target.value)}
                   />
@@ -206,7 +206,7 @@ export default function AddEntryModal({ type, onClose, onEntryAdded, editEntry =
                     min={field.min}
                     max={field.max}
                     value={formData[field.name] || ''}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 bg-[#191a2e] text-white placeholder-blue-200 rounded-md outline-none focus:ring-2 focus:ring-blue-700"
                     onChange={(e) => handleInputChange(field.name, e.target.value)}
                   />
                 )}
@@ -217,14 +217,14 @@ export default function AddEntryModal({ type, onClose, onEntryAdded, editEntry =
               <button
                 type="button"
                 onClick={onClose}
-                className="flex-1 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+                className="flex-1 px-4 py-2 border border-purple-900 rounded-md text-purple-200 hover:bg-purple-900"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
+                className="flex-1 px-4 py-2 bg-gradient-to-r from-[#7D2AE8] to-[#6600CC] text-white rounded-md hover:from-[#6600CC] hover:to-[#7D2AE8] disabled:opacity-50"
               >
                 {isSubmitting ? (isEditing ? 'Updating...' : 'Adding...') : (isEditing ? 'Update Entry' : 'Add Entry')}
               </button>
