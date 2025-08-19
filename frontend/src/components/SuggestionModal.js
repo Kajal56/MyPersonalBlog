@@ -30,9 +30,9 @@ export default function SuggestionModal({ type, onClose, onSuggestionAdded }) {
   }
 
   return (
-  <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center p-4 z-50">
-  <div className="bg-[#0a0011] rounded-lg max-w-md w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-[#181825]">
-      <div className="p-6">
+  <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center p-2 sm:p-4 z-50 overflow-x-hidden" style={{paddingBottom: 'env(safe-area-inset-bottom)'}}>
+    <div className="bg-[#0a0011] rounded-lg w-full max-w-[98vw] sm:max-w-md max-h-[90dvh] overflow-y-auto shadow-2xl border border-[#181825]" style={{boxSizing: 'border-box'}}>
+      <div className="p-3 sm:p-6">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-bold text-white">Suggest a {type.slice(0, -1)}</h2>
           <button onClick={onClose} className="text-purple-200 hover:text-white">&times;</button>
