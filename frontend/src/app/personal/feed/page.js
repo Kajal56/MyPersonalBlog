@@ -79,16 +79,16 @@ export default function FeedPage() {
   }
 
   const renderPost = (post) => (
-  <div key={post.id} className="bg-transparent shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden">
-      <div className="p-4 border-b border-gray-100 dark:border-gray-700">
+  <div key={post.id} className="bg-gradient-to-br from-[#2D0036] to-[#6600CC] shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden">
+      <div className="p-4 border-b border-purple-900">
         <div className="flex justify-between items-start">
           <div className="flex-1">
             {post.title && (
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-1">
+              <h3 className="text-lg font-semibold text-white mb-1">
                 {post.title}
               </h3>
             )}
-            <div className="flex items-center text-sm text-gray-500 dark:text-gray-300">
+            <div className="flex items-center text-sm text-purple-200">
               <span>📅 {formatDate(post.dateAdded)}</span>
             </div>
           </div>
@@ -96,13 +96,13 @@ export default function FeedPage() {
             <div className="flex space-x-2 ml-4">
               <button
                 onClick={() => handleEdit(post)}
-                className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                className="text-purple-300 hover:text-white text-sm font-medium"
               >
                 ✏️ Edit
               </button>
               <button 
                 onClick={() => handleDeleteClick(post)}
-                className="text-red-600 hover:text-red-800 text-sm font-medium"
+                className="text-red-400 hover:text-white text-sm font-medium"
               >
                 🗑️ Delete
               </button>
@@ -112,7 +112,7 @@ export default function FeedPage() {
       </div>
       <div className="p-4">
         <div className="prose prose-sm max-w-none">
-          <p className="text-gray-800 dark:text-gray-300 whitespace-pre-wrap leading-relaxed">
+          <p className="text-white whitespace-pre-wrap leading-relaxed">
             {post.content}
           </p>
         </div>
@@ -122,24 +122,24 @@ export default function FeedPage() {
               <video 
                 src={post.mediaData} 
                 controls 
-                className="w-full max-h-96 object-cover border border-gray-200"
+                className="w-full max-h-96 object-cover border border-purple-900"
               />
             ) : (
               <img 
                 src={post.mediaData} 
                 alt="Post media" 
-                className="w-full max-h-96 object-cover border border-gray-200"
+                className="w-full max-h-96 object-cover border border-purple-900"
               />
             )}
           </div>
         )}
         {post.tags && post.tags.length > 0 && (
-          <div className="mt-4 pt-3 border-t border-gray-100 dark:border-gray-700">
+          <div className="mt-4 pt-3 border-t border-purple-900">
             <div className="flex flex-wrap gap-2">
               {post.tags.map((tag, index) => (
                 <span
                   key={index}
-                  className="px-2 py-1 bg-gradient-to-r from-blue-100 to-purple-100 dark:from-gray-700 dark:to-gray-800 text-blue-800 dark:text-gray-200 text-xs border border-blue-200 dark:border-gray-700"
+                  className="px-2 py-1 bg-purple-900 text-purple-200 text-xs border border-purple-900"
                   style={{ borderRadius: 0 }}
                 >
                   #{tag}
@@ -158,8 +158,8 @@ export default function FeedPage() {
         <div className="max-w-4xl mx-auto">
           <div className="flex justify-between items-center mb-8">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">📱 My Feed</h1>
-              <p className="text-gray-600 dark:text-gray-300">Your personal Instagram-style timeline</p>
+              <h1 className="text-3xl font-bold text-white mb-2">📱 My Feed</h1>
+              <p className="text-white">Your personal Instagram-style timeline</p>
             </div>
             {isAdminMode && (
               <button

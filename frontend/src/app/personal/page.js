@@ -39,6 +39,13 @@ export default function PersonalPage() {
     }
   }
 
+  // Only show Flats and Restaurants if user is admin
+  const [isAdminMode, setIsAdminMode] = useState(false);
+  useEffect(() => {
+    // Check admin mode from localStorage/context if available
+    setIsAdminMode(localStorage.getItem('isAdminMode') === 'true');
+  }, []);
+
   return (
     <div className="min-h-screen py-10 px-4">
       <div className="max-w-3xl mx-auto">
@@ -66,20 +73,24 @@ export default function PersonalPage() {
               <p className="text-white">Travel adventures and memories</p>
             </div>
           </Link>
-          <Link href="/personal/restaurants" className="p-8 transition-all">
-            <div className="text-center">
-              <div className="text-3xl mb-3">🍽️</div>
-              <h3 className="text-lg font-semibold text-white">Restaurants</h3>
-              <p className="text-white">Culinary discoveries</p>
-            </div>
-          </Link>
-          <Link href="/personal/flats" className="p-8 transition-all">
-            <div className="text-center">
-              <div className="text-3xl mb-3">🏠</div>
-              <h3 className="text-lg font-semibold text-white">Flats</h3>
-              <p className="text-white">Rental experiences and tips</p>
-            </div>
-          </Link>
+          {isAdminMode && (
+            <Link href="/personal/restaurants" className="p-8 transition-all">
+              <div className="text-center">
+                <div className="text-3xl mb-3">🍽️</div>
+                <h3 className="text-lg font-semibold text-white">Restaurants</h3>
+                <p className="text-white">Culinary discoveries</p>
+              </div>
+            </Link>
+          )}
+          {isAdminMode && (
+            <Link href="/personal/flats" className="p-8 transition-all">
+              <div className="text-center">
+                <div className="text-3xl mb-3">🏠</div>
+                <h3 className="text-lg font-semibold text-white">Flats</h3>
+                <p className="text-white">Rental experiences and tips</p>
+              </div>
+            </Link>
+          )}
           <Link href="/personal/feed" className="p-8 transition-all">
             <div className="text-center">
               <div className="text-3xl mb-3">📝</div>

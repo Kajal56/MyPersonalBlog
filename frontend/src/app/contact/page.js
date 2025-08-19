@@ -51,7 +51,8 @@ export default function ContactPage() {
   };
 
   return (
-  <div className="min-h-screen flex flex-col items-center justify-center bg-transparent py-10 px-4">
+  <div className="min-h-screen flex flex-col items-center justify-center bg-transparent py-0 px-4">
+    <div className="w-full max-w-md mt-[-8vh]">
       <h1 className="text-4xl font-extrabold text-white mb-4 text-center">Contact Me</h1>
       <p className="text-lg text-white mb-6 text-center">
         Connect with me on social media or send a message below!
@@ -70,11 +71,11 @@ export default function ContactPage() {
           <svg className="w-7 h-7 text-blue-500 hover:text-blue-600" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14C2.2 0 0 2.2 0 5v14c0 2.8 2.2 5 5 5h14c2.8 0 5-2.2 5-5V5c0-2.8-2.2-5-5-5zM7.1 19H3.6V9h3.5v10zm-1.8-11.3c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm14.7 11.3h-3.5v-5.4c0-1.3-.5-2.2-1.7-2.2-1 0-1.6.7-1.9 1.4-.1.2-.1.5-.1.8V19h-3.5s.1-10 0-10h3.5v1.4c.5-.8 1.3-1.9 3.2-1.9 2.3 0 4 1.5 4 4.7V19z"/></svg>
         </a>
       </div>
-      <form className="space-y-4" onSubmit={handleSubmit}>
-        <input name="name" type="text" placeholder="Your Name" value={form.name} onChange={handleChange} className="w-full px-4 py-2 border border-gray-700 bg-transparent text-white focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900" />
-        <input name="email" type="email" placeholder="Your Email" value={form.email} onChange={handleChange} className="w-full px-4 py-2 border border-gray-700 bg-transparent text-white focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900" />
-        <textarea name="message" placeholder="Your Message" value={form.message} onChange={handleChange} className="w-full px-4 py-2 border border-gray-700 bg-transparent text-white focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900" rows={4} />
-        <button type="submit" disabled={submitting} className="w-full bg-blue-800 text-white py-2 font-semibold hover:bg-blue-900 transition-colors">
+      <form className="space-y-4 max-w-md mx-auto w-full flex flex-col items-center" onSubmit={handleSubmit}>
+        <input name="name" type="text" placeholder="Your Name" value={form.name} onChange={handleChange} className="w-3/4 px-4 py-2 border border-gray-700 bg-transparent text-white focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900" />
+        <input name="email" type="email" placeholder="Your Email" value={form.email} onChange={handleChange} className="w-3/4 px-4 py-2 border border-gray-700 bg-transparent text-white focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900" />
+        <textarea name="message" placeholder="Your Message" value={form.message} onChange={handleChange} className="w-3/4 px-4 py-2 border border-gray-700 bg-transparent text-white focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900" rows={4} />
+        <button type="submit" disabled={submitting} className="w-3/4 bg-blue-800 text-white py-2 font-semibold hover:bg-blue-900 transition-colors">
           {submitting ? 'Sending...' : 'Send Message'}
         </button>
         {success && <div className="text-green-400 text-center mt-2">{success}</div>}
@@ -101,5 +102,6 @@ export default function ContactPage() {
         </div>
       )}
     </div>
+  </div>
   )
 }

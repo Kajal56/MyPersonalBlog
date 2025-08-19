@@ -15,6 +15,7 @@ const allTabs = [
 export default function PersonalTabs() {
   const pathname = usePathname()
   const { isAdminMode } = useAdminMode();
+  // Only show adminOnly tabs if isAdminMode is true
   const tabs = allTabs.filter(tab => !tab.adminOnly || isAdminMode);
   return (
     <nav className="relative z-10 flex justify-center" style={{ marginTop: '-2.5rem', marginBottom: '2.5rem' }}>
@@ -25,8 +26,8 @@ export default function PersonalTabs() {
             href={tab.href}
             className={`px-4 py-2 text-sm font-medium transition-colors duration-200
               ${pathname === tab.href
-                ? 'bg-blue-600 text-white dark:bg-blue-700 dark:text-white shadow'
-                : 'bg-gray-100 text-gray-700 bg-transparent dark:text-gray-200 hover:bg-blue-100 dark:hover:bg-blue-900'}
+                ? 'bg-[#6600CC] text-white dark:bg-[#6600CC] dark:text-white shadow'
+                : 'bg-transparent text-gray-200 hover:bg-[#7D2AE8] hover:text-white'}
             `}
           >
             {tab.label}

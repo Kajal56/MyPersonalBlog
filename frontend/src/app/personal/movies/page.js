@@ -109,10 +109,10 @@ export default function MoviesPage() {
         ) : (
           <button
             onClick={() => setShowSuggestModal(true)}
-            className="bg-[#6600CC] hover:bg-[#7D2AE8] text-white px-6 py-3 font-medium transition-colors flex items-center space-x-2"
+            className="bg-gradient-to-r from-[#7D2AE8] to-[#6600CC] hover:from-[#6600CC] hover:to-[#7D2AE8] text-white px-6 py-3 font-medium transition-colors flex items-center space-x-2"
           >
             <span>💡</span>
-            <span>Suggest Movie</span>
+            <span>Suggest a Movie</span>
           </button>
         )}
       </div>

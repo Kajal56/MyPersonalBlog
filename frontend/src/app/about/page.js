@@ -2,8 +2,8 @@
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center py-10 px-4">
-  <div className="max-w-2xl w-full">
+    <div className="min-h-screen flex items-center justify-center py-0 px-4">
+      <div className="max-w-2xl w-full mt-[-16vh]">
         <h1 className="text-4xl font-extrabold text-white mb-4 text-center">About Me</h1>
         <p className="text-lg text-white mb-6 text-center">
           Hi, I'm Kajal! Welcome to my personal blog. Here you'll find my thoughts, experiences, and projects. I love movies, books, travel, and great food. I'm passionate about learning, building, and sharing.
