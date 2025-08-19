@@ -47,69 +47,69 @@ export default function PersonalPage() {
   }, []);
 
   return (
-    <div className="min-h-screen py-10 px-4">
+    <div className="min-h-screen py-6 px-2 sm:py-10 sm:px-4">
       <div className="max-w-3xl mx-auto">
-        <h1 className="text-4xl font-extrabold text-white mb-8 text-center">Personal</h1>
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-white mb-6 sm:mb-8 text-center">Personal</h1>
         {/* Links to all sections */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12 mb-12">
-          <Link href="/personal/movies" className="p-8 transition-all">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8 mt-8 sm:mt-12 mb-8 sm:mb-12">
+          <Link href="/personal/movies" className="p-5 sm:p-8 transition-all">
             <div className="text-center">
-              <div className="text-3xl mb-3">🎬</div>
-              <h3 className="text-lg font-semibold text-white">Movies</h3>
-              <p className="text-white">My movie watchlist and reviews</p>
+              <div className="text-2xl sm:text-3xl mb-2 sm:mb-3">🎬</div>
+              <h3 className="text-base sm:text-lg font-semibold text-white">Movies</h3>
+              <p className="text-white text-sm sm:text-base">My movie watchlist and reviews</p>
             </div>
           </Link>
-          <Link href="/personal/books" className="p-8 transition-all">
+          <Link href="/personal/books" className="p-5 sm:p-8 transition-all">
             <div className="text-center">
-              <div className="text-3xl mb-3">📚</div>
-              <h3 className="text-lg font-semibold text-white">Books</h3>
-              <p className="text-white">Reading list and takeaways</p>
+              <div className="text-2xl sm:text-3xl mb-2 sm:mb-3">📚</div>
+              <h3 className="text-base sm:text-lg font-semibold text-white">Books</h3>
+              <p className="text-white text-sm sm:text-base">Reading list and takeaways</p>
             </div>
           </Link>
-          <Link href="/personal/trips" className="p-8 transition-all">
+          <Link href="/personal/trips" className="p-5 sm:p-8 transition-all">
             <div className="text-center">
-              <div className="text-3xl mb-3">✈️</div>
-              <h3 className="text-lg font-semibold text-white">Trips</h3>
-              <p className="text-white">Travel adventures and memories</p>
+              <div className="text-2xl sm:text-3xl mb-2 sm:mb-3">✈️</div>
+              <h3 className="text-base sm:text-lg font-semibold text-white">Trips</h3>
+              <p className="text-white text-sm sm:text-base">Travel adventures and memories</p>
             </div>
           </Link>
           {isAdminMode && (
-            <Link href="/personal/restaurants" className="p-8 transition-all">
+            <Link href="/personal/restaurants" className="p-5 sm:p-8 transition-all">
               <div className="text-center">
-                <div className="text-3xl mb-3">🍽️</div>
-                <h3 className="text-lg font-semibold text-white">Restaurants</h3>
-                <p className="text-white">Culinary discoveries</p>
+                <div className="text-2xl sm:text-3xl mb-2 sm:mb-3">🍽️</div>
+                <h3 className="text-base sm:text-lg font-semibold text-white">Restaurants</h3>
+                <p className="text-white text-sm sm:text-base">Culinary discoveries</p>
               </div>
             </Link>
           )}
           {isAdminMode && (
-            <Link href="/personal/flats" className="p-8 transition-all">
+            <Link href="/personal/flats" className="p-5 sm:p-8 transition-all">
               <div className="text-center">
-                <div className="text-3xl mb-3">🏠</div>
-                <h3 className="text-lg font-semibold text-white">Flats</h3>
-                <p className="text-white">Rental experiences and tips</p>
+                <div className="text-2xl sm:text-3xl mb-2 sm:mb-3">🏠</div>
+                <h3 className="text-base sm:text-lg font-semibold text-white">Flats</h3>
+                <p className="text-white text-sm sm:text-base">Rental experiences and tips</p>
               </div>
             </Link>
           )}
-          <Link href="/personal/feed" className="p-8 transition-all">
+          <Link href="/personal/feed" className="p-5 sm:p-8 transition-all">
             <div className="text-center">
-              <div className="text-3xl mb-3">📝</div>
-              <h3 className="text-lg font-semibold text-white">Feed</h3>
-              <p className="text-white">Latest posts and updates</p>
+              <div className="text-2xl sm:text-3xl mb-2 sm:mb-3">📝</div>
+              <h3 className="text-base sm:text-lg font-semibold text-white">Feed</h3>
+              <p className="text-white text-sm sm:text-base">Latest posts and updates</p>
             </div>
           </Link>
         </div>
         {/* Recently Added below all sections */}
-        <div className="mb-12">
-          <h2 className="text-2xl font-bold text-white mb-6 text-center">Recently Added</h2>
+        <div className="mb-8 sm:mb-12">
+          <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6 text-center">Recently Added</h2>
           {loading ? (
             <div className="text-center text-white animate-pulse">Loading recent entries...</div>
           ) : recentEntries.length > 0 ? (
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               {recentEntries.map((entry, index) => (
-                <div key={index} className="pl-4 py-2 flex flex-col gap-1">
+                <div key={index} className="pl-2 sm:pl-4 py-2 flex flex-col gap-1">
                   <div className="flex items-center justify-between">
-                    <h3 className="font-semibold text-white">{entry.title}</h3>
+                    <h3 className="font-semibold text-white text-sm sm:text-base">{entry.title}</h3>
                     <span className="text-xs text-blue-300 capitalize px-2 py-1">{entry.type}</span>
                   </div>
                   <p className="text-white text-xs">
