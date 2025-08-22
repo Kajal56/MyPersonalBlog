@@ -6,10 +6,12 @@ export default function AboutPage() {
       <div className="max-w-2xl w-full mt-[-16vh]">
         <h1 className="text-4xl font-extrabold text-white mb-4 text-center">About Me</h1>
         <p className="text-lg text-white mb-6 text-center">
-          Hi, I'm Kajal! Welcome to my personal blog. Here you'll find my thoughts, experiences, and projects. I love movies, books, travel, and great food. I'm passionate about learning, building, and sharing.
+          I'm Kajal, a software engineer passionate about building new things and connecting with like-minded people. I love the algorithmic side of computer science and enjoy working on innovative projects (check out my resume for more). After graduating from IIT Bombay, I spent a year working in Bangalore and am always eager to learn and grow.<br/><br/>
+          On the personal side, I’m from a small town in Haryana, where I completed my schooling. My interests revolve around dance—I started with Bhangra, explored Bollywood and hip-hop, and am now pursuing Kathak. I also enjoy music; I’ve tried playing the flute and am hoping to learn piano soon (tips are welcome!). Badminton is another hobby I love.<br/><br/>
+          I built this site to share my thoughts on movies, books, and travels. You’ll find suggestion buttons throughout—please share your recommendations! Maybe we have something in common—if so, don’t hesitate to contact me :)
         </p>
         <div className="text-center text-white text-sm mb-6">
-          Feel free to explore the site and connect with me!
+          Feel free to explore the site and connect with me! Maybe we have something in common—if so, don’t hesitate to contact me :)
         </div>
         <div className="flex justify-center gap-6 mt-4">
           <a href="https://x.com/KajalMalik56" target="_blank" rel="noopener" aria-label="Twitter">

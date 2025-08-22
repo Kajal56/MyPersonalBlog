@@ -37,10 +37,10 @@ export default function Home() {
         </div>
         <div className="flex-1 flex flex-col justify-center items-center text-center">
           <h1 className="text-2xl sm:text-4xl md:text-5xl font-extrabold text-white mb-4 sm:mb-6 md:mb-8 text-center">
-            Welcome to My Personal Blog
+            Welcome to My Personal Website
           </h1>
           <p className="text-sm sm:text-lg md:text-xl text-white mb-2 sm:mb-4 md:mb-6 text-center">
-            <span className="text-xs sm:text-sm md:text-base">Discover my favorite movies, books, trips, restaurants, and more. Explore, connect, and enjoy!</span>
+            <span className="text-xs sm:text-sm md:text-base">I'm sharing my personal interests and professional journey here—feel free to explore, share your suggestions, interact, or just enjoy the site!</span>
           </p>
         </div>
       </div>

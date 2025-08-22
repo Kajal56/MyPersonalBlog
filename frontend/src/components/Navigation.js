@@ -13,11 +13,11 @@ export default function Navigation() {
   // Theme logic removed; always use dark theme
 
   const navItems = [
-    { href: '/', label: 'Home' },
-    { href: '/personal', label: 'Personal' },
-    { href: '/about', label: 'About' },
-    { href: '/profile', label: 'Professional' },
-    { href: '/contact', label: 'Contact' },
+  { href: '/', label: 'Home' },
+  { href: '/about', label: 'About' },
+  { href: '/profile', label: 'Professional' },
+  { href: '/personal', label: 'Personal' },
+  { href: '/contact', label: 'Contact' },
   ]
 
   return (
@@ -41,16 +41,16 @@ export default function Navigation() {
           About
         </a>
         <a
-          href="/personal"
-          className="text-white font-semibold hover:text-purple-300 transition-colors"
-        >
-          Personal
-        </a>
-        <a
           href="/profile"
           className="text-white font-semibold hover:text-purple-300 transition-colors"
         >
           Professional
+        </a>
+        <a
+          href="/personal"
+          className="text-white font-semibold hover:text-purple-300 transition-colors"
+        >
+          Personal
         </a>
         <a
           href="/contact"
@@ -83,7 +83,7 @@ export default function Navigation() {
         </button>
         {showAdminModal && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-            <div className="bg-transparent shadow-lg p-8 w-full max-w-sm">
+            <div className="bg-[#181825] shadow-lg p-8 w-full max-w-sm rounded-lg border border-blue-900">
               <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-gray-100">
                 Admin Authentication
               </h2>
