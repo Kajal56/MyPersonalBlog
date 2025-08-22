@@ -4,43 +4,43 @@ import { apiService } from '../services/apiService'
 
 const formFields = {
   movies: [
-    { name: 'title', label: 'Movie Title', type: 'text', required: true },
-    { name: 'rating', label: 'Rating (1-10)', type: 'number', min: 1, max: 10, required: true },
-    { name: 'favoriteAspect', label: 'What I liked most', type: 'textarea', required: true },
-    { name: 'dateWatched', label: 'Date Watched', type: 'date', required: true },
-    { name: 'tags', label: 'Tags (comma separated)', type: 'text' }
+    { name: 'title', label: 'Movie Title', type: 'text', required: false },
+    { name: 'rating', label: 'Rating (1-10)', type: 'number', min: 1, max: 10, required: false },
+    { name: 'favoriteAspect', label: 'What I liked most', type: 'textarea', required: false },
+    { name: 'dateWatched', label: 'Date Watched', type: 'date', required: false },
+    { name: 'tags', label: 'Tags (comma separated)', type: 'text', required: false }
   ],
   books: [
-    { name: 'title', label: 'Book Title', type: 'text', required: true },
-    { name: 'author', label: 'Author', type: 'text', required: true },
-    { name: 'rating', label: 'Rating (1-10)', type: 'number', min: 1, max: 10, required: true },
-    { name: 'keyTakeaway', label: 'Key Takeaway', type: 'textarea', required: true },
-    { name: 'dateRead', label: 'Date Read', type: 'date', required: true },
-    { name: 'tags', label: 'Tags (comma separated)', type: 'text' }
+    { name: 'title', label: 'Book Title', type: 'text', required: false },
+    { name: 'author', label: 'Author', type: 'text', required: false },
+    { name: 'rating', label: 'Rating (1-10)', type: 'number', min: 1, max: 10, required: false },
+    { name: 'keyTakeaway', label: 'Key Takeaway', type: 'textarea', required: false },
+    { name: 'dateRead', label: 'Date Read', type: 'date', required: false },
+    { name: 'tags', label: 'Tags (comma separated)', type: 'text', required: false }
   ],
   trips: [
-    { name: 'title', label: 'Trip Title', type: 'text', required: true },
-    { name: 'destination', label: 'Destination', type: 'text', required: true },
-    { name: 'startDate', label: 'Start Date', type: 'date', required: true },
-    { name: 'endDate', label: 'End Date', type: 'date', required: true },
-    { name: 'highlight', label: 'Trip Highlight', type: 'textarea', required: true },
-    { name: 'tags', label: 'Tags (comma separated)', type: 'text' }
+    { name: 'title', label: 'Trip Title', type: 'text', required: false },
+    { name: 'destination', label: 'Destination', type: 'text', required: false },
+    { name: 'startDate', label: 'Start Date', type: 'date', required: false },
+    { name: 'endDate', label: 'End Date', type: 'date', required: false },
+    { name: 'highlight', label: 'Trip Highlight', type: 'textarea', required: false },
+    { name: 'tags', label: 'Tags (comma separated)', type: 'text', required: false }
   ],
   restaurants: [
-    { name: 'name', label: 'Restaurant Name', type: 'text', required: true },
-    { name: 'location', label: 'Location', type: 'text', required: true },
-    { name: 'cuisine', label: 'Cuisine Type', type: 'text', required: true },
-    { name: 'rating', label: 'Rating (1-10)', type: 'number', min: 1, max: 10, required: true },
-    { name: 'favoriteDish', label: 'Favorite Dish', type: 'text', required: true },
-    { name: 'dateVisited', label: 'Date Visited', type: 'date', required: true },
-    { name: 'tags', label: 'Tags (comma separated)', type: 'text' }
+    { name: 'name', label: 'Restaurant Name', type: 'text', required: false },
+    { name: 'location', label: 'Location', type: 'text', required: false },
+    { name: 'cuisine', label: 'Cuisine Type', type: 'text', required: false },
+    { name: 'rating', label: 'Rating (1-10)', type: 'number', min: 1, max: 10, required: false },
+    { name: 'favoriteDish', label: 'Favorite Dish', type: 'text', required: false },
+    { name: 'dateVisited', label: 'Date Visited', type: 'date', required: false },
+    { name: 'tags', label: 'Tags (comma separated)', type: 'text', required: false }
   ],
   flats: [
-    { name: 'name', label: 'Property/Flat Name', type: 'text', required: true },
-    { name: 'contactNumber', label: 'Contact Number', type: 'tel', required: true },
-    { name: 'societyName', label: 'Society Name', type: 'text', required: true },
+    { name: 'name', label: 'Property/Flat Name', type: 'text', required: false },
+    { name: 'contactNumber', label: 'Contact Number', type: 'tel', required: false },
+    { name: 'societyName', label: 'Society Name', type: 'text', required: false },
     { name: 'googleMapsLink', label: 'Google Maps Link', type: 'url', required: false },
-    { name: 'rentValue', label: 'Monthly Rent (₹)', type: 'number', min: 0, required: true },
+    { name: 'rentValue', label: 'Monthly Rent (₹)', type: 'number', min: 0, required: false },
     { name: 'remarks', label: 'Remarks/Notes', type: 'textarea', required: false }
   ]
 }
