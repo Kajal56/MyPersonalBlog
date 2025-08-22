@@ -131,3 +131,15 @@ model RestaurantSuggestion {
 
   @@map("restaurant_suggestions")
 }
+
+model MovieSuggestion {
+  id            String   @id @default(cuid())
+  name          String?
+  itemName      String?
+  message       String
+  moment        String?
+  dateSuggested DateTime @default(now())
+  isRead        Boolean  @default(false)
+
+  @@map("movie_suggestions")
+}

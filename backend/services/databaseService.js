@@ -80,6 +80,7 @@ class DatabaseService {
   }
 
   async addMovieSuggestion(data) {
+    console.log('Adding movie suggestion with data:', data);
     return this.prisma.movieSuggestion.create({
       data: {
         name: data.name || null,

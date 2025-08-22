@@ -14,6 +14,7 @@ function logError(error, req) {
 // POST /api/movies/suggestions
 router.post('/', async (req, res) => {
   try {
+    console.log('Creating movie suggestion with data:', req.body);
     const suggestion = await databaseService.addMovieSuggestion(req.body);
     res.status(201).json(suggestion);
   } catch (error) {
