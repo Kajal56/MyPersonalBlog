@@ -76,9 +76,9 @@ export default function BooksPage() {
       <PersonalTabs />
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">📚 Books</h1>
-          <p className="text-gray-600 dark:text-gray-300">My reading list and key takeaways</p>
-        </div>
+          <h1 className="text-3xl font-bold text-white mb-2">📚 Books</h1>
+          <p className="text-white">My reading list and key takeaways</p>
+          </div>
         {isAdminMode ? (
           <button
             onClick={() => setShowAddModal(true)}
@@ -150,7 +150,7 @@ export default function BooksPage() {
       {/* Suggestions list for admins */}
       {isAdminMode && (
         <div className="mt-12">
-          <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-gray-100">Book Suggestions</h2>
+          <h2 className="text-2xl font-bold mb-4 text-[#7D2AE8] dark:text-[#A78BFA]">Book Suggestions</h2>
           {loadingSuggestions ? (
             <div className="text-gray-600 dark:text-gray-300">Loading suggestions...</div>
           ) : suggestions.length === 0 ? (
@@ -158,13 +158,12 @@ export default function BooksPage() {
           ) : (
             <div className="space-y-4">
               {suggestions.map(suggestion => (
-                <div key={suggestion.id} className="bg-transparent p-4 rounded-lg shadow">
+                <div key={suggestion.id} className="bg-[#181825] p-4 rounded-lg shadow">
                   <div className="flex justify-between items-center">
                     <div>
-                      <div className="font-semibold text-gray-900 dark:text-gray-100">{suggestion.itemName || 'Untitled'}</div>
-                      <div className="text-gray-700 dark:text-gray-300 text-sm">{suggestion.message}</div>
-                      <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">Suggested by: {suggestion.name || 'Anonymous'} | {new Date(suggestion.dateSuggested).toLocaleString()}</div>
-                    </div>
+                      <div className="font-semibold text-white text-lg mb-1">{suggestion.itemName || 'Untitled'}</div>
+                      <div className="text-[#A78BFA] text-base mb-1">{suggestion.message}</div>
+                      <div className="text-xs text-gray-300 mt-1">Suggested by: <span className="font-semibold text-white">{suggestion.name || 'Anonymous'}</span> | <span className="text-gray-400">{new Date(suggestion.dateSuggested).toLocaleString()}</span></div>                    </div>
                     <div className="flex flex-col items-end">
                       <span className={`px-2 py-1 rounded text-xs font-semibold mb-2 ${suggestion.isRead ? 'bg-green-200 text-green-800' : 'bg-yellow-200 text-yellow-800'}`}>
                         {suggestion.isRead ? 'Read' : 'Unread'}
