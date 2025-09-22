@@ -7,10 +7,7 @@
     },
     {
       "src": "backend/server.js",
-      "use": "@vercel/node",
-      "config": {
-        "includeFiles": ["backend/**"]
-      }
+      "use": "@vercel/node"
     }
   ],
   "routes": [
@@ -19,27 +16,8 @@
       "dest": "backend/server.js"
     },
     {
-      "src": "/personal/books/([^/]+)",
-      "dest": "frontend/personal/books/$1"
-    },
-    {
-      "src": "/personal/movies/([^/]+)",
-      "dest": "frontend/personal/movies/$1"
-    },
-    {
-      "src": "/personal/trips/([^/]+)",
-      "dest": "frontend/personal/trips/$1"
-    },
-    {
-      "src": "/personal/restaurants/([^/]+)",
-      "dest": "frontend/personal/restaurants/$1"
-    },
-    {
       "src": "/(.*)",
       "dest": "frontend/$1"
     }
-  ],
-  "env": {
-    "NODE_ENV": "production"
-  }
+  ]
 }
