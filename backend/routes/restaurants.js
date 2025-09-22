@@ -20,6 +20,56 @@ router.get('/', async (req, res) => {
   }
 });
 
+// GET /api/restaurants/slug/:slug
+router.get('/slug/:slug', async (req, res) => {
+  try {
+    const restaurant = await databaseService.getRestaurantBySlug(req.params.slug);
+    
+    if (restaurant) {
+      res.json({
+        success: true,
+        data: restaurant
+      });
+    } else {
+      res.status(404).json({
+        success: false,
+        error: 'Restaurant not found'
+      });
+    }
+  } catch (error) {
+    console.error('Error fetching restaurant by slug:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fetch restaurant'
+    });
+  }
+});
+
+// GET /api/restaurants/:id
+router.get('/:id', async (req, res) => {
+  try {
+    const restaurant = await databaseService.getRestaurantById(req.params.id);
+    
+    if (restaurant) {
+      res.json({
+        success: true,
+        data: restaurant
+      });
+    } else {
+      res.status(404).json({
+        success: false,
+        error: 'Restaurant not found'
+      });
+    }
+  } catch (error) {
+    console.error('Error fetching restaurant:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fetch restaurant'
+    });
+  }
+});
+
 // POST /api/restaurants
 router.post('/', async (req, res) => {
   try {

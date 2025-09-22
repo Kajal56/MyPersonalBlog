@@ -20,6 +20,56 @@ router.get('/', async (req, res) => {
   }
 });
 
+// GET /api/trips/slug/:slug
+router.get('/slug/:slug', async (req, res) => {
+  try {
+    const trip = await databaseService.getTripBySlug(req.params.slug);
+    
+    if (trip) {
+      res.json({
+        success: true,
+        data: trip
+      });
+    } else {
+      res.status(404).json({
+        success: false,
+        error: 'Trip not found'
+      });
+    }
+  } catch (error) {
+    console.error('Error fetching trip by slug:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fetch trip'
+    });
+  }
+});
+
+// GET /api/trips/:id
+router.get('/:id', async (req, res) => {
+  try {
+    const trip = await databaseService.getTripById(req.params.id);
+    
+    if (trip) {
+      res.json({
+        success: true,
+        data: trip
+      });
+    } else {
+      res.status(404).json({
+        success: false,
+        error: 'Trip not found'
+      });
+    }
+  } catch (error) {
+    console.error('Error fetching trip:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fetch trip'
+    });
+  }
+});
+
 // POST /api/trips
 router.post('/', async (req, res) => {
   try {

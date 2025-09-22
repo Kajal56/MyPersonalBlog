@@ -10,6 +10,7 @@ datasource db {
 model Movie {
   id             String   @id @default(cuid())
   title          String
+  slug           String?  @unique
   rating         Int
   favoriteAspect String
   dateWatched    DateTime
@@ -22,6 +23,7 @@ model Movie {
 model Book {
   id          String   @id @default(cuid())
   title       String
+  slug        String?  @unique
   author      String
   rating      Int
   keyTakeaway String
@@ -35,6 +37,7 @@ model Book {
 model Trip {
   id          String   @id @default(cuid())
   title       String
+  slug        String?  @unique
   destination String
   startDate   DateTime
   endDate     DateTime
@@ -48,6 +51,7 @@ model Trip {
 model Restaurant {
   id           String   @id @default(cuid())
   name         String
+  slug         String?  @unique
   location     String
   cuisine      String
   rating       Int

@@ -1,4 +1,5 @@
 const { PrismaClient } = require('@prisma/client');
+const { generateUniqueSlug } = require('../utils/slugify');
 
 // Global variable to reuse the Prisma instance in serverless environments
 let prisma;
@@ -141,10 +142,26 @@ class DatabaseService {
     });
   }
 
+  async getMovieBySlug(slug) {
+    return this.prisma.movie.findUnique({
+      where: { slug }
+    });
+  }
+
   async addMovie(data) {
+    // Get existing slugs to avoid duplicates
+    const existingMovies = await this.prisma.movie.findMany({
+      select: { slug: true }
+    });
+    const existingSlugs = existingMovies.map(m => m.slug).filter(Boolean);
+    
+    // Generate unique slug
+    const slug = generateUniqueSlug(data.title, existingSlugs);
+    
     return this.prisma.movie.create({
       data: {
         title: data.title,
+        slug: slug,
         rating: parseInt(data.rating),
         favoriteAspect: data.favoriteAspect,
         dateWatched: new Date(data.dateWatched),
@@ -185,10 +202,26 @@ class DatabaseService {
     });
   }
 
+  async getBookBySlug(slug) {
+    return this.prisma.book.findUnique({
+      where: { slug }
+    });
+  }
+
   async addBook(data) {
+    // Get existing slugs to avoid duplicates
+    const existingBooks = await this.prisma.book.findMany({
+      select: { slug: true }
+    });
+    const existingSlugs = existingBooks.map(b => b.slug).filter(Boolean);
+    
+    // Generate unique slug
+    const slug = generateUniqueSlug(data.title, existingSlugs);
+    
     return this.prisma.book.create({
       data: {
         title: data.title,
+        slug: slug,
         author: data.author,
         rating: parseInt(data.rating),
         keyTakeaway: data.keyTakeaway,
@@ -277,10 +310,26 @@ class DatabaseService {
     });
   }
 
+  async getTripBySlug(slug) {
+    return this.prisma.trip.findUnique({
+      where: { slug }
+    });
+  }
+
   async addTrip(data) {
+    // Get existing slugs to avoid duplicates
+    const existingTrips = await this.prisma.trip.findMany({
+      select: { slug: true }
+    });
+    const existingSlugs = existingTrips.map(t => t.slug).filter(Boolean);
+    
+    // Generate unique slug
+    const slug = generateUniqueSlug(data.title, existingSlugs);
+    
     return this.prisma.trip.create({
       data: {
         title: data.title,
+        slug: slug,
         destination: data.destination,
         startDate: new Date(data.startDate),
         endDate: new Date(data.endDate),
@@ -323,10 +372,26 @@ class DatabaseService {
     });
   }
 
+  async getRestaurantBySlug(slug) {
+    return this.prisma.restaurant.findUnique({
+      where: { slug }
+    });
+  }
+
   async addRestaurant(data) {
+    // Get existing slugs to avoid duplicates
+    const existingRestaurants = await this.prisma.restaurant.findMany({
+      select: { slug: true }
+    });
+    const existingSlugs = existingRestaurants.map(r => r.slug).filter(Boolean);
+    
+    // Generate unique slug from restaurant name
+    const slug = generateUniqueSlug(data.name, existingSlugs);
+    
     return this.prisma.restaurant.create({
       data: {
         name: data.name,
+        slug: slug,
         location: data.location,
         cuisine: data.cuisine,
         rating: parseInt(data.rating),

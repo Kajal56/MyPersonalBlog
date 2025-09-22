@@ -20,6 +20,31 @@ router.get('/', async (req, res) => {
   }
 });
 
+// GET /api/movies/slug/:slug
+router.get('/slug/:slug', async (req, res) => {
+  try {
+    const movie = await databaseService.getMovieBySlug(req.params.slug);
+    
+    if (movie) {
+      res.json({
+        success: true,
+        data: movie
+      });
+    } else {
+      res.status(404).json({
+        success: false,
+        error: 'Movie not found'
+      });
+    }
+  } catch (error) {
+    console.error('Error fetching movie by slug:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fetch movie'
+    });
+  }
+});
+
 // GET /api/movies/:id
 router.get('/:id', async (req, res) => {
   try {

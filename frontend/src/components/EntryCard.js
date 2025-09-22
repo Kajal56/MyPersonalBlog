@@ -1,10 +1,13 @@
 "use client";
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import ConfirmDialog from './ConfirmDialog';
 import { useAdminMode } from './AdminModeContext';
 import SuggestionModal from './SuggestionModal';
 
 export default function EntryCard({ type, entry, fields, onEdit, onDelete, cardClassName }) {
+  const router = useRouter();
+  
   // Fix: Define handleDeleteClick for Delete button
   const handleDeleteClick = () => {
     setShowDeleteDialog(true);
@@ -21,6 +24,28 @@ export default function EntryCard({ type, entry, fields, onEdit, onDelete, cardC
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const detailFields = fields ? fields.filter(f => f.value) : [];
+
+  // Handle navigation to slug-based URL
+  const handleCardClick = () => {
+    if (!cardClickable || isAdminMode) return;
+    
+    if (entry.slug) {
+      // Navigate to slug-based URL under personal
+      let baseRoute = '';
+      if (isMovieType) baseRoute = '/personal/movies';
+      else if (isBookType) baseRoute = '/personal/books';
+      else if (isTripType) baseRoute = '/personal/trips';
+      else if (isRestaurantType) baseRoute = '/personal/restaurants';
+      
+      if (baseRoute) {
+        router.push(`${baseRoute}/${entry.slug}`);
+        return;
+      }
+    }
+    
+    // Fallback to modal for entries without slugs
+    setShowDetailModal(true);
+  };
 
   // Correct placement: Define handleDeleteConfirm above return
   const handleDeleteConfirm = () => {
@@ -46,7 +71,7 @@ export default function EntryCard({ type, entry, fields, onEdit, onDelete, cardC
     <>
       <div
         className={cardClassName || "bg-gradient-to-br from-[#2D0036] to-[#6600CC] shadow-md p-4 sm:p-5 hover:shadow-lg transition-shadow w-full rounded-lg"}
-        onClick={() => cardClickable && setShowDetailModal(true)}
+        onClick={handleCardClick}
         style={cardClickable ? { cursor: 'pointer' } : {}}
         tabIndex={cardClickable ? 0 : undefined}
         role={cardClickable ? 'button' : undefined}

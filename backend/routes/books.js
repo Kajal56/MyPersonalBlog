@@ -21,6 +21,56 @@ router.get('/', async (req, res) => {
   }
 });
 
+// GET /api/books/slug/:slug
+router.get('/slug/:slug', async (req, res) => {
+  try {
+    const book = await databaseService.getBookBySlug(req.params.slug);
+    
+    if (book) {
+      res.json({
+        success: true,
+        data: book
+      });
+    } else {
+      res.status(404).json({
+        success: false,
+        error: 'Book not found'
+      });
+    }
+  } catch (error) {
+    console.error('Error fetching book by slug:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fetch book'
+    });
+  }
+});
+
+// GET /api/books/:id
+router.get('/:id', async (req, res) => {
+  try {
+    const book = await databaseService.getBookById(req.params.id);
+    
+    if (book) {
+      res.json({
+        success: true,
+        data: book
+      });
+    } else {
+      res.status(404).json({
+        success: false,
+        error: 'Book not found'
+      });
+    }
+  } catch (error) {
+    console.error('Error fetching book:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fetch book'
+    });
+  }
+});
+
 // POST /api/books
 router.post('/', async (req, res) => {
   try {

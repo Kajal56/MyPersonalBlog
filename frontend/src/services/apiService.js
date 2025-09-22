@@ -93,6 +93,22 @@ class ApiService {
     return this.getAll('movies');
   }
 
+  async getMovieBySlug(slug) {
+    const url = `${API_BASE_URL}/movies/slug/${slug}`;
+    console.log('Making API request to:', url);
+    const response = await fetch(url, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    return await response.json();
+  }
+
   async createMovie(movieData) {
     return this.create('movies', movieData);
   }
@@ -108,6 +124,10 @@ class ApiService {
   // Books
   async getAllBooks() {
     return this.getAll('books');
+  }
+
+  async getBookBySlug(slug) {
+    return this.request(`/books/slug/${slug}`);
   }
 
   async createBook(bookData) {
@@ -127,6 +147,10 @@ class ApiService {
     return this.getAll('trips');
   }
 
+  async getTripBySlug(slug) {
+    return this.request(`/trips/slug/${slug}`);
+  }
+
   async createTrip(tripData) {
     return this.create('trips', tripData);
   }
@@ -142,6 +166,10 @@ class ApiService {
   // Restaurants
   async getAllRestaurants() {
     return this.getAll('restaurants');
+  }
+
+  async getRestaurantBySlug(slug) {
+    return this.request(`/restaurants/slug/${slug}`);
   }
 
   async createRestaurant(restaurantData) {
