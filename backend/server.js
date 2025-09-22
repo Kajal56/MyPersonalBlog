@@ -67,6 +67,30 @@ app.get('/health', (req, res) => {
   });
 });
 
+// API health check with database test
+app.get('/api/health', async (req, res) => {
+  try {
+    // Test database connection by trying to get one book
+    const databaseService = require('./services/databaseService');
+    await databaseService.prisma.$queryRaw`SELECT 1`;
+    
+    res.status(200).json({
+      status: 'OK',
+      message: 'Personal Blog API is running',
+      database: 'Connected',
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error('Database connection error:', error);
+    res.status(500).json({
+      status: 'ERROR',
+      message: 'Database connection failed',
+      error: error.message,
+      timestamp: new Date().toISOString()
+    });
+  }
+});
+
 // API Routes
 app.use('/api/movies/suggestions', movieSuggestionsRoutes);
 app.use('/api/movies', movieRoutes);
