@@ -114,7 +114,7 @@ export default function TripsPage() {
           <p className="text-gray-600 dark:text-gray-300">Start documenting your travels!</p>
         </div>
       ) : (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-6 max-w-2xl mx-auto">
           {trips.map((trip) => (
             <EntryCard
               key={trip.id}
@@ -131,9 +131,7 @@ export default function TripsPage() {
             />
           ))}
         </div>
-      )}
-
-      {/* Suggestion Modal for non-admins */}
+      )}      {/* Suggestion Modal for non-admins */}
       {showSuggestModal && (
         <SuggestionModal
           type="trips"

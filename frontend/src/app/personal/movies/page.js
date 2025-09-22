@@ -132,7 +132,7 @@ export default function MoviesPage() {
           <p className="text-gray-600">Start adding your movie reviews!</p>
         </div>
       ) : (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-6 max-w-2xl mx-auto">
           {movies.map((movie) => (
             <EntryCard
               key={movie.id}

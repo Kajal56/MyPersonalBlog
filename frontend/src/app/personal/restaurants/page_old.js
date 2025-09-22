@@ -1,8 +1,22 @@
-'use client'
 
+'use client'
 import { useState, useEffect } from 'react'
 import { apiService } from '../../../services/apiService'
 import EntryCard from '../../../components/EntryCard'
+                { label: 'Location', value: restaurant.location, icon: '📍' },
+                { label: 'Cuisine', value: restaurant.cuisine },
+                { label: 'Rating', value: `${restaurant.rating}/10`, icon: '⭐' },
+                { label: 'Favorite dish', value: restaurant.favoriteDish },
+                { label: 'Date visited', value: new Date(restaurant.dateVisited).toLocaleDateString() }
+              ]}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+            />
+          ))}
+        </div>
+      )}apiService'
+import EntryCard from '../../../components/EntryCard'
+import PersonalTabs from '../../../components/PersonalTabs'
 import AddEntryModal from '../../../components/AddEntryModal'
 
 export default function RestaurantsPage() {
@@ -52,10 +66,11 @@ export default function RestaurantsPage() {
 
   return (
     <div className="max-w-6xl mx-auto">
+      <PersonalTabs />
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-white mb-2">🍽️ Restaurants</h1>
-          <p className="text-white">My dining experiences and favorites</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">🍽️ Restaurants</h1>
+          <p className="text-gray-600 dark:text-gray-300">My culinary discoveries</p>
         </div>
         <button
           onClick={() => setShowAddModal(true)}
@@ -81,7 +96,7 @@ export default function RestaurantsPage() {
           <p className="text-gray-600">Start documenting your dining experiences!</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-6 max-w-2xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-6 max-w-2xl mx-auto">
           {restaurants.map((restaurant) => (
             <EntryCard
               key={restaurant.id}
@@ -89,7 +104,7 @@ export default function RestaurantsPage() {
               entry={restaurant}
               fields={[
                 { label: 'Location', value: restaurant.location, icon: '📍' },
-                { label: 'Cuisine', value: restaurant.cuisine },
+                { label: 'Cuisine', value: restaurant.cuisine, icon: '🍴' },
                 { label: 'Rating', value: `${restaurant.rating}/10`, icon: '⭐' },
                 { label: 'Favorite dish', value: restaurant.favoriteDish },
                 { label: 'Date visited', value: new Date(restaurant.dateVisited).toLocaleDateString() }

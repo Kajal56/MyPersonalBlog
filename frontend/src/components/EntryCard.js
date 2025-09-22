@@ -45,7 +45,7 @@ export default function EntryCard({ type, entry, fields, onEdit, onDelete, cardC
   return (
     <>
       <div
-        className={cardClassName || "bg-gradient-to-br from-[#2D0036] to-[#6600CC] shadow-md p-4 sm:p-5 hover:shadow-lg transition-shadow w-full max-w-sm mx-auto rounded-lg"}
+        className={cardClassName || "bg-gradient-to-br from-[#2D0036] to-[#6600CC] shadow-md p-4 sm:p-5 hover:shadow-lg transition-shadow w-full rounded-lg"}
         onClick={() => cardClickable && setShowDetailModal(true)}
         style={cardClickable ? { cursor: 'pointer' } : {}}
         tabIndex={cardClickable ? 0 : undefined}

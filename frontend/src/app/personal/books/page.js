@@ -113,7 +113,7 @@ export default function BooksPage() {
           <p className="text-gray-600 dark:text-gray-300">Start adding your book reviews!</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 gap-6 max-w-2xl mx-auto">
           {books.map((book) => (
             <EntryCard
               key={book.id}
@@ -126,9 +126,7 @@ export default function BooksPage() {
             />
           ))}
         </div>
-      )}
-
-      {/* Suggestion Modal for non-admins */}
+      )}      {/* Suggestion Modal for non-admins */}
       {showSuggestModal && (
         <SuggestionModal
           type="books"
