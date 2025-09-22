@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -14,7 +14,7 @@ model Movie {
   rating         Int
   favoriteAspect String
   dateWatched    DateTime
-  tags           String[]
+  tags           String   // JSON string for SQLite compatibility
   dateAdded      DateTime @default(now())
 
   @@map("movies")
@@ -28,7 +28,7 @@ model Book {
   rating      Int
   keyTakeaway String
   dateRead    DateTime
-  tags        String[]
+  tags        String   // JSON string for SQLite compatibility
   dateAdded   DateTime @default(now())
 
   @@map("books")
@@ -42,7 +42,7 @@ model Trip {
   startDate   DateTime
   endDate     DateTime
   highlight   String
-  tags        String[]
+  tags        String   // JSON string for SQLite compatibility
   dateAdded   DateTime @default(now())
 
   @@map("trips")
@@ -57,7 +57,7 @@ model Restaurant {
   rating       Int
   favoriteDish String
   dateVisited  DateTime
-  tags         String[]
+  tags         String   // JSON string for SQLite compatibility
   dateAdded    DateTime @default(now())
 
   @@map("restaurants")
@@ -81,7 +81,7 @@ model FeedPost {
   title     String?
   content   String
   mediaType String?
-  tags      String[]
+  tags      String   // JSON string for SQLite compatibility
   dateAdded DateTime @default(now())
   mediaData String?
 

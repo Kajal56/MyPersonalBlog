@@ -77,15 +77,15 @@ export default function MoviesPage() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className="max-w-6xl mx-auto bg-gradient-to-br from-[#0D0012] to-[#220044] min-h-screen p-6">
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">🎬 Movies</h1>
-          <p className="text-gray-600">My movie watchlist and reviews</p>
+          <h1 className="text-3xl font-bold text-white mb-2">🎬 Movies</h1>
+          <p className="text-purple-200">My movie watchlist and reviews</p>
         </div>
         <button
           onClick={() => setShowAddModal(true)}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors flex items-center space-x-2"
+          className="bg-purple-800 hover:bg-purple-900 text-white px-6 py-3 font-medium transition-colors flex items-center space-x-2"
         >
           <span>+</span>
           <span>Add Movie</span>
@@ -94,17 +94,17 @@ export default function MoviesPage() {
 
       {loading ? (
         <div className="text-center py-12">
-          <div className="text-lg text-gray-600">Loading movies...</div>
+          <div className="text-lg text-purple-300">Loading movies...</div>
         </div>
       ) : error ? (
         <div className="text-center py-12">
-          <div className="text-lg text-red-600">{error}</div>
+          <div className="text-lg text-red-400">{error}</div>
         </div>
       ) : movies.length === 0 ? (
         <div className="text-center py-12">
           <div className="text-6xl mb-4">🎬</div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">No movies yet</h3>
-          <p className="text-gray-600">Start adding your movie reviews!</p>
+          <h3 className="text-xl font-semibold text-white mb-2">No movies yet</h3>
+          <p className="text-purple-200">Start adding your movie reviews!</p>
         </div>
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">

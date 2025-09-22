@@ -27,7 +27,7 @@ export default function EntryCard({ type, entry, fields, onEdit, onDelete, cardC
 
   // Handle navigation to slug-based URL
   const handleCardClick = () => {
-    if (!cardClickable || isAdminMode) return;
+    if (!cardClickable) return;
     
     if (entry.slug) {
       // Navigate to slug-based URL under personal
@@ -50,7 +50,7 @@ export default function EntryCard({ type, entry, fields, onEdit, onDelete, cardC
   // Correct placement: Define handleDeleteConfirm above return
   const handleDeleteConfirm = () => {
     if (onDelete) {
-      onDelete(entry);
+      onDelete(entry.id);
     }
     setShowDeleteDialog(false);
   };
@@ -70,7 +70,7 @@ export default function EntryCard({ type, entry, fields, onEdit, onDelete, cardC
   return (
     <>
       <div
-        className={cardClassName || "bg-gradient-to-br from-[#2D0036] to-[#6600CC] shadow-md p-4 sm:p-5 hover:shadow-lg transition-shadow w-full rounded-lg"}
+        className={cardClassName || "bg-gradient-to-br from-[#0D0012] to-[#330066] shadow-md p-4 sm:p-5 hover:shadow-lg transition-shadow w-full"}
         onClick={handleCardClick}
         style={cardClickable ? { cursor: 'pointer' } : {}}
         tabIndex={cardClickable ? 0 : undefined}
@@ -88,7 +88,7 @@ export default function EntryCard({ type, entry, fields, onEdit, onDelete, cardC
                   e.stopPropagation();
                   handleEdit();
                 }}
-                className="text-purple-300 hover:text-white text-xs sm:text-sm px-2 py-1 rounded bg-purple-800 bg-opacity-50"
+                className="text-purple-200 hover:text-white text-xs sm:text-sm px-2 py-1 bg-purple-950 bg-opacity-70"
               >
                 Edit
               </button>
@@ -97,7 +97,7 @@ export default function EntryCard({ type, entry, fields, onEdit, onDelete, cardC
                   e.stopPropagation();
                   handleDeleteClick();
                 }}
-                className="text-red-300 hover:text-white text-xs sm:text-sm px-2 py-1 rounded bg-red-800 bg-opacity-50"
+                className="text-red-200 hover:text-white text-xs sm:text-sm px-2 py-1 bg-red-950 bg-opacity-70"
               >
                 Delete
               </button>
@@ -118,12 +118,12 @@ export default function EntryCard({ type, entry, fields, onEdit, onDelete, cardC
         </div>
 
         {entry.tags && entry.tags.length > 0 && (
-          <div className="mt-4 pt-4 border-t border-purple-900">
+          <div className="mt-4 pt-4 border-t border-purple-950">
             <div className="flex flex-wrap gap-1">
               {entry.tags.map((tag, index) => (
                 <span
                   key={index}
-                  className="px-2 py-1 bg-purple-900 text-purple-200 text-xs rounded-sm"
+                  className="px-2 py-1 bg-purple-950 text-purple-200 text-xs"
                 >
                   {tag}
                 </span>
@@ -235,12 +235,12 @@ export default function EntryCard({ type, entry, fields, onEdit, onDelete, cardC
               </>
             )}
             {entry.tags && entry.tags.length > 0 && (
-              <div className="pt-2 border-t border-purple-200">
+              <div className="pt-2 border-t border-purple-900">
                 <div className="flex flex-wrap gap-2">
                   {entry.tags.map((tag, index) => (
                     <span
                       key={index}
-                      className="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded"
+                      className="px-2 py-1 bg-purple-950 text-purple-300 text-xs"
                     >
                       {tag}
                     </span>
