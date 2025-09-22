@@ -47,6 +47,14 @@ export default function EntryCard({ type, entry, fields, onEdit, onDelete, cardC
     setShowDetailModal(true);
   };
 
+  // Handle keyboard navigation
+  const handleKeyDown = (e) => {
+    if (cardClickable && (e.key === 'Enter' || e.key === ' ')) {
+      e.preventDefault();
+      handleCardClick();
+    }
+  };
+
   // Correct placement: Define handleDeleteConfirm above return
   const handleDeleteConfirm = () => {
     if (onDelete) {
@@ -70,15 +78,15 @@ export default function EntryCard({ type, entry, fields, onEdit, onDelete, cardC
   return (
     <>
       <div
-        className={cardClassName || "bg-gradient-to-br from-[#0D0012] to-[#330066] shadow-md p-4 sm:p-5 hover:shadow-lg transition-shadow w-full"}
+        className={cardClassName || `bg-gradient-to-br from-[#0D0012] to-[#330066] shadow-md p-4 sm:p-5 w-full transition-all duration-200 ${cardClickable ? 'hover:shadow-xl hover:shadow-purple-500/20 hover:bg-gradient-to-br hover:from-[#1A0026] hover:to-[#4A0080] cursor-pointer transform hover:scale-[1.02]' : 'hover:shadow-lg'}`}
         onClick={handleCardClick}
-        style={cardClickable ? { cursor: 'pointer' } : {}}
+        onKeyDown={handleKeyDown}
         tabIndex={cardClickable ? 0 : undefined}
         role={cardClickable ? 'button' : undefined}
-        aria-label={cardClickable ? 'View entry details' : undefined}
+        aria-label={cardClickable ? `View details for ${entry.title || entry.name}` : undefined}
       >
         <div className="flex justify-between items-start mb-4">
-          <h3 className="text-base sm:text-lg font-semibold text-white line-clamp-2 flex-1 pr-2">
+          <h3 className={`text-base sm:text-lg font-semibold line-clamp-2 flex-1 pr-2 transition-colors duration-200 ${cardClickable ? 'text-purple-100 hover:text-purple-50 hover:underline decoration-purple-300 underline-offset-2' : 'text-white'}`}>
             {entry.title || entry.name}
           </h3>
           {isAdminMode && (
@@ -248,6 +256,32 @@ export default function EntryCard({ type, entry, fields, onEdit, onDelete, cardC
                 </div>
               </div>
             )}
+            {/* Custom navigation buttons */}
+            <div className="flex space-x-2 pt-4 border-t border-purple-900">
+              <button
+                onClick={() => setShowDetailModal(false)}
+                className="flex-1 px-4 py-2 bg-purple-900 text-white hover:bg-purple-800 transition-colors"
+              >
+                Close
+              </button>
+              <button
+                onClick={() => {
+                  setShowDetailModal(false);
+                  if (isMovieType) router.push('/personal/movies');
+                  else if (isBookType) router.push('/personal/books');
+                  else if (isTripType) router.push('/personal/trips');
+                  else if (isRestaurantType) router.push('/personal/restaurants');
+                  else router.push('/personal');
+                }}
+                className="flex-1 px-4 py-2 bg-gradient-to-r from-purple-800 to-purple-900 text-white hover:from-purple-900 hover:to-purple-800 transition-colors"
+              >
+                {isMovieType ? 'Explore More Movies' 
+                  : isBookType ? 'Explore More Books'
+                  : isTripType ? 'Explore More Trips'
+                  : isRestaurantType ? 'Explore More Restaurants'
+                  : 'Back to Personal'}
+              </button>
+            </div>
           </div>
         </SuggestionModal>
       )}

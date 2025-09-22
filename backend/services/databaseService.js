@@ -429,30 +429,30 @@ class DatabaseService {
       this.prisma.movie.findMany({
         take: limit,
         orderBy: { dateAdded: 'desc' },
-        select: { id: true, title: true, dateAdded: true }
+        select: { id: true, title: true, dateAdded: true, slug: true }
       }),
       this.prisma.book.findMany({
         take: limit,
         orderBy: { dateAdded: 'desc' },
-        select: { id: true, title: true, dateAdded: true }
+        select: { id: true, title: true, dateAdded: true, slug: true }
       }),
       this.prisma.trip.findMany({
         take: limit,
         orderBy: { dateAdded: 'desc' },
-        select: { id: true, title: true, dateAdded: true }
+        select: { id: true, title: true, dateAdded: true, slug: true }
       }),
       this.prisma.restaurant.findMany({
         take: limit,
         orderBy: { dateAdded: 'desc' },
-        select: { id: true, name: true, dateAdded: true }
+        select: { id: true, name: true, dateAdded: true, slug: true }
       })
     ]);
 
     const allEntries = [
-      ...movies.map(item => ({ ...item, type: 'movies' })),
-      ...books.map(item => ({ ...item, type: 'books' })),
-      ...trips.map(item => ({ ...item, type: 'trips' })),
-      ...restaurants.map(item => ({ ...item, title: item.name, type: 'restaurants' }))
+      ...movies.map(item => ({ ...item, type: 'movie' })),
+      ...books.map(item => ({ ...item, type: 'book' })),
+      ...trips.map(item => ({ ...item, type: 'trip' })),
+      ...restaurants.map(item => ({ ...item, title: item.name, type: 'restaurant' }))
     ];
 
     return allEntries

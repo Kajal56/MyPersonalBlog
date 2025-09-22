@@ -1,17 +1,39 @@
 "use client"
 
 import Link from "next/link"
-
+import { useRouter } from "next/navigation"
 import { useState, useEffect } from "react"
 import { apiService } from "../../services/apiService"
 
 export default function PersonalPage() {
+  const router = useRouter()
   const [recentEntries, setRecentEntries] = useState([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     loadRecentEntries()
   }, [])
+
+  const handleRecentEntryClick = (entry) => {
+    console.log('Recent entry clicked:', entry);
+    console.log('Entry type:', entry.type);
+    console.log('Entry slug:', entry.slug);
+    
+    if (entry.slug && entry.type !== 'feed') {
+      // Navigate to slug-based URL - convert singular type to plural for URL
+      const pluralType = entry.type === 'movie' ? 'movies' 
+                      : entry.type === 'book' ? 'books'
+                      : entry.type === 'trip' ? 'trips'
+                      : entry.type === 'restaurant' ? 'restaurants'
+                      : entry.type;
+      const url = `/personal/${pluralType}/${entry.slug}`;
+      console.log('Navigating to:', url);
+      router.push(url);
+    } else {
+      console.log('No slug or is feed entry, not navigating');
+    }
+    // For feed entries or entries without slugs, we could add modal or other handling
+  }
 
 
   const loadRecentEntries = async () => {
@@ -107,12 +129,28 @@ export default function PersonalPage() {
           ) : recentEntries.length > 0 ? (
             <div className="space-y-3 sm:space-y-4">
               {recentEntries.map((entry, index) => (
-                <div key={index} className="pl-2 sm:pl-4 py-2 flex flex-col gap-1">
+                <div 
+                  key={index} 
+                  className={`pl-2 sm:pl-4 py-2 flex flex-col gap-1 ${
+                    entry.slug && entry.type !== 'feed' 
+                      ? 'cursor-pointer hover:bg-purple-900/20 rounded transition-colors' 
+                      : ''
+                  }`}
+                  onClick={() => handleRecentEntryClick(entry)}
+                >
                   <div className="flex items-center justify-between">
-                    <h3 className="font-semibold text-white text-sm sm:text-base">{entry.title}</h3>
-                    <span className="text-xs text-blue-300 capitalize px-2 py-1">{entry.type}</span>
+                    <h3 className={`font-semibold text-sm sm:text-base ${
+                      entry.slug && entry.type !== 'feed' 
+                        ? 'text-purple-200 hover:text-white transition-colors' 
+                        : 'text-white'
+                    }`}>{entry.title}</h3>
+                    <span className={`text-xs capitalize px-2 py-1 ${
+                      entry.slug && entry.type !== 'feed'
+                        ? 'text-purple-300 bg-purple-950/30 rounded'
+                        : 'text-purple-300'
+                    }`}>{entry.type}</span>
                   </div>
-                  <p className="text-white text-xs">
+                  <p className="text-purple-200 text-xs">
                     Added {new Date(entry.dateAdded).toLocaleDateString()}
                   </p>
                 </div>
