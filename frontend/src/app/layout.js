@@ -8,6 +8,7 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata = {
   title: 'My Personal Blog',
   description: 'A personal blog to track movies, books, trips, and restaurants',
+  viewport: 'width=device-width, initial-scale=1, maximum-scale=5'
 }
 
 export default function RootLayout({ children }) {
@@ -18,7 +19,7 @@ export default function RootLayout({ children }) {
         <AdminModeProvider>
           <div className="min-h-screen flex flex-col w-full">
             <Navigation />
-            <main className="container mx-auto px-2 sm:px-4 md:px-8 py-4 sm:py-8 w-full max-w-screen-xl min-h-[80vh]" style={{minHeight: '80dvh'}}>
+            <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 w-full max-w-screen-xl min-h-[80vh]" style={{minHeight: '80dvh'}}>
               {children}
             </main>
           </div>

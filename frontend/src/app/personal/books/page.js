@@ -74,15 +74,15 @@ export default function BooksPage() {
   return (
     <div className="max-w-6xl mx-auto">
       <PersonalTabs />
-      <div className="flex justify-between items-center mb-8">
-        <div>
-          <h1 className="text-3xl font-bold text-white mb-2">📚 Books</h1>
-          <p className="text-white">My reading list and key takeaways</p>
-          </div>
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+        <div className="flex-1">
+          <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2">📚 Books</h1>
+          <p className="text-white text-sm sm:text-base">My reading list and key takeaways</p>
+        </div>
         {isAdminMode ? (
           <button
             onClick={() => setShowAddModal(true)}
-            className="bg-[#6600CC] hover:bg-[#7D2AE8] text-white px-6 py-3 font-medium transition-colors flex items-center space-x-2"
+            className="bg-[#6600CC] hover:bg-[#7D2AE8] text-white px-4 sm:px-6 py-2 sm:py-3 font-medium transition-colors flex items-center space-x-2 text-sm sm:text-base rounded-md"
           >
             <span>+</span>
             <span>Add Book</span>
@@ -90,7 +90,7 @@ export default function BooksPage() {
         ) : (
           <button
             onClick={() => setShowSuggestModal(true)}
-            className="bg-gradient-to-r from-[#7D2AE8] to-[#6600CC] hover:from-[#6600CC] hover:to-[#7D2AE8] text-white px-6 py-3 font-medium transition-colors flex items-center space-x-2"
+            className="bg-gradient-to-r from-[#7D2AE8] to-[#6600CC] hover:from-[#6600CC] hover:to-[#7D2AE8] text-white px-4 sm:px-6 py-2 sm:py-3 font-medium transition-colors flex items-center space-x-2 text-sm sm:text-base rounded-md"
           >
             <span>💡</span>
             <span>Suggest a Book</span>
@@ -113,7 +113,7 @@ export default function BooksPage() {
           <p className="text-gray-600 dark:text-gray-300">Start adding your book reviews!</p>
         </div>
       ) : (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {books.map((book) => (
             <EntryCard
               key={book.id}
@@ -149,28 +149,32 @@ export default function BooksPage() {
 
       {/* Suggestions list for admins */}
       {isAdminMode && (
-        <div className="mt-12">
-          <h2 className="text-2xl font-bold mb-4 text-[#7D2AE8] dark:text-[#A78BFA]">Book Suggestions</h2>
+        <div className="mt-8 sm:mt-12">
+          <h2 className="text-xl sm:text-2xl font-bold mb-4 text-[#7D2AE8] dark:text-[#A78BFA]">Book Suggestions</h2>
           {loadingSuggestions ? (
             <div className="text-gray-600 dark:text-gray-300">Loading suggestions...</div>
           ) : suggestions.length === 0 ? (
             <div className="text-gray-600 dark:text-gray-300">No suggestions yet.</div>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               {suggestions.map(suggestion => (
-                <div key={suggestion.id} className="bg-[#181825] p-4 rounded-lg shadow">
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <div className="font-semibold text-white text-lg mb-1">{suggestion.itemName || 'Untitled'}</div>
-                      <div className="text-[#A78BFA] text-base mb-1">{suggestion.message}</div>
-                      <div className="text-xs text-gray-300 mt-1">Suggested by: <span className="font-semibold text-white">{suggestion.name || 'Anonymous'}</span> | <span className="text-gray-400">{new Date(suggestion.dateSuggested).toLocaleString()}</span></div>                    </div>
-                    <div className="flex flex-col items-end">
-                      <span className={`px-2 py-1 rounded text-xs font-semibold mb-2 ${suggestion.isRead ? 'bg-green-200 text-green-800' : 'bg-yellow-200 text-yellow-800'}`}>
+                <div key={suggestion.id} className="bg-[#181825] p-3 sm:p-4 rounded-lg shadow">
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                    <div className="flex-1">
+                      <div className="font-semibold text-white text-base sm:text-lg mb-1">{suggestion.itemName || 'Untitled'}</div>
+                      <div className="text-[#A78BFA] text-sm sm:text-base mb-1">{suggestion.message}</div>
+                      <div className="text-xs text-gray-300 mt-1">
+                        Suggested by: <span className="font-semibold text-white">{suggestion.name || 'Anonymous'}</span> | 
+                        <span className="text-gray-400"> {new Date(suggestion.dateSuggested).toLocaleString()}</span>
+                      </div>
+                    </div>
+                    <div className="flex flex-row sm:flex-col items-center sm:items-end gap-2">
+                      <span className={`px-2 py-1 rounded text-xs font-semibold ${suggestion.isRead ? 'bg-green-200 text-green-800' : 'bg-yellow-200 text-yellow-800'}`}>
                         {suggestion.isRead ? 'Read' : 'Unread'}
                       </span>
                       {!suggestion.isRead && (
                         <button
-                          className="bg-[#6600CC] hover:bg-[#7D2AE8] text-white text-xs px-3 py-1 rounded transition-colors"
+                          className="bg-[#6600CC] hover:bg-[#7D2AE8] text-white text-xs px-3 py-1 rounded transition-colors whitespace-nowrap"
                           onClick={async () => {
                             await apiService.updateSuggestion('books', suggestion.id, { isRead: true })
                             loadSuggestions()

@@ -10,9 +10,9 @@ export default function AboutPage() {
           On the personal side, I’m from a small town in Haryana, where I completed my schooling. My interests revolve around dance—I started with Bhangra, explored Bollywood and hip-hop, and am now pursuing Kathak. I also enjoy music; I’ve tried playing the flute and am hoping to learn piano soon (tips are welcome!). Badminton is another hobby I love.<br/><br/>
           I built this site to share my thoughts on movies, books, and travels. You’ll find suggestion buttons throughout—please share your recommendations! Maybe we have something in common—if so, don’t hesitate to contact me :)
         </p>
-        <div className="text-center text-white text-sm mb-6">
+        {/* <div className="text-center text-white text-sm mb-6">
           Feel free to explore the site and connect with me! Maybe we have something in common—if so, don’t hesitate to contact me :)
-        </div>
+        </div> */}
         <div className="flex justify-center gap-6 mt-4">
           <a href="https://x.com/KajalMalik56" target="_blank" rel="noopener" aria-label="Twitter">
             <svg className="w-7 h-7 text-blue-400 hover:text-blue-500" fill="currentColor" viewBox="0 0 24 24"><path d="M22.46 6c-.77.35-1.6.59-2.47.7a4.3 4.3 0 0 0 1.88-2.37c-.83.5-1.75.87-2.72 1.07A4.28 4.28 0 0 0 12 9.75c0 .34.04.67.1.99C8.09 10.6 5.13 8.94 3.16 6.5c-.37.64-.58 1.38-.58 2.17 0 1.5.77 2.83 1.94 3.61-.72-.02-1.4-.22-1.99-.55v.06c0 2.1 1.49 3.85 3.47 4.25-.36.1-.74.16-1.13.16-.28 0-.54-.03-.8-.08.54 1.7 2.1 2.94 3.95 2.97A8.6 8.6 0 0 1 2 19.54c-.29 0-.57-.02-.85-.05A12.13 12.13 0 0 0 8.29 21c7.55 0 11.68-6.26 11.68-11.68 0-.18-.01-.36-.02-.54A8.18 8.18 0 0 0 24 4.59a8.2 8.2 0 0 1-2.36.65z"/></svg>
