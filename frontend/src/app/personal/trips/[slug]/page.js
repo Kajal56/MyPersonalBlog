@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import { apiService } from '../../../../services/apiService';
 
 export default function TripDetailPage() {
   const params = useParams();
@@ -14,15 +15,8 @@ export default function TripDetailPage() {
     const fetchTrip = async () => {
       try {
         setLoading(true);
-        const url = `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/trips/slug/${params.slug}`;
-        const response = await fetch(url);
-        const result = await response.json();
-        
-        if (result.success) {
-          setTrip(result.data);
-        } else {
-          setError('Trip not found');
-        }
+        const result = await apiService.getTripBySlug(params.slug);
+        setTrip(result);
       } catch (err) {
         console.error('Error fetching trip:', err);
         setError('Failed to load trip');
