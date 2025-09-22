@@ -119,7 +119,7 @@ export default function EntryCard({ type, entry, fields, onEdit, onDelete, cardC
               {field.icon && <span className="text-sm mt-0.5 text-purple-300 flex-shrink-0">{field.icon}</span>}
               <div className="flex-1 min-w-0">
                 <span className="text-sm font-medium text-purple-200">{field.label}:</span>
-                <p className="text-sm text-white break-words">{field.value}</p>
+                <p className="text-sm text-white break-words whitespace-pre-line">{field.value}</p>
               </div>
             </div>
           ))}
@@ -174,7 +174,7 @@ export default function EntryCard({ type, entry, fields, onEdit, onDelete, cardC
                   <div className="flex items-start space-x-2">
                     <div className="flex-1 min-w-0">
                       <span className="text-sm font-medium text-purple-300">Key Takeaway:</span>
-                      <p className="text-sm text-purple-100 font-semibold break-words">{entry.keyTakeaway}</p>
+                      <p className="text-sm text-purple-100 font-semibold break-words whitespace-pre-line">{entry.keyTakeaway}</p>
                     </div>
                   </div>
                 )}
@@ -233,7 +233,7 @@ export default function EntryCard({ type, entry, fields, onEdit, onDelete, cardC
                   <div className="flex items-start space-x-2">
                     <div className="flex-1 min-w-0">
                       <span className="text-sm font-medium text-purple-300">Key Takeaway:</span>
-                      <p className="text-sm text-purple-100 font-semibold break-words">{entry.keyTakeaway}</p>
+                      <p className="text-sm text-purple-100 font-semibold break-words whitespace-pre-line">{entry.keyTakeaway}</p>
                     </div>
                   </div>
                 )}

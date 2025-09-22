@@ -91,7 +91,7 @@ export default function MoviesPage() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto bg-gradient-to-br from-[#0D0012] to-[#220044] min-h-screen p-6">
+    <div className="max-w-6xl mx-auto min-h-screen p-6">
       <PersonalTabs />
       <div className="flex justify-between items-center mb-8">
         <div>

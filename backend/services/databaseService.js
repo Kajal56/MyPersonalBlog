@@ -131,9 +131,14 @@ class DatabaseService {
 
   // Movies
   async getAllMovies() {
-    return this.prisma.movie.findMany({
-      orderBy: { dateAdded: 'desc' }
-    });
+    try {
+      return this.prisma.movie.findMany({
+        orderBy: { dateAdded: 'desc' }
+      });
+    } catch (error) {
+      console.error('Database connection error in getAllMovies:', error.message);
+      throw error;
+    }
   }
 
   async getMovieById(id) {

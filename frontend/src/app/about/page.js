@@ -2,8 +2,8 @@
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center py-0 px-4">
-      <div className="max-w-2xl w-full mt-[-16vh]">
+    <div className="min-h-screen flex items-center justify-center py-0 px-4 pt-4 md:pt-0">
+      <div className="max-w-2xl w-full mt-[-8vh] md:mt-[-16vh]">
         <h1 className="text-4xl font-extrabold text-white mb-4 text-center">About Me</h1>
         <p className="text-lg text-white mb-6 text-center">
           I'm Kajal, a software engineer passionate about building new things and connecting with like-minded people. I love the algorithmic side of computer science and enjoy working on innovative projects (check out my resume for more). After graduating from IIT Bombay, I spent a year working in Bangalore and am always eager to learn and grow.<br/><br/>

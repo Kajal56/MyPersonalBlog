@@ -83,7 +83,7 @@ export default function TripDetailPage() {
         </div>
 
         {/* Trip details card */}
-        <div className="bg-gradient-to-br from-purple-950/95 to-purple-900/95 backdrop-blur-sm shadow-2xl p-6 border border-purple-950">
+        <div className="p-6">
           <div className="grid gap-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
@@ -98,7 +98,7 @@ export default function TripDetailPage() {
 
             <div>
               <label className="block text-sm font-medium text-purple-200 mb-2">Highlight</label>
-              <p className="text-white bg-purple-900/70 p-3 border border-purple-700">{trip.highlight}</p>
+              <p className="text-white whitespace-pre-line">{trip.highlight}</p>
             </div>
 
             {trip.tags && trip.tags.length > 0 && (

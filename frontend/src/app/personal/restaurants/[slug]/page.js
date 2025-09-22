@@ -83,7 +83,7 @@ export default function RestaurantDetailPage() {
         </div>
 
         {/* Restaurant details card */}
-        <div className="bg-gradient-to-br from-purple-950/95 to-purple-900/95 backdrop-blur-sm shadow-2xl p-6 border border-purple-950">
+        <div className="p-6">
           <div className="grid gap-6">
             <div>
               <label className="block text-sm font-medium text-purple-200 mb-2">Rating</label>
@@ -106,7 +106,7 @@ export default function RestaurantDetailPage() {
 
             <div>
               <label className="block text-sm font-medium text-purple-200 mb-2">Favorite Dish</label>
-              <p className="text-white bg-purple-900/70 p-3 border border-purple-700">{restaurant.favoriteDish}</p>
+              <p className="text-white whitespace-pre-line">{restaurant.favoriteDish}</p>
             </div>
 
             <div>
