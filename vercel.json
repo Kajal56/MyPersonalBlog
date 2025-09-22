@@ -3,7 +3,10 @@
   "builds": [
     {
       "src": "frontend/package.json",
-      "use": "@vercel/next"
+      "use": "@vercel/next",
+      "config": {
+        "rootDirectory": "frontend"
+      }
     },
     {
       "src": "backend/server.js",
@@ -14,6 +17,9 @@
     {
       "src": "/api/(.*)",
       "dest": "backend/server.js"
+    },
+    {
+      "handle": "filesystem"
     },
     {
       "src": "/(.*)",
