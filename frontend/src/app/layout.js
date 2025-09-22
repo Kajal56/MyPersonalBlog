@@ -6,7 +6,7 @@ import { AdminModeProvider } from '../components/AdminModeContext'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'My Personal Blog',
+  title: 'Life Curated',
   description: 'A personal blog to track movies, books, trips, and restaurants',
   viewport: 'width=device-width, initial-scale=1, maximum-scale=5'
 }
