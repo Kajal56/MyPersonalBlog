@@ -3,8 +3,8 @@
 var isProduction = process.env.NODE_ENV === 'production';
 var base_url;
 if (isProduction){
-  // In production, use relative /api path since backend is deployed to the same domain
-  base_url = '/api';
+  base_url = process.env.NEXT_PUBLIC_API_URL || 
+    (typeof window !== 'undefined' ? '/api' : 'http://localhost:5000/api');
 }
 else{
   base_url = 'http://localhost:5000/api'; // Default base URL for local development
