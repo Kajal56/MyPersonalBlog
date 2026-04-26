@@ -81,7 +81,10 @@ model FeedPost {
   title     String?
   content   String
   mediaType String?
-  tags      String   // JSON string for SQLite compatibility
+  // Tags for the post. Stored as a string array to match the "TEXT[]" column
+  // defined in the existing "feed_posts" table (see baseline.sql).
+  // This aligns with how tags are stored for movies, books, trips, etc.
+  tags      String[]
   dateAdded DateTime @default(now())
   mediaData String?
 

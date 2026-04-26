@@ -513,9 +513,40 @@ class DatabaseService {
 
   // Feed Posts
   async getAllFeedPosts() {
-    return this.prisma.feedPost.findMany({
-      orderBy: { dateAdded: 'desc' }
-    });
+    try {
+      return await this.prisma.feedPost.findMany({
+        orderBy: { dateAdded: 'desc' }
+      });
+    } catch (error) {
+      // Production can have a partially-migrated feed_posts table.
+      // Fall back to a dynamic SQL query that only selects existing columns.
+      console.warn('Falling back to compatibility feed query:', error.message);
+
+      const columnRows = await this.prisma.$queryRaw`
+        SELECT column_name
+        FROM information_schema.columns
+        WHERE table_schema = 'public' AND table_name = 'feed_posts'
+      `;
+      const columns = new Set(columnRows.map((row) => row.column_name));
+
+      if (!columns.has('id') || !columns.has('content')) {
+        throw error;
+      }
+
+      const selectParts = [
+        `"id"`,
+        columns.has('title') ? `"title"` : `NULL::text AS "title"`,
+        `"content"`,
+        columns.has('mediaType') ? `"mediaType"` : `NULL::text AS "mediaType"`,
+        columns.has('mediaData') ? `"mediaData"` : `NULL::text AS "mediaData"`,
+        columns.has('tags') ? `COALESCE("tags", ARRAY[]::text[]) AS "tags"` : `ARRAY[]::text[] AS "tags"`,
+        columns.has('dateAdded') ? `"dateAdded"` : `NOW() AS "dateAdded"`,
+      ];
+
+      const orderByClause = columns.has('dateAdded') ? ` ORDER BY "dateAdded" DESC` : '';
+      const query = `SELECT ${selectParts.join(', ')} FROM "feed_posts"${orderByClause}`;
+      return this.prisma.$queryRawUnsafe(query);
+    }
   }
 
   async getFeedPostById(id) {

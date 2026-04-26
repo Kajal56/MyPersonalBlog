@@ -27,7 +27,7 @@ lsof -ti:3000 | xargs kill -9 2>/dev/null || true
 
 # Start Backend
 echo -e "${GREEN}📦 Starting Backend API (Port 5000)...${NC}"
-cd backend && npm run dev &
+(cd backend && npm run dev) &
 BACKEND_PID=$!
 
 # Wait a moment for backend to start
@@ -35,7 +35,7 @@ sleep 3
 
 # Start Frontend
 echo -e "${GREEN}🌐 Starting Frontend (Port 3000)...${NC}"
-cd ../frontend && npm run dev &
+(cd frontend && npm run dev) &
 FRONTEND_PID=$!
 
 echo ""
