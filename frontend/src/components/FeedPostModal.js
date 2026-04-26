@@ -2,6 +2,14 @@
 import { useState } from 'react'
 import { apiService } from '../services/apiService'
 
+const getApiBaseUrl = () => {
+  const configuredUrl = process.env.NEXT_PUBLIC_API_URL
+  if (configuredUrl) {
+    return configuredUrl
+  }
+  return process.env.NODE_ENV === 'production' ? '/api' : 'http://localhost:5000/api'
+}
+
 export default function FeedPostModal({ onClose, onPostAdded, editPost = null }) {
   const [formData, setFormData] = useState(() => {
     if (editPost) {
@@ -21,6 +29,7 @@ export default function FeedPostModal({ onClose, onPostAdded, editPost = null })
   const [previewUrl, setPreviewUrl] = useState(editPost?.mediaData || null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState('')
+  const apiBaseUrl = getApiBaseUrl()
 
   const isEditing = !!editPost
 
@@ -78,7 +87,7 @@ export default function FeedPostModal({ onClose, onPostAdded, editPost = null })
       let result
       if (isEditing) {
         // For editing, we'll use a custom fetch since apiService doesn't handle FormData well
-        const response = await fetch(`http://localhost:5000/api/feed/${editPost.id}`, {
+        const response = await fetch(`${apiBaseUrl}/feed/${editPost.id}`, {
           method: 'PUT',
           body: submitData
         })
@@ -86,7 +95,7 @@ export default function FeedPostModal({ onClose, onPostAdded, editPost = null })
         if (!response.ok) throw new Error(result.error || 'Failed to update post')
       } else {
         // For creating, also use custom fetch
-        const response = await fetch('http://localhost:5000/api/feed', {
+        const response = await fetch(`${apiBaseUrl}/feed`, {
           method: 'POST',
           body: submitData
         })
