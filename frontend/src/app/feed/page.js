@@ -163,7 +163,7 @@ export default function FeedPage() {
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
             📱 My Feed
           </h1>
-          <p className="text-gray-600">Your personal Instagram-style timeline</p>
+          <p className="text-gray-600">My personal yapping place</p>
         </div>
         <button
           onClick={() => setShowAddModal(true)}
