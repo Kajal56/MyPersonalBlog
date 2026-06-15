@@ -1,30 +1,12 @@
 const express = require('express');
 const multer = require('multer');
-const path = require('path');
-const fs = require('fs');
 const router = express.Router();
 const databaseService = require('../services/databaseService');
 
-// Create uploads directory if it doesn't exist
-const uploadsDir = path.join(__dirname, '../uploads');
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
-}
-
-// Configure multer for file uploads
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, uploadsDir);
-  },
-  filename: function (req, file, cb) {
-    // Generate unique filename with timestamp
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
-  }
-});
-
+// In-memory storage: Vercel serverless has a read-only filesystem (only /tmp is writable).
+// Files are converted to base64 for the database, so disk storage is unnecessary.
 const upload = multer({
-  storage: storage,
+  storage: multer.memoryStorage(),
   limits: {
     fileSize: 10 * 1024 * 1024, // 10MB limit
   },
@@ -37,6 +19,19 @@ const upload = multer({
     }
   }
 });
+
+const handleMediaUpload = (req, res, next) => {
+  upload.single('media')(req, res, (err) => {
+    if (err) {
+      if (err.code === 'LIMIT_FILE_SIZE') {
+        return res.status(413).json({ success: false, error: 'File too large. Maximum size is 10MB.' });
+      }
+      console.error('Feed media upload error:', err);
+      return res.status(400).json({ success: false, error: err.message || 'File upload failed' });
+    }
+    next();
+  });
+};
 
 // Get all feed posts
 router.get('/', async (req, res) => {
@@ -67,7 +62,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // Create new feed post (with optional file upload)
-router.post('/', upload.single('media'), async (req, res) => {
+router.post('/', handleMediaUpload, async (req, res) => {
   try {
     const postData = req.body;
     
@@ -92,14 +87,8 @@ router.post('/', upload.single('media'), async (req, res) => {
     // Add media information if file was uploaded
     if (req.file) {
       postData.mediaType = req.file.mimetype.startsWith('image/') ? 'image' : 'video';
-      // Convert file to Base64
-      const fs = require('fs');
-      const fileBuffer = fs.readFileSync(req.file.path);
-      const base64Data = fileBuffer.toString('base64');
+      const base64Data = req.file.buffer.toString('base64');
       postData.mediaData = `data:${req.file.mimetype};base64,${base64Data}`;
-      
-      // Clean up the temporary file
-      fs.unlinkSync(req.file.path);
     }
 
     const newPost = await databaseService.createFeedPost(postData);
@@ -111,7 +100,7 @@ router.post('/', upload.single('media'), async (req, res) => {
 });
 
 // Update feed post
-router.put('/:id', upload.single('media'), async (req, res) => {
+router.put('/:id', handleMediaUpload, async (req, res) => {
   try {
     const { id } = req.params;
     const postData = req.body;
@@ -129,14 +118,8 @@ router.put('/:id', upload.single('media'), async (req, res) => {
     // Add media information if new file was uploaded
     if (req.file) {
       postData.mediaType = req.file.mimetype.startsWith('image/') ? 'image' : 'video';
-      // Convert file to Base64
-      const fs = require('fs');
-      const fileBuffer = fs.readFileSync(req.file.path);
-      const base64Data = fileBuffer.toString('base64');
+      const base64Data = req.file.buffer.toString('base64');
       postData.mediaData = `data:${req.file.mimetype};base64,${base64Data}`;
-      
-      // Clean up the temporary file
-      fs.unlinkSync(req.file.path);
     }
     
     const updatedPost = await databaseService.updateFeedPost(id, postData);
