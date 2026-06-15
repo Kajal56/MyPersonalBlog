@@ -208,13 +208,13 @@ export default function FeedPostModal({ onClose, onPostAdded, editPost = null })
                       <video 
                         src={previewUrl} 
                         controls 
-                        className="w-full max-h-64 object-cover"
+                        className="max-w-full h-auto max-h-64 object-contain mx-auto"
                       />
                     ) : (
                       <img 
                         src={previewUrl} 
                         alt="Preview" 
-                        className="w-full max-h-64 object-cover"
+                        className="max-w-full h-auto max-h-64 object-contain mx-auto"
                       />
                     )}
                   </div>

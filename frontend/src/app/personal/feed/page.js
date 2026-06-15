@@ -117,18 +117,18 @@ export default function FeedPage() {
           </p>
         </div>
         {post.mediaData && (
-          <div className="mt-4">
+          <div className="mt-4 flex justify-center">
             {post.mediaType === 'video' ? (
               <video 
                 src={post.mediaData} 
                 controls 
-                className="w-full max-h-96 object-cover border border-purple-900"
+                className="max-w-full h-auto max-h-[70vh] object-contain border border-purple-900"
               />
             ) : (
               <img 
                 src={post.mediaData} 
                 alt="Post media" 
-                className="w-full max-h-96 object-cover border border-purple-900"
+                className="max-w-full h-auto max-h-[70vh] object-contain border border-purple-900"
               />
             )}
           </div>
