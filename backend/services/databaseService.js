@@ -115,10 +115,15 @@ class DatabaseService {
   }
 
   constructor() {
-    // Reuse existing Prisma instance in serverless environments
+    // Reuse existing Prisma instance in serverless environments (Vercel)
     if (!prisma) {
       prisma = new PrismaClient({
         log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
+        datasources: {
+          db: {
+            url: process.env.DATABASE_URL,
+          },
+        },
       });
     }
     this.prisma = prisma;

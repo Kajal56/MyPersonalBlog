@@ -1,5 +1,7 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "version": 2,
+  "regions": ["sin1"],
   "builds": [
     {
       "src": "frontend/package.json",
@@ -7,7 +9,11 @@
     },
     {
       "src": "backend/server.js",
-      "use": "@vercel/node"
+      "use": "@vercel/node",
+      "config": {
+        "memory": 1024,
+        "maxDuration": 10
+      }
     }
   ],
   "routes": [
