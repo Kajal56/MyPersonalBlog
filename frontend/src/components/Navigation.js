@@ -17,7 +17,7 @@ export default function Navigation() {
   { href: '/', label: 'Home' },
   { href: '/about', label: 'About' },
   { href: '/profile', label: 'Professional' },
-  { href: '/personal', label: 'Personal' },
+  { href: '/personal/feed', label: 'Personal' },
   { href: '/contact', label: 'Contact' },
   ]
 
@@ -50,7 +50,7 @@ export default function Navigation() {
             Professional
           </a>
           <a
-            href="/personal"
+            href="/personal/feed"
             className="text-white font-semibold hover:text-purple-300 transition-colors"
           >
             Personal
@@ -166,7 +166,7 @@ export default function Navigation() {
               Professional
             </a>
             <a
-              href="/personal"
+              href="/personal/feed"
               className="block text-white font-semibold py-2 hover:text-purple-300 transition-colors"
               onClick={() => setIsMobileMenuOpen(false)}
             >

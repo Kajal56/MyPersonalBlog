@@ -271,7 +271,7 @@ export default function EntryCard({ type, entry, fields, onEdit, onDelete, cardC
                   else if (isBookType) router.push('/personal/books');
                   else if (isTripType) router.push('/personal/trips');
                   else if (isRestaurantType) router.push('/personal/restaurants');
-                  else router.push('/personal');
+                  else router.push('/personal/feed');
                 }}
                 className="flex-1 px-4 py-2 bg-gradient-to-r from-purple-800 to-purple-900 text-white hover:from-purple-900 hover:to-purple-800 transition-colors"
               >

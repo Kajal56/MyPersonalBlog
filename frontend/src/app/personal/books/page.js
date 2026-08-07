@@ -119,7 +119,12 @@ export default function BooksPage() {
               key={book.id}
               type="books"
               entry={book}
-              fields={[{ label: 'Author', value: book.author },{ label: 'Rating', value: `${book.rating}/10`, icon: '⭐' },{ label: 'Takeaway', value: book.takeaway }]}
+              fields={[
+                { label: 'Author', value: book.author },
+                { label: 'Rating', value: `${book.rating}/10`, icon: '⭐' },
+                { label: 'Key takeaway', value: book.keyTakeaway },
+                { label: 'Date read', value: new Date(book.dateRead).toLocaleDateString() },
+              ]}
               onEdit={isAdminMode ? handleEdit : undefined}
               onDelete={isAdminMode ? handleDelete : undefined}
               isAdminMode={isAdminMode}

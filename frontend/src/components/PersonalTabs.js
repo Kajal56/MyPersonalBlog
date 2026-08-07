@@ -4,12 +4,12 @@ import { usePathname } from 'next/navigation'
 import { useAdminMode } from './AdminModeContext'
 
 const allTabs = [
+  { href: '/personal/feed', label: 'Thoughts' },
   { href: '/personal/movies', label: 'Movies' },
   { href: '/personal/books', label: 'Books' },
   { href: '/personal/trips', label: 'Trips' },
   { href: '/personal/restaurants', label: 'Restaurants', adminOnly: true },
   { href: '/personal/flats', label: 'Flats', adminOnly: true },
-  { href: '/personal/feed', label: 'Feed' },
 ]
 
 export default function PersonalTabs() {

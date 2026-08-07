@@ -158,8 +158,7 @@ export default function FeedPage() {
         <div className="max-w-4xl mx-auto">
           <div className="flex justify-between items-center mb-8">
             <div>
-              <h1 className="text-3xl font-bold text-white mb-2">📱 My Feed</h1>
-              <p className="text-white">Your personal Instagram-style timeline</p>
+              <h1 className="text-3xl font-bold text-white mb-2">My venting place</h1>
             </div>
             {isAdminMode && (
               <button
@@ -182,9 +181,9 @@ export default function FeedPage() {
             </div>
           ) : posts.length === 0 ? (
             <div className="text-center py-12">
-              <div className="text-6xl mb-4">📱</div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">Your feed is empty</h3>
-              <p className="text-gray-600 dark:text-gray-300 mb-4">Start sharing your thoughts, experiences, or anything that's on your mind!</p>
+              <div className="text-6xl mb-4">💭</div>
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">Nothing here yet</h3>
+              <p className="text-gray-600 dark:text-gray-300 mb-4">Share a thought when you&apos;re ready.</p>
               <button
                 onClick={() => setShowAddModal(true)}
                 className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300"
