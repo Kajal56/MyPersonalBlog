@@ -16,7 +16,6 @@ export default function Navigation() {
   const navItems = [
   { href: '/', label: 'Home' },
   { href: '/about', label: 'About' },
-  { href: '/profile', label: 'Professional' },
   { href: '/personal/feed', label: 'Personal' },
   { href: '/contact', label: 'Contact' },
   ]
@@ -42,12 +41,6 @@ export default function Navigation() {
             className="text-white font-semibold hover:text-purple-300 transition-colors"
           >
             About
-          </a>
-          <a
-            href="/profile"
-            className="text-white font-semibold hover:text-purple-300 transition-colors"
-          >
-            Professional
           </a>
           <a
             href="/personal/feed"
@@ -157,13 +150,6 @@ export default function Navigation() {
               onClick={() => setIsMobileMenuOpen(false)}
             >
               About
-            </a>
-            <a
-              href="/profile"
-              className="block text-white font-semibold py-2 hover:text-purple-300 transition-colors"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Professional
             </a>
             <a
               href="/personal/feed"

@@ -1,18 +1,56 @@
 "use client"
 
+import Link from "next/link"
+
 export default function AboutPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center py-0 px-4 pt-4 md:pt-0">
-      <div className="max-w-2xl w-full mt-[-8vh] md:mt-[-16vh]">
+    <div className="w-full max-w-2xl mx-auto py-4 sm:py-8 px-2 sm:px-4">
         <h1 className="text-4xl font-extrabold text-white mb-4 text-center">About Me</h1>
-        <p className="text-lg text-white mb-6 text-center">
-          I'm Kajal, a software engineer passionate about building new things and connecting with like-minded people. I love the algorithmic side of computer science and enjoy working on innovative projects (check out my resume for more). After graduating from IIT Bombay, I spent a year working in Bangalore and am always eager to learn and grow.<br/><br/>
-          On the personal side, I’m from a small town in Haryana, where I completed my schooling. My interests revolve around dance—I started with Bhangra, explored Bollywood and hip-hop, and am now pursuing Kathak. I also enjoy music; I’ve tried playing the flute and am hoping to learn piano soon (tips are welcome!). Badminton is another hobby I love.<br/><br/>
-          I built this site to share my thoughts on movies, books, and travels. You’ll find suggestion buttons throughout—please share your recommendations! Maybe we have something in common—if so, don’t hesitate to contact me :)
-        </p>
-        {/* <div className="text-center text-white text-sm mb-6">
-          Feel free to explore the site and connect with me! Maybe we have something in common—if so, don’t hesitate to contact me :)
-        </div> */}
+
+        <section className="mb-8 text-center">
+          <p className="text-lg text-white mb-6 text-center">
+            I&apos;m Kajal — a software engineer who loves building, learning, and connecting with
+            like-minded people. I&apos;m from a small town in Haryana, and my interests revolve around
+            dance — I started with Bhangra, explored Bollywood and hip-hop, and am now pursuing
+            Kathak. I also enjoy music; I&apos;ve tried playing the flute and am hoping to learn
+            piano soon (tips are welcome!). I really dream of performing Kathak/Dance in general and
+            Piano on a big stage one day — that matters to me the most. Badminton is another hobby I
+            love (I never said I&apos;m good at it :/).
+          </p>
+          <p className="text-lg text-white mb-6 text-center">
+            I built this site to share my thoughts on movies, books, and travels — you&apos;ll find
+            suggestion buttons throughout, so please share your recommendations! For the more personal
+            side — my venting place, reading list, watchlist, and more — head to{" "}
+            <Link
+              href="/personal/feed"
+              className="text-purple-300 hover:text-purple-100 underline underline-offset-2"
+            >
+              Personal
+            </Link>
+            .
+          </p>
+        </section>
+
+        <section id="professional" className="mb-8 text-center">
+          <h2 className="text-2xl font-bold text-white mb-4 text-center">Worky-worky</h2>
+          <p className="text-lg text-white mb-6 text-center">
+            I did my schooling in Haryana and graduated from IIT Bombay, Computer Science and
+            Engineering Department, with Honors — databases, networks, compilers, operating systems,
+            the usual CSE stack — but algorithm design is what I&apos;ve always enjoyed most. I&apos;ve
+            explored machine learning (keen to go deeper) and dipped into network security in my final
+            semester. After college I worked at Microsoft in Bangalore as a Software Engineer; before
+            that, two SDE internships — the full story is in my resume below.
+          </p>
+          <a
+            href="https://drive.google.com/file/d/1TeZpOFuS0fojkrbYZnWYGhpq_6-freE8/view?usp=sharing"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-300 hover:underline"
+          >
+            View Resume (Google Drive)
+          </a>
+        </section>
+
         <div className="flex justify-center gap-6 mt-4">
           <a href="https://x.com/KajalMalik56" target="_blank" rel="noopener" aria-label="Twitter">
             <svg className="w-7 h-7 text-blue-400 hover:text-blue-500" fill="currentColor" viewBox="0 0 24 24"><path d="M22.46 6c-.77.35-1.6.59-2.47.7a4.3 4.3 0 0 0 1.88-2.37c-.83.5-1.75.87-2.72 1.07A4.28 4.28 0 0 0 12 9.75c0 .34.04.67.1.99C8.09 10.6 5.13 8.94 3.16 6.5c-.37.64-.58 1.38-.58 2.17 0 1.5.77 2.83 1.94 3.61-.72-.02-1.4-.22-1.99-.55v.06c0 2.1 1.49 3.85 3.47 4.25-.36.1-.74.16-1.13.16-.28 0-.54-.03-.8-.08.54 1.7 2.1 2.94 3.95 2.97A8.6 8.6 0 0 1 2 19.54c-.29 0-.57-.02-.85-.05A12.13 12.13 0 0 0 8.29 21c7.55 0 11.68-6.26 11.68-11.68 0-.18-.01-.36-.02-.54A8.18 8.18 0 0 0 24 4.59a8.2 8.2 0 0 1-2.36.65z"/></svg>
@@ -27,7 +65,6 @@ export default function AboutPage() {
             <svg className="w-7 h-7 text-blue-500 hover:text-blue-600" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14C2.2 0 0 2.2 0 5v14c0 2.8 2.2 5 5 5h14c2.8 0 5-2.2 5-5V5c0-2.8-2.2-5-5-5zM7.1 19H3.6V9h3.5v10zm-1.8-11.3c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm14.7 11.3h-3.5v-5.4c0-1.3-.5-2.2-1.7-2.2-1 0-1.6.7-1.9 1.4-.1.2-.1.5-.1.8V19h-3.5s.1-10 0-10h3.5v1.4c.5-.8 1.3-1.9 3.2-1.9 2.3 0 4 1.5 4 4.7V19z"/></svg>
           </a>
         </div>
-      </div>
     </div>
   )
 }
