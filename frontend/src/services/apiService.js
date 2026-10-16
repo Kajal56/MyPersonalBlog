@@ -218,6 +218,23 @@ class ApiService {
     return this.delete('feed', id);
   }
 
+  // UPSC Notes
+  async getAllUpscNotes() {
+    return this.getAll('upsc-notes');
+  }
+
+  async createUpscNote(data) {
+    return this.create('upsc-notes', data);
+  }
+
+  async updateUpscNote(id, data) {
+    return this.update('upsc-notes', id, data);
+  }
+
+  async deleteUpscNote(id) {
+    return this.delete('upsc-notes', id);
+  }
+
   // Suggestions
   async createSuggestion(type, data) {
     // type: 'books', 'movies', 'restaurants'

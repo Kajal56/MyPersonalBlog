@@ -591,6 +591,38 @@ class DatabaseService {
     });
   }
 
+  // UPSC Notes
+  async getAllUpscNotes() {
+    return this.prisma.upscNote.findMany({
+      orderBy: { dateAdded: 'desc' }
+    });
+  }
+
+  async createUpscNote(data) {
+    return this.prisma.upscNote.create({
+      data: {
+        topic: data.topic.trim(),
+        content: data.content.trim()
+      }
+    });
+  }
+
+  async updateUpscNote(id, data) {
+    return this.prisma.upscNote.update({
+      where: { id },
+      data: {
+        topic: data.topic.trim(),
+        content: data.content.trim()
+      }
+    });
+  }
+
+  async deleteUpscNote(id) {
+    return this.prisma.upscNote.delete({
+      where: { id }
+    });
+  }
+
   // Clean up connections
   async disconnect() {
     await this.prisma.$disconnect();

@@ -92,6 +92,15 @@ model FeedPost {
   @@map("feed_posts")
 }
 
+model UpscNote {
+  id        String   @id @default(cuid())
+  topic     String
+  content   String
+  dateAdded DateTime @default(now())
+
+  @@map("upsc_notes")
+}
+
 model BookSuggestion {
   id            String   @id @default(cuid())
   name          String?

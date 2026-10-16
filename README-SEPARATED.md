@@ -76,6 +76,12 @@ npm run dev
 - `PUT /restaurants/:id` - Update restaurant
 - `DELETE /restaurants/:id` - Delete restaurant
 
+#### UPSC Notes
+- `GET /upsc-notes` - Get all UPSC notes
+- `POST /upsc-notes` - Add a topic and its note content
+- `PUT /upsc-notes/:id` - Update a UPSC note
+- `DELETE /upsc-notes/:id` - Delete a UPSC note
+
 #### Health Check
 - `GET /health` - API health status
 
