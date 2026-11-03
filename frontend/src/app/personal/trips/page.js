@@ -4,9 +4,13 @@ import { useState, useEffect } from 'react'
 import { apiService } from '../../../services/apiService'
 import EntryCard from '../../../components/EntryCard'
 import AddEntryModal from '../../../components/AddEntryModal'
-import PersonalTabs from '../../../components/PersonalTabs'
 import { useAdminMode } from '../../../components/AdminModeContext'
 import SuggestionModal from '../../../components/SuggestionModal'
+
+const formatTripDate = (value) =>
+  value
+    ? new Date(value).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' })
+    : ''
 
 export default function TripsPage() {
   const { isAdminMode } = useAdminMode()
@@ -74,11 +78,10 @@ export default function TripsPage() {
 
   return (
     <div className="max-w-6xl mx-auto">
-      <PersonalTabs />
-      <div className="flex justify-between items-center mb-8">
+      <div className="max-w-3xl mx-auto flex flex-wrap gap-4 justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-white mb-2">✈️ Trips</h1>
-          <p className="text-white">My travel adventures and memories</p>
+          <h1 className="page-title mb-2">✈️ Trips</h1>
+          <p className="text-purple-200/80">My travel adventures and memories</p>
         </div>
         {isAdminMode ? (
           <button
@@ -91,7 +94,7 @@ export default function TripsPage() {
         ) : (
           <button
             onClick={() => setShowSuggestModal(true)}
-            className="bg-gradient-to-r from-[#7D2AE8] to-[#6600CC] hover:from-[#6600CC] hover:to-[#7D2AE8] text-white px-6 py-3 font-medium transition-colors flex items-center space-x-2"
+            className="btn-primary"
           >
             <span>💡</span>
             <span>Suggest a Trip</span>
@@ -114,7 +117,7 @@ export default function TripsPage() {
           <p className="text-gray-600 dark:text-gray-300">Start documenting your travels!</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-6 max-w-2xl mx-auto">
+        <div className="grid grid-cols-1 gap-6 max-w-3xl mx-auto">
           {trips.map((trip) => (
             <EntryCard
               key={trip.id}
@@ -122,7 +125,7 @@ export default function TripsPage() {
               entry={trip}
               fields={[
                 { label: 'Destination', value: trip.destination, icon: '📍' },
-                { label: 'Duration', value: `${trip.startDate} - ${trip.endDate}` },
+                { label: 'Duration', value: `${formatTripDate(trip.startDate)} – ${formatTripDate(trip.endDate)}`, icon: '🗓️' },
                 { label: 'Highlight', value: trip.highlight },
               ]}
               onEdit={isAdminMode ? handleEdit : undefined}

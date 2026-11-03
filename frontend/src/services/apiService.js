@@ -94,19 +94,7 @@ class ApiService {
   }
 
   async getMovieBySlug(slug) {
-    const url = `${API_BASE_URL}/movies/slug/${slug}`;
-    console.log('Making API request to:', url);
-    const response = await fetch(url, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    
-    return await response.json();
+    return this.request(`/movies/slug/${slug}`);
   }
 
   async createMovie(movieData) {

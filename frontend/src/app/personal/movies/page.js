@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import EntryCard from '../../../components/EntryCard'
-import PersonalTabs from '../../../components/PersonalTabs'
 import AddEntryButton from '../../../components/AddEntryButton'
 import AddEntryModal from '../../../components/AddEntryModal'
 import SuggestionModal from '../../../components/SuggestionModal'
@@ -91,11 +90,10 @@ export default function MoviesPage() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto min-h-screen p-6">
-      <PersonalTabs />
-      <div className="flex justify-between items-center mb-8">
+    <div className="max-w-6xl mx-auto">
+      <div className="max-w-3xl mx-auto flex flex-wrap gap-4 justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-white mb-2">🎬 Movies</h1>
+          <h1 className="page-title mb-2">🎬 Movies</h1>
           <p className="text-purple-200">My movie watchlist and reviews</p>
         </div>
         {isAdminMode ? (
@@ -109,7 +107,7 @@ export default function MoviesPage() {
         ) : (
           <button
             onClick={() => setShowSuggestModal(true)}
-            className="bg-gradient-to-r from-purple-800 to-purple-900 hover:from-purple-900 hover:to-purple-800 text-white px-6 py-3 font-medium transition-colors flex items-center space-x-2"
+            className="btn-primary"
           >
             <span>💡</span>
             <span>Suggest a Movie</span>
@@ -132,7 +130,7 @@ export default function MoviesPage() {
           <p className="text-purple-200">Start adding your movie reviews!</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-6 max-w-2xl mx-auto">
+        <div className="grid grid-cols-1 gap-6 max-w-3xl mx-auto">
           {movies.map((movie) => (
             <EntryCard
               key={movie.id}

@@ -2,7 +2,6 @@
 import { useState, useEffect } from 'react'
 import { apiService } from '../../../services/apiService'
 import EntryCard from '../../../components/EntryCard'
-import PersonalTabs from '../../../components/PersonalTabs'
 import { useAdminMode } from '../../../components/AdminModeContext'
 import AddEntryModal from '../../../components/AddEntryModal'
 import SuggestionModal from '../../../components/SuggestionModal'
@@ -73,11 +72,10 @@ export default function BooksPage() {
 
   return (
     <div className="max-w-6xl mx-auto">
-      <PersonalTabs />
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+      <div className="max-w-3xl mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
         <div className="flex-1">
-          <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2">📚 Books</h1>
-          <p className="text-white text-sm sm:text-base">My reading list and key takeaways</p>
+          <h1 className="page-title mb-2">📚 Books</h1>
+          <p className="text-purple-200/80 text-sm sm:text-base">My reading list and key takeaways</p>
         </div>
         {isAdminMode ? (
           <button
@@ -90,7 +88,7 @@ export default function BooksPage() {
         ) : (
           <button
             onClick={() => setShowSuggestModal(true)}
-            className="bg-gradient-to-r from-[#7D2AE8] to-[#6600CC] hover:from-[#6600CC] hover:to-[#7D2AE8] text-white px-4 sm:px-6 py-2 sm:py-3 font-medium transition-colors flex items-center space-x-2 text-sm sm:text-base rounded-md"
+            className="btn-primary text-sm sm:text-base"
           >
             <span>💡</span>
             <span>Suggest a Book</span>
@@ -113,7 +111,7 @@ export default function BooksPage() {
           <p className="text-gray-600 dark:text-gray-300">Start adding your book reviews!</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-6 max-w-2xl mx-auto">
+        <div className="grid grid-cols-1 gap-6 max-w-3xl mx-auto">
           {books.map((book) => (
             <EntryCard
               key={book.id}

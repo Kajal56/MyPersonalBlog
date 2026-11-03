@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { useAdminMode } from './AdminModeContext'
+import { useSlidingHighlight } from './useSlidingHighlight'
 
 export default function Navigation() {
   const pathname = usePathname()
@@ -20,44 +21,49 @@ export default function Navigation() {
   { href: '/contact', label: 'Contact' },
   ]
 
+  const isActive = (href) =>
+    href === '/' ? pathname === '/' : pathname.startsWith(href.split('/').slice(0, 2).join('/'))
+
+  const navHighlight = useSlidingHighlight(pathname)
+
   return (
-    <nav className="w-full bg-transparent">
+    <nav className="sticky top-0 z-40 w-full border-b border-white/5 bg-black/40 backdrop-blur-md">
       {/* Desktop Navigation */}
       <div className="hidden md:flex items-center justify-between py-4 px-6">
         <div className="flex items-center">
-          <a href="/" className="text-white font-bold text-xl hover:text-purple-300 transition-colors">
+          <a href="/" className="font-display text-2xl font-semibold text-white hover:text-purple-200 transition-colors">
             Kajal Malik
           </a>
         </div>
-        <div className="flex-1 flex items-center justify-center gap-6">
-          <a
-            href="/"
-            className="text-white font-semibold hover:text-purple-300 transition-colors"
+        <div className="flex-1 flex items-center justify-center">
+          <div
+            ref={navHighlight.containerRef}
+            {...navHighlight.containerProps}
+            className="relative flex items-center gap-1 rounded-lg border border-white/10 bg-white/5 p-1"
           >
-            Home
-          </a>
-          <a
-            href="/about"
-            className="text-white font-semibold hover:text-purple-300 transition-colors"
-          >
-            About
-          </a>
-          <a
-            href="/personal/feed"
-            className="text-white font-semibold hover:text-purple-300 transition-colors"
-          >
-            Personal
-          </a>
-          <a
-            href="/contact"
-            className="text-white font-semibold hover:text-purple-300 transition-colors"
-          >
-            Contact
-          </a>
+            <span
+              aria-hidden="true"
+              className={`absolute rounded-md bg-[#6600CC] shadow-md shadow-purple-700/40 ${navHighlight.highlightClassName}`}
+              style={navHighlight.highlightStyle}
+            />
+            {navItems.map(item => (
+              <a
+                key={item.href}
+                href={item.href}
+                data-active={isActive(item.href)}
+                {...navHighlight.itemProps}
+                className={`relative z-10 rounded-md px-5 py-1.5 text-sm font-medium transition-colors duration-300 ${
+                  isActive(item.href) ? 'text-white' : 'text-purple-100/80 hover:text-white'
+                }`}
+              >
+                {item.label}
+              </a>
+            ))}
+          </div>
         </div>
         <div className="flex items-center gap-2">
           {isAdminMode && (
-            <span className="text-white font-semibold px-3 py-1 rounded-full bg-gradient-to-r from-purple-600 to-purple-700 shadow-lg text-sm">
+            <span className="text-white font-semibold px-3 py-1 rounded bg-gradient-to-r from-purple-600 to-purple-700 shadow-lg text-sm">
               Admin Mode
             </span>
           )}
@@ -69,7 +75,7 @@ export default function Navigation() {
                 setShowAdminModal(true)
               }
             }}
-            className={`px-4 py-2 text-sm font-medium transition-all duration-200 ${
+            className={`rounded-md px-4 py-2 text-sm font-medium transition-all duration-200 ${
               isAdminMode
                 ? 'bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white shadow-lg'
                 : 'text-gray-300 hover:text-white hover:bg-gray-800 hover:bg-opacity-30'
@@ -83,13 +89,13 @@ export default function Navigation() {
       {/* Mobile Navigation */}
       <div className="md:hidden flex items-center justify-between py-4 px-4">
         <div className="flex items-center">
-          <a href="/" className="text-white font-bold text-lg hover:text-purple-300 transition-colors">
+          <a href="/" className="font-display text-xl font-semibold text-white hover:text-purple-200 transition-colors">
             Kajal Malik
           </a>
         </div>
         <div className="flex items-center gap-2">
           {isAdminMode && (
-            <span className="text-white font-semibold px-2 py-1 rounded-full bg-gradient-to-r from-purple-600 to-purple-700 shadow-lg text-xs">
+            <span className="text-white font-semibold px-2 py-1 rounded bg-gradient-to-r from-purple-600 to-purple-700 shadow-lg text-xs">
               Admin
             </span>
           )}
@@ -135,36 +141,20 @@ export default function Navigation() {
 
       {/* Mobile Menu Dropdown */}
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-black bg-opacity-95 border-t border-purple-900">
-          <div className="px-4 py-2 space-y-2">
-            <a
-              href="/"
-              className="block text-white font-semibold py-2 hover:text-purple-300 transition-colors"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Home
-            </a>
-            <a
-              href="/about"
-              className="block text-white font-semibold py-2 hover:text-purple-300 transition-colors"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              About
-            </a>
-            <a
-              href="/personal/feed"
-              className="block text-white font-semibold py-2 hover:text-purple-300 transition-colors"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Personal
-            </a>
-            <a
-              href="/contact"
-              className="block text-white font-semibold py-2 hover:text-purple-300 transition-colors"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Contact
-            </a>
+        <div className="md:hidden border-t border-white/10 bg-black/90 backdrop-blur-md">
+          <div className="px-4 py-3 space-y-1">
+            {navItems.map(item => (
+              <a
+                key={item.href}
+                href={item.href}
+                className={`block rounded-md px-4 py-2.5 font-medium transition-colors ${
+                  isActive(item.href) ? 'bg-[#6600CC] text-white' : 'text-white hover:bg-white/5'
+                }`}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                {item.label}
+              </a>
+            ))}
           </div>
         </div>
       )}

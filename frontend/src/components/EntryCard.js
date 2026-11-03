@@ -78,7 +78,7 @@ export default function EntryCard({ type, entry, fields, onEdit, onDelete, cardC
   return (
     <>
       <div
-        className={cardClassName || `bg-gradient-to-br from-[#0D0012] to-[#330066] shadow-md p-4 sm:p-5 w-full transition-all duration-200 ${cardClickable ? 'hover:shadow-xl hover:shadow-purple-500/20 hover:bg-gradient-to-br hover:from-[#1A0026] hover:to-[#4A0080] cursor-pointer transform hover:scale-[1.02]' : 'hover:shadow-lg'}`}
+        className={cardClassName || `glass-card card-hover reveal p-5 sm:p-6 w-full ${cardClickable ? 'cursor-pointer' : ''}`}
         onClick={handleCardClick}
         onKeyDown={handleKeyDown}
         tabIndex={cardClickable ? 0 : undefined}
@@ -86,7 +86,7 @@ export default function EntryCard({ type, entry, fields, onEdit, onDelete, cardC
         aria-label={cardClickable ? `View details for ${entry.title || entry.name}` : undefined}
       >
         <div className="flex justify-between items-start mb-4">
-          <h3 className={`text-base sm:text-lg font-semibold line-clamp-2 flex-1 pr-2 transition-colors duration-200 ${cardClickable ? 'text-purple-100 hover:text-purple-50 hover:underline decoration-purple-300 underline-offset-2' : 'text-white'}`}>
+          <h3 className={`font-display text-xl sm:text-2xl font-semibold line-clamp-2 flex-1 pr-2 transition-colors duration-200 ${cardClickable ? 'text-purple-100 hover:text-purple-50 hover:underline decoration-purple-300 underline-offset-2' : 'text-white'}`}>
             {entry.title || entry.name}
           </h3>
           {isAdminMode && (
@@ -118,20 +118,20 @@ export default function EntryCard({ type, entry, fields, onEdit, onDelete, cardC
             <div key={index} className="flex items-start space-x-2">
               {field.icon && <span className="text-sm mt-0.5 text-purple-300 flex-shrink-0">{field.icon}</span>}
               <div className="flex-1 min-w-0">
-                <span className="text-sm font-medium text-purple-200">{field.label}:</span>
-                <p className="text-sm text-white break-words whitespace-pre-line">{field.value}</p>
+                <span className="text-xs font-semibold uppercase tracking-wider text-purple-300/90">{field.label}</span>
+                <p className="mt-0.5 text-sm leading-relaxed text-purple-50 break-words whitespace-pre-line">{field.value}</p>
               </div>
             </div>
           ))}
         </div>
 
         {entry.tags && entry.tags.length > 0 && (
-          <div className="mt-4 pt-4 border-t border-purple-950">
+          <div className="mt-5 pt-4 border-t border-white/10">
             <div className="flex flex-wrap gap-1">
               {entry.tags.map((tag, index) => (
                 <span
                   key={index}
-                  className="px-2 py-1 bg-purple-950 text-purple-200 text-xs"
+                  className="pill-tag"
                 >
                   {tag}
                 </span>

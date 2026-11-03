@@ -6,7 +6,6 @@ import FeedPostModal from '../../../components/FeedPostModal'
 import ConfirmDialog from '../../../components/ConfirmDialog'
 // ...existing code...
 import { useAdminMode } from '../../../components/AdminModeContext'
-import PersonalTabs from '../../../components/PersonalTabs'
 
 export default function FeedPage() {
   const { isAdminMode } = useAdminMode()
@@ -79,17 +78,17 @@ export default function FeedPage() {
   }
 
   const renderPost = (post) => (
-  <div key={post.id} className="bg-gradient-to-br from-[#2D0036] to-[#6600CC] shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden">
-      <div className="p-4 border-b border-purple-900">
+  <article key={post.id} className="glass-card-bright card-hover reveal overflow-hidden">
+      <div className="px-5 pt-5 pb-4 sm:px-6 border-b border-white/10">
         <div className="flex justify-between items-start">
           <div className="flex-1">
             {post.title && (
-              <h3 className="text-lg font-semibold text-white mb-1">
+              <h3 className="font-display text-2xl font-semibold text-white mb-1">
                 {post.title}
               </h3>
             )}
             <div className="flex items-center text-sm text-purple-200">
-              <span>📅 {formatDate(post.dateAdded)}</span>
+              <span className="text-xs uppercase tracking-wider">{formatDate(post.dateAdded)}</span>
             </div>
           </div>
           {isAdminMode && (
@@ -110,7 +109,7 @@ export default function FeedPage() {
           )}
         </div>
       </div>
-      <div className="p-4">
+      <div className="p-5 sm:p-6">
         <div className="prose prose-sm max-w-none">
           <p className="text-white whitespace-pre-wrap leading-relaxed">
             {post.content}
@@ -122,25 +121,24 @@ export default function FeedPage() {
               <video 
                 src={post.mediaData} 
                 controls 
-                className="max-w-full h-auto max-h-[70vh] object-contain border border-purple-900"
+                className="max-w-full h-auto max-h-[70vh] object-contain rounded-xl border border-white/10"
               />
             ) : (
               <img 
                 src={post.mediaData} 
                 alt="Post media" 
-                className="max-w-full h-auto max-h-[70vh] object-contain border border-purple-900"
+                className="max-w-full h-auto max-h-[70vh] object-contain rounded-xl border border-white/10"
               />
             )}
           </div>
         )}
         {post.tags && post.tags.length > 0 && (
-          <div className="mt-4 pt-3 border-t border-purple-900">
+          <div className="mt-5 pt-4 border-t border-white/10">
             <div className="flex flex-wrap gap-2">
               {post.tags.map((tag, index) => (
                 <span
                   key={index}
-                  className="px-2 py-1 bg-purple-900 text-purple-200 text-xs border border-purple-900"
-                  style={{ borderRadius: 0 }}
+                  className="pill-tag"
                 >
                   #{tag}
                 </span>
@@ -149,16 +147,16 @@ export default function FeedPage() {
           </div>
         )}
       </div>
-    </div>
+    </article>
   )
 
     return (
       <div className="max-w-6xl mx-auto">
-        <PersonalTabs />
         <div className="max-w-4xl mx-auto">
           <div className="flex justify-between items-center mb-8">
             <div>
-              <h1 className="text-3xl font-bold text-white mb-2">My venting place</h1>
+              <h1 className="page-title mb-2">My venting place</h1>
+              <p className="text-purple-200/80">Unfiltered thoughts, as they come.</p>
             </div>
             {isAdminMode && (
               <button
