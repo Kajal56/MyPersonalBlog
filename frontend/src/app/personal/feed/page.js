@@ -4,8 +4,10 @@ import { useState, useEffect } from 'react'
 import { apiService } from '../../../services/apiService'
 import FeedPostModal from '../../../components/FeedPostModal'
 import ConfirmDialog from '../../../components/ConfirmDialog'
-// ...existing code...
 import { useAdminMode } from '../../../components/AdminModeContext'
+import { excerpt, readingTime, timeAgo } from '../../../utils/text'
+
+const PREVIEW_LENGTH = 320
 
 export default function FeedPage() {
   const { isAdminMode } = useAdminMode()
@@ -15,6 +17,7 @@ export default function FeedPage() {
   const [showAddModal, setShowAddModal] = useState(false)
   const [editPost, setEditPost] = useState(null)
   const [deletePost, setDeletePost] = useState(null)
+  const [expanded, setExpanded] = useState(() => new Set())
 
   useEffect(() => {
     loadPosts()
@@ -61,94 +64,88 @@ export default function FeedPage() {
     setEditPost(null)
   }
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString)
-    const now = new Date()
-    const diffTime = Math.abs(now - date)
-    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24))
-    if (diffDays === 0) {
-      return 'Today'
-    } else if (diffDays === 1) {
-      return 'Yesterday'
-    } else if (diffDays < 7) {
-      return `${diffDays} days ago`
-    } else {
-      return date.toLocaleDateString()
-    }
+  // Links from the home page point at #post-<id>: open that post and bring it into view
+  useEffect(() => {
+    if (loading || !window.location.hash.startsWith('#post-')) return
+    const id = window.location.hash.slice('#post-'.length)
+    setExpanded(prev => new Set(prev).add(id))
+    requestAnimationFrame(() => document.getElementById(`post-${id}`)?.scrollIntoView({ behavior: 'smooth' }))
+  }, [loading])
+
+  const toggleExpanded = (id) => {
+    setExpanded(prev => {
+      const next = new Set(prev)
+      next.has(id) ? next.delete(id) : next.add(id)
+      return next
+    })
   }
 
-  const renderPost = (post) => (
-  <article key={post.id} className="glass-card-bright card-hover reveal overflow-hidden">
-      <div className="px-5 pt-5 pb-4 sm:px-6 border-b border-white/10">
-        <div className="flex justify-between items-start">
-          <div className="flex-1">
-            {post.title && (
-              <h3 className="font-display text-2xl font-semibold text-white mb-1">
-                {post.title}
-              </h3>
-            )}
-            <div className="flex items-center text-sm text-purple-200">
-              <span className="text-xs uppercase tracking-wider">{formatDate(post.dateAdded)}</span>
-            </div>
+  const renderPost = (post) => {
+    const date = new Date(post.dateAdded)
+    const isLong = (post.content || '').length > PREVIEW_LENGTH
+    const isOpen = expanded.has(post.id)
+
+    return (
+      <article key={post.id} id={`post-${post.id}`} className="reveal grid scroll-mt-28 grid-cols-[3.5rem_1fr] gap-4 sm:grid-cols-[5rem_1fr] sm:gap-6">
+        {/* Journal-style date column */}
+        <div className="pt-5 text-center">
+          <div className="font-display text-3xl font-semibold leading-none text-white sm:text-4xl">{date.getDate()}</div>
+          <div className="mt-1 text-[11px] font-semibold uppercase tracking-widest text-purple-300">
+            {date.toLocaleDateString('en-GB', { month: 'short' })}
           </div>
-          {isAdminMode && (
-            <div className="flex space-x-2 ml-4">
+          <div className="text-[11px] text-purple-300/60">{date.getFullYear()}</div>
+        </div>
+
+        <div className="glass-card-bright card-hover overflow-hidden">
+          <div className="p-5 sm:p-6">
+            <div className="mb-3 flex items-start justify-between gap-4">
+              <div>
+                {post.title && <h3 className="font-display text-2xl font-semibold text-white">{post.title}</h3>}
+                <p className="mt-1 text-xs uppercase tracking-wider text-purple-200/80">
+                  {timeAgo(post.dateAdded)} · {readingTime(post.content)}
+                </p>
+              </div>
+              {isAdminMode && (
+                <div className="flex shrink-0 space-x-3">
+                  <button onClick={() => handleEdit(post)} className="text-sm font-medium text-purple-200 hover:text-white">Edit</button>
+                  <button onClick={() => handleDeleteClick(post)} className="text-sm font-medium text-red-300 hover:text-white">Delete</button>
+                </div>
+              )}
+            </div>
+
+            <p className="whitespace-pre-wrap leading-relaxed text-white">
+              {isLong && !isOpen ? excerpt(post.content, PREVIEW_LENGTH) : post.content}
+            </p>
+            {isLong && (
               <button
-                onClick={() => handleEdit(post)}
-                className="text-purple-300 hover:text-white text-sm font-medium"
+                onClick={() => toggleExpanded(post.id)}
+                aria-expanded={isOpen}
+                className="mt-3 text-sm font-medium text-purple-100 underline decoration-purple-300/50 underline-offset-4 hover:text-white"
               >
-                ✏️ Edit
+                {isOpen ? 'Show less' : 'Keep reading →'}
               </button>
-              <button 
-                onClick={() => handleDeleteClick(post)}
-                className="text-red-400 hover:text-white text-sm font-medium"
-              >
-                🗑️ Delete
-              </button>
-            </div>
-          )}
-        </div>
-      </div>
-      <div className="p-5 sm:p-6">
-        <div className="prose prose-sm max-w-none">
-          <p className="text-white whitespace-pre-wrap leading-relaxed">
-            {post.content}
-          </p>
-        </div>
-        {post.mediaData && (
-          <div className="mt-4 flex justify-center">
-            {post.mediaType === 'video' ? (
-              <video 
-                src={post.mediaData} 
-                controls 
-                className="max-w-full h-auto max-h-[70vh] object-contain rounded-xl border border-white/10"
-              />
-            ) : (
-              <img 
-                src={post.mediaData} 
-                alt="Post media" 
-                className="max-w-full h-auto max-h-[70vh] object-contain rounded-xl border border-white/10"
-              />
+            )}
+
+            {post.mediaData && (
+              <div className="mt-4 flex justify-center">
+                {post.mediaType === 'video' ? (
+                  <video src={post.mediaData} controls className="h-auto max-h-[70vh] max-w-full rounded-lg border border-white/10 object-contain" />
+                ) : (
+                  <img src={post.mediaData} alt="Post media" className="h-auto max-h-[70vh] max-w-full rounded-lg border border-white/10 object-contain" />
+                )}
+              </div>
+            )}
+
+            {post.tags && post.tags.length > 0 && (
+              <div className="mt-4 flex flex-wrap gap-2 border-t border-white/10 pt-4">
+                {post.tags.map((tag, index) => <span key={index} className="pill-tag">#{tag}</span>)}
+              </div>
             )}
           </div>
-        )}
-        {post.tags && post.tags.length > 0 && (
-          <div className="mt-5 pt-4 border-t border-white/10">
-            <div className="flex flex-wrap gap-2">
-              {post.tags.map((tag, index) => (
-                <span
-                  key={index}
-                  className="pill-tag"
-                >
-                  #{tag}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
-    </article>
-  )
+        </div>
+      </article>
+    )
+  }
 
     return (
       <div className="max-w-6xl mx-auto">
@@ -190,7 +187,7 @@ export default function FeedPage() {
               </button>
             </div>
           ) : (
-            <div className="space-y-6">
+            <div className="space-y-8">
               {posts.map(renderPost)}
             </div>
           )}

@@ -1,7 +1,8 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { apiService } from '../../../services/apiService'
-import EntryCard from '../../../components/EntryCard'
+import ReviewTile from '../../../components/ReviewTile'
+import { excerpt, formatDate } from '../../../utils/text'
 import { useAdminMode } from '../../../components/AdminModeContext'
 import AddEntryModal from '../../../components/AddEntryModal'
 import SuggestionModal from '../../../components/SuggestionModal'
@@ -72,7 +73,7 @@ export default function BooksPage() {
 
   return (
     <div className="max-w-6xl mx-auto">
-      <div className="max-w-3xl mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+      <div className="max-w-5xl mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
         <div className="flex-1">
           <h1 className="page-title mb-2">📚 Books</h1>
           <p className="text-purple-200/80 text-sm sm:text-base">My reading list and key takeaways</p>
@@ -111,23 +112,23 @@ export default function BooksPage() {
           <p className="text-gray-600 dark:text-gray-300">Start adding your book reviews!</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-6 max-w-3xl mx-auto">
-          {books.map((book) => (
-            <EntryCard
-              key={book.id}
-              type="books"
-              entry={book}
-              fields={[
-                { label: 'Author', value: book.author },
-                { label: 'Rating', value: `${book.rating}/10`, icon: '⭐' },
-                { label: 'Key takeaway', value: book.keyTakeaway },
-                { label: 'Date read', value: new Date(book.dateRead).toLocaleDateString() },
-              ]}
-              onEdit={isAdminMode ? handleEdit : undefined}
-              onDelete={isAdminMode ? handleDelete : undefined}
-              isAdminMode={isAdminMode}
-            />
-          ))}
+        <div className="max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {books.map((book) => (
+              <ReviewTile
+                key={book.id}
+                href={`/personal/books/${book.slug}`}
+                title={book.title}
+                subtitle={book.author && `by ${book.author}`}
+                rating={book.rating}
+                excerpt={excerpt(book.keyTakeaway)}
+                meta={book.dateRead ? `Read ${formatDate(book.dateRead)}` : null}
+                tags={book.tags}
+                onEdit={isAdminMode ? () => handleEdit(book) : undefined}
+                onDelete={isAdminMode ? () => handleDelete(book.id) : undefined}
+              />
+            ))}
+          </div>
         </div>
       )}      {/* Suggestion Modal for non-admins */}
       {showSuggestModal && (

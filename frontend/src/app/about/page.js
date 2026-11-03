@@ -24,12 +24,19 @@ export default function AboutPage() {
           <p className="text-base sm:text-lg leading-relaxed text-purple-50">
             I built this site to share my thoughts on movies, books, and travels — you&apos;ll find
             suggestion buttons throughout, so please share your recommendations! For the more personal
-            side — my venting place, reading list, watchlist, and more — head to{" "}
+            side — my venting place and notes are under{" "}
             <Link
               href="/personal/feed"
               className="text-purple-300 hover:text-purple-100 underline underline-offset-2"
             >
-              Personal
+              Writing
+            </Link>
+            , and my watchlist, reading list and travels under{" "}
+            <Link
+              href="/personal/movies"
+              className="text-purple-300 hover:text-purple-100 underline underline-offset-2"
+            >
+              Reviews
             </Link>
             .
           </p>

@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
-import { apiService } from '../services/apiService'
+import { TYPE_META, useLatestByType } from '../components/useLatest'
+import { timeAgo } from '../utils/text'
 
 const roles = ['Engineer', 'Dancer', 'Dreamer', 'Reader', 'Traveller']
 
@@ -10,8 +11,7 @@ const prefersReducedMotion = () =>
   typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 export default function Home() {
-  const [recentEntries, setRecentEntries] = useState([])
-  const [loading, setLoading] = useState(true)
+  const latest = useLatestByType()
   const [roleIndex, setRoleIndex] = useState(0)
   const [tilt, setTilt] = useState({ x: 0, y: 0 })
   const paintingRef = useRef(null)
@@ -30,25 +30,9 @@ export default function Home() {
     setTilt({ x: py * -12, y: px * 12 })
   }
 
-  useEffect(() => {
-    loadRecentEntries()
-  }, [])
-
-  const loadRecentEntries = async () => {
-    try {
-      setLoading(true)
-      const data = await apiService.getRecentEntries()
-      setRecentEntries(data)
-    } catch (err) {
-      console.error('Error loading recent entries:', err)
-    } finally {
-      setLoading(false)
-    }
-  }
-
   return (
     <div className="w-full max-w-screen-xl mx-auto px-2 sm:px-4 md:px-8" style={{paddingBottom: 'env(safe-area-inset-bottom)'}}>
-      <div className="flex flex-col md:flex-row items-center justify-center gap-10 md:gap-16 py-4 md:py-10 md:min-h-[75vh]">
+      <div className="flex flex-col md:flex-row items-center justify-center gap-10 md:gap-16 py-4 md:py-10 md:min-h-[min(75vh,760px)]">
         <div className="relative flex justify-center animate-fade-up">
           {/* Glow behind the painting */}
           <div aria-hidden="true" className="absolute inset-6 rounded-lg bg-gradient-to-br from-amber-400/30 via-[#7D2AE8]/40 to-[#6600CC]/50 blur-3xl" />
@@ -106,8 +90,50 @@ export default function Home() {
           </div>
         </div>
       </div>
-      {/* Removed grid of links to tabs. Tabs now only appear under Personal. */}
-      {/* Recent entries section removed for a cleaner home page */}
+      {/* Latest from each section */}
+      {(latest === null || latest.length > 0) && (
+        <section aria-labelledby="latest-heading" className="mt-8 md:mt-4 pb-12">
+          <div className="mb-6 flex items-end justify-between gap-4">
+            <div>
+              <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-purple-300">What&apos;s new</p>
+              <h2 id="latest-heading" className="font-display text-3xl font-semibold text-white">Latest from me</h2>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {latest === null
+              ? [0, 1, 2].map(i => <div key={i} className="h-44 animate-pulse rounded-lg border border-white/5 bg-white/5" />)
+              : latest.map((entry, i) => {
+                  const meta = TYPE_META[entry.type]
+                  return (
+                    <Link
+                      key={`${entry.type}-${entry.id}`}
+                      href={meta.href(entry)}
+                      className={`glass-card card-hover reveal group flex flex-col p-5 sm:p-6 ${i === 0 ? 'sm:col-span-2' : ''}`}
+                    >
+                      <div className="mb-3 flex items-center justify-between gap-3">
+                        <span className="text-xs font-semibold uppercase tracking-[0.18em] text-purple-300">
+                          {meta.emoji} {meta.label}
+                        </span>
+                        {entry.rating != null && (
+                          <span className="rounded border border-yellow-300/30 bg-yellow-300/10 px-2 py-0.5 text-xs font-semibold text-yellow-200">
+                            ★ {entry.rating}/10
+                          </span>
+                        )}
+                      </div>
+                      <h3 className={`font-display font-semibold leading-snug text-white ${i === 0 ? 'text-3xl' : 'text-xl'}`}>{entry.title}</h3>
+                      {entry.excerpt && (
+                        <p className={`mt-2 text-sm leading-relaxed text-purple-100/80 ${i === 0 ? 'line-clamp-3' : 'line-clamp-2'}`}>{entry.excerpt}</p>
+                      )}
+                      <div className="mt-auto flex items-center justify-between pt-4 text-xs text-purple-300/80">
+                        <span>{timeAgo(entry.dateAdded)}</span>
+                        <span className="font-medium text-purple-200 transition-transform duration-300 group-hover:translate-x-1">Read →</span>
+                      </div>
+                    </Link>
+                  )
+                })}
+          </div>
+        </section>
+      )}
     </div>
   )
 }

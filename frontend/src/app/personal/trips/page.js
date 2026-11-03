@@ -2,19 +2,72 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { apiService } from '../../../services/apiService'
-import EntryCard from '../../../components/EntryCard'
+import Link from 'next/link'
+import ConfirmDialog from '../../../components/ConfirmDialog'
+import { excerpt, formatDate } from '../../../utils/text'
 import AddEntryModal from '../../../components/AddEntryModal'
 import { useAdminMode } from '../../../components/AdminModeContext'
 import SuggestionModal from '../../../components/SuggestionModal'
 
-const formatTripDate = (value) =>
-  value
-    ? new Date(value).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' })
-    : ''
+const tripLength = (start, end) => {
+  if (!start || !end) return null
+  const days = Math.round((new Date(end) - new Date(start)) / 86400000) + 1
+  return days > 0 ? `${days} day${days === 1 ? '' : 's'}` : null
+}
+
+function TripTimelineItem({ trip, onEdit, onDelete }) {
+  const [confirmDelete, setConfirmDelete] = useState(false)
+  const length = tripLength(trip.startDate, trip.endDate)
+
+  return (
+    <li className="reveal relative mb-10 pl-8 sm:pl-10 last:mb-0">
+      {/* Dot on the timeline */}
+      <span aria-hidden="true" className="absolute -left-[7px] top-1.5 h-3.5 w-3.5 rounded-full border-2 border-[#0a0011] bg-gradient-to-br from-fuchsia-400 to-[#7D2AE8] shadow-[0_0_12px_rgba(167,139,250,0.8)]" />
+      <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-purple-300">
+        {formatDate(trip.startDate, { month: 'long', year: 'numeric' })}
+      </p>
+      <article className="glass-card card-hover group p-5 sm:p-6">
+        <div className="mb-3 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+          <h3 className="font-display text-2xl font-semibold text-white">
+            <Link href={`/personal/trips/${trip.slug}`} className="after:absolute after:inset-0 after:content-[''] focus:outline-none focus-visible:underline">
+              {trip.title}
+            </Link>
+          </h3>
+          {length && <span className="text-xs uppercase tracking-wider text-purple-300/80">{length}</span>}
+        </div>
+        {trip.destination && <p className="mb-3 text-sm text-purple-200">📍 {trip.destination}</p>}
+        {trip.highlight && <p className="mb-4 line-clamp-3 text-sm leading-relaxed text-purple-50/90">{excerpt(trip.highlight, 260)}</p>}
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="flex flex-wrap gap-1.5">
+            {(trip.tags || []).map(tag => <span key={tag} className="pill-tag">{tag}</span>)}
+          </div>
+          <span className="text-xs font-medium text-purple-200 transition-transform duration-300 group-hover:translate-x-1">Read the story →</span>
+        </div>
+        {(onEdit || onDelete) && (
+          <div className="relative z-10 mt-4 flex gap-2">
+            {onEdit && <button onClick={onEdit} className="rounded bg-purple-950/70 px-2 py-1 text-xs text-purple-200 hover:text-white">Edit</button>}
+            {onDelete && <button onClick={() => setConfirmDelete(true)} className="rounded bg-red-950/70 px-2 py-1 text-xs text-red-200 hover:text-white">Delete</button>}
+          </div>
+        )}
+      </article>
+      <ConfirmDialog
+        isOpen={confirmDelete}
+        onConfirm={() => { setConfirmDelete(false); onDelete?.() }}
+        onCancel={() => setConfirmDelete(false)}
+        title="Delete Trip"
+        message={`Are you sure you want to delete "${trip.title}"? This action cannot be undone.`}
+        confirmText="Delete"
+        cancelText="Cancel"
+      />
+    </li>
+  )
+}
 
 export default function TripsPage() {
   const { isAdminMode } = useAdminMode()
   const [trips, setTrips] = useState([])
+  // Timeline runs by when the trip happened, newest first
+  const tripsByDate = [...trips].sort((a, b) => new Date(b.startDate) - new Date(a.startDate))
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [showAddModal, setShowAddModal] = useState(false)
@@ -117,22 +170,17 @@ export default function TripsPage() {
           <p className="text-gray-600 dark:text-gray-300">Start documenting your travels!</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-6 max-w-3xl mx-auto">
-          {trips.map((trip) => (
-            <EntryCard
-              key={trip.id}
-              type="trips"
-              entry={trip}
-              fields={[
-                { label: 'Destination', value: trip.destination, icon: '📍' },
-                { label: 'Duration', value: `${formatTripDate(trip.startDate)} – ${formatTripDate(trip.endDate)}`, icon: '🗓️' },
-                { label: 'Highlight', value: trip.highlight },
-              ]}
-              onEdit={isAdminMode ? handleEdit : undefined}
-              onDelete={isAdminMode ? handleDelete : undefined}
-              isAdminMode={isAdminMode}
-            />
-          ))}
+        <div className="max-w-3xl mx-auto">
+          <ol className="relative border-l border-purple-400/25 ml-3 sm:ml-4">
+            {tripsByDate.map((trip) => (
+              <TripTimelineItem
+                key={trip.id}
+                trip={trip}
+                onEdit={isAdminMode ? () => handleEdit(trip) : undefined}
+                onDelete={isAdminMode ? () => handleDelete(trip.id) : undefined}
+              />
+            ))}
+          </ol>
         </div>
       )}      {/* Suggestion Modal for non-admins */}
       {showSuggestModal && (

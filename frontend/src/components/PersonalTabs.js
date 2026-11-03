@@ -4,21 +4,31 @@ import { usePathname } from 'next/navigation'
 import { useAdminMode } from './AdminModeContext'
 import { useSlidingHighlight } from './useSlidingHighlight'
 
-const allTabs = [
-  { href: '/personal/feed', label: 'Thoughts' },
-  { href: '/personal/movies', label: 'Movies' },
-  { href: '/personal/books', label: 'Books' },
-  { href: '/personal/trips', label: 'Trips' },
-  { href: '/personal/upsc-notes', label: 'UPSC Notes' },
-  { href: '/personal/restaurants', label: 'Restaurants', adminOnly: true },
-  { href: '/personal/flats', label: 'Flats', adminOnly: true },
-]
+// The Personal area is split into two sections, each with its own tab bar
+const sections = {
+  writing: [
+    { href: '/personal/feed', label: 'Thoughts' },
+    { href: '/personal/upsc-notes', label: 'UPSC Notes' },
+  ],
+  reviews: [
+    { href: '/personal/movies', label: 'Movies' },
+    { href: '/personal/books', label: 'Books' },
+    { href: '/personal/trips', label: 'Trips' },
+    { href: '/personal/restaurants', label: 'Restaurants', adminOnly: true },
+    { href: '/personal/flats', label: 'Flats', adminOnly: true },
+  ],
+}
+
+const allTabs = [...sections.writing, ...sections.reviews]
+
+export const isWritingPath = (pathname) => sections.writing.some(tab => pathname.startsWith(tab.href))
 
 export default function PersonalTabs() {
   const pathname = usePathname()
   const { isAdminMode } = useAdminMode();
   // Only show adminOnly tabs if isAdminMode is true
-  const tabs = allTabs.filter(tab => !tab.adminOnly || isAdminMode);
+  const section = isWritingPath(pathname) ? sections.writing : sections.reviews;
+  const tabs = section.filter(tab => !tab.adminOnly || isAdminMode);
   const highlight = useSlidingHighlight(`${pathname}|${tabs.length}`);
   // Detail pages (e.g. a single movie) don't show the tab bar
   if (!allTabs.some(tab => tab.href === pathname)) return null;

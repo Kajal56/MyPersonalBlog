@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { useAdminMode } from './AdminModeContext'
 import { useSlidingHighlight } from './useSlidingHighlight'
+import { isWritingPath } from './PersonalTabs'
 
 export default function Navigation() {
   const pathname = usePathname()
@@ -17,12 +18,17 @@ export default function Navigation() {
   const navItems = [
   { href: '/', label: 'Home' },
   { href: '/about', label: 'About' },
-  { href: '/personal/feed', label: 'Personal' },
+  { href: '/personal/feed', label: 'Writing' },
+  { href: '/personal/movies', label: 'Reviews' },
   { href: '/contact', label: 'Contact' },
   ]
 
-  const isActive = (href) =>
-    href === '/' ? pathname === '/' : pathname.startsWith(href.split('/').slice(0, 2).join('/'))
+  const isActive = (href) => {
+    if (href === '/') return pathname === '/'
+    if (href === '/personal/feed') return isWritingPath(pathname)
+    if (href === '/personal/movies') return pathname.startsWith('/personal') && !isWritingPath(pathname)
+    return pathname.startsWith(href)
+  }
 
   const navHighlight = useSlidingHighlight(pathname)
 

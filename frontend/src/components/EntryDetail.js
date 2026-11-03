@@ -4,12 +4,9 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 
-export const formatDate = (value) => {
-  if (!value) return null;
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return null;
-  return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
-};
+import { formatDate, readingTime } from '../utils/text';
+
+export { formatDate };
 
 function RatingMeter({ rating }) {
   const pct = Math.max(0, Math.min(10, rating)) * 10;
@@ -116,7 +113,10 @@ export default function EntryDetail({ fetchEntry, backHref, backLabel, notFoundL
 
       {body?.text && (
         <section className="glass-card animate-fade-up p-6 sm:p-8" style={{ '--i': 5 }}>
-          <h2 className="mb-4 font-display text-2xl font-semibold text-white">{body.label}</h2>
+          <div className="mb-4 flex items-baseline justify-between gap-4">
+            <h2 className="font-display text-2xl font-semibold text-white">{body.label}</h2>
+            <span className="shrink-0 text-xs uppercase tracking-wider text-purple-300/70">{readingTime(body.text)}</span>
+          </div>
           <p className="whitespace-pre-line text-base leading-8 text-purple-50 sm:text-[17px]">{body.text}</p>
         </section>
       )}
