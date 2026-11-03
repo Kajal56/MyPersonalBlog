@@ -1,3 +1,180 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  ::selection {
+    background: rgba(125, 42, 232, 0.6);
+    color: #fff;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Slim purple scrollbar */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #4a0080 transparent;
+  }
+}
+
+@layer components {
+  /* Serif display font for page titles */
+  .page-title {
+    @apply font-display text-3xl sm:text-4xl font-semibold text-white tracking-tight;
+  }
+
+  /* Soft white-to-lilac gradient text for highlights */
+  .text-glow {
+    @apply bg-gradient-to-r from-white via-purple-200 to-purple-400 bg-clip-text text-transparent;
+  }
+
+  /* Dark glass card — movies, books, trips */
+  .glass-card {
+    @apply rounded-lg border border-white/10 bg-gradient-to-br from-[#14001f]/90 to-[#330066]/80 backdrop-blur-sm shadow-lg shadow-black/40;
+  }
+
+  /* Brighter card — thoughts, UPSC notes */
+  .glass-card-bright {
+    @apply rounded-lg border border-white/10 bg-gradient-to-br from-[#2D0036] to-[#6600CC] shadow-lg shadow-purple-950/50;
+  }
+
+  .card-hover {
+    @apply transition-all duration-300 hover:-translate-y-1 hover:border-purple-400/40 hover:shadow-xl hover:shadow-purple-600/25;
+  }
+
+  .pill-tag {
+    @apply inline-block rounded border border-purple-400/30 bg-purple-500/15 px-3 py-0.5 text-xs text-purple-100;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-md bg-gradient-to-r from-[#7D2AE8] to-[#6600CC] px-6 py-3 font-medium text-white shadow-lg shadow-purple-700/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-purple-500/50 hover:brightness-110 disabled:opacity-60 disabled:hover:translate-y-0;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-md border border-white/20 px-6 py-3 font-medium text-white transition-all duration-300 hover:border-purple-300/60 hover:bg-white/5;
+  }
+
+  .input-field {
+    @apply w-full rounded-md border border-white/10 bg-black/30 px-4 py-3 text-white placeholder-purple-200/50 transition focus:border-purple-400/60 focus:outline-none focus:ring-2 focus:ring-purple-500/40;
+  }
+
+  .social-btn {
+    @apply flex h-11 w-11 items-center justify-center rounded-md border border-white/10 bg-white/5 text-purple-100 transition-all duration-300 hover:-translate-y-1 hover:border-purple-400/50 hover:bg-[#6600CC]/40 hover:text-white hover:shadow-lg hover:shadow-purple-600/40;
+  }
+}
+
+@layer utilities {
+  /* Staggered entrance: set --i on each item for the delay step */
+  .animate-fade-up {
+    animation: fade-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: calc(var(--i, 0) * 80ms);
+  }
+
+  .animate-float {
+    animation: float 7s ease-in-out infinite;
+  }
+
+  .animate-drift-1 {
+    animation: drift-1 22s ease-in-out infinite alternate;
+  }
+
+  .animate-drift-2 {
+    animation: drift-2 28s ease-in-out infinite alternate;
+  }
+
+  .animate-word {
+    animation: word-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+}
+
+/* Scroll reveal — only hidden once MotionEffects has mounted, so no-JS still shows content */
+.reveal-ready .reveal:not(.is-visible) {
+  opacity: 0;
+}
+
+.reveal.is-visible {
+  animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--i, 0) * 90ms);
+}
+
+/* Cursor spotlight on cards (position fed by MotionEffects) */
+.glass-card,
+.glass-card-bright {
+  position: relative;
+}
+
+.glass-card::before,
+.glass-card-bright::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(196, 167, 255, 0.14), transparent 45%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.glass-card:hover::before,
+.glass-card-bright:hover::before {
+  opacity: 1;
+}
+
+/* `translate` (not `transform`) so hover lift via transform still works after the animation */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    translate: 0 18px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes float {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -10px; }
+}
+
+@keyframes drift-1 {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-12vw, 18vh) scale(1.15); }
+  100% { transform: translate(-4vw, 40vh) scale(0.95); }
+}
+
+@keyframes drift-2 {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(15vw, -20vh) scale(1.2); }
+  100% { transform: translate(30vw, -6vh) scale(1); }
+}
+
+@keyframes word-in {
+  from {
+    opacity: 0;
+    translate: 0 6px;
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+    filter: blur(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up,
+  .animate-float,
+  .animate-drift-1,
+  .animate-drift-2,
+  .animate-word,
+  .reveal.is-visible {
+    animation: none;
+  }
+
+  .reveal-ready .reveal:not(.is-visible) {
+    opacity: 1;
+  }
+}

@@ -1,123 +1,34 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import EntryDetail, { formatDate } from '../../../../components/EntryDetail';
 import { apiService } from '../../../../services/apiService';
 
+const fetchTrip = (slug) => apiService.getTripBySlug(slug);
+
+const tripLength = (start, end) => {
+  if (!start || !end) return null;
+  const days = Math.round((new Date(end) - new Date(start)) / 86400000) + 1;
+  return days > 0 ? `${days} day${days === 1 ? '' : 's'}` : null;
+};
+
 export default function TripDetailPage() {
-  const params = useParams();
-  const router = useRouter();
-  const [trip, setTrip] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchTrip = async () => {
-      try {
-        setLoading(true);
-        const result = await apiService.getTripBySlug(params.slug);
-        setTrip(result);
-      } catch (err) {
-        console.error('Error fetching trip:', err);
-        setError('Failed to load trip');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (params.slug) {
-      fetchTrip();
-    }
-  }, [params.slug]);
-
-  const handleClose = () => {
-    router.push('/personal/trips');
-  };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-[#000008] to-[#110033] flex items-center justify-center">
-        <div className="text-lg text-purple-200">Loading trip...</div>
-      </div>
-    );
-  }
-
-  if (error || !trip) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-[#000008] to-[#110033] flex items-center justify-center">
-        <div className="text-center">
-          <div className="text-lg text-red-300 mb-4">{error || 'Trip not found'}</div>
-          <button
-            onClick={handleClose}
-            className="bg-purple-950 text-white px-4 py-2 hover:bg-purple-900 transition-colors"
-          >
-            Back to Trips
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#000008] to-[#110033] p-4">
-      <div className="max-w-2xl mx-auto">
-        {/* Header with back button */}
-        <div className="mb-6">
-          <button
-            onClick={handleClose}
-            className="flex items-center text-purple-200 hover:text-white transition-colors mb-4"
-          >
-            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-            Back to Trips
-          </button>
-          <h1 className="text-3xl font-bold text-white">{trip.title}</h1>
-          <p className="text-xl text-purple-200 mt-2">{trip.destination}</p>
-        </div>
-
-        {/* Trip details card */}
-        <div className="p-6">
-          <div className="grid gap-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-purple-200 mb-2">Start Date</label>
-                <p className="text-white">{new Date(trip.startDate).toLocaleDateString()}</p>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-purple-200 mb-2">End Date</label>
-                <p className="text-white">{new Date(trip.endDate).toLocaleDateString()}</p>
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-purple-200 mb-2">Highlight</label>
-              <p className="text-white whitespace-pre-line">{trip.highlight}</p>
-            </div>
-
-            {trip.tags && trip.tags.length > 0 && (
-              <div>
-                <label className="block text-sm font-medium text-purple-200 mb-2">Tags</label>
-                <div className="flex flex-wrap gap-2">
-                  {trip.tags.map((tag, index) => (
-                    <span
-                      key={index}
-                      className="bg-purple-800 text-purple-100 px-3 py-1 text-sm border border-purple-700"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            <div>
-              <label className="block text-sm font-medium text-purple-200 mb-2">Added</label>
-              <p className="text-purple-300 text-sm">{new Date(trip.dateAdded).toLocaleDateString()}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <EntryDetail
+      fetchEntry={fetchTrip}
+      backHref="/personal/trips"
+      backLabel="All trips"
+      notFoundLabel="trip"
+      config={(trip) => ({
+        kicker: '✈️ Trip',
+        title: trip.title,
+        subtitle: trip.destination && `📍 ${trip.destination}`,
+        meta: [
+          { label: 'From', value: formatDate(trip.startDate) },
+          { label: 'To', value: formatDate(trip.endDate) },
+          { label: 'Length', value: tripLength(trip.startDate, trip.endDate) },
+        ],
+        body: { label: 'Highlights', text: trip.highlight },
+      })}
+    />
   );
 }

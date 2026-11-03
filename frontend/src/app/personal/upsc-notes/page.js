@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react'
 import { apiService } from '../../../services/apiService'
 import { useAdminMode } from '../../../components/AdminModeContext'
 import ConfirmDialog from '../../../components/ConfirmDialog'
-import PersonalTabs from '../../../components/PersonalTabs'
 
 export default function UpscNotesPage() {
   const { isAdminMode } = useAdminMode()
@@ -92,11 +91,10 @@ export default function UpscNotesPage() {
 
   return (
     <div className="max-w-6xl mx-auto">
-      <PersonalTabs />
       <div className="max-w-4xl mx-auto">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-white mb-2">UPSC Notes</h1>
+            <h1 className="page-title mb-2">UPSC Notes</h1>
             <p className="text-purple-200">Topics, thoughts, and notes from my UPSC preparation.</p>
           </div>
           {isAdminMode && (
@@ -126,11 +124,11 @@ export default function UpscNotesPage() {
         ) : (
           <div className="space-y-6">
             {notes.map(note => (
-              <article key={note.id} className="bg-gradient-to-br from-[#2D0036] to-[#6600CC] shadow-md overflow-hidden">
-                <header className="p-4 border-b border-purple-900 flex justify-between items-start gap-4">
+              <article key={note.id} className="glass-card-bright card-hover reveal overflow-hidden">
+                <header className="px-5 pt-5 pb-4 sm:px-6 border-b border-white/10 flex justify-between items-start gap-4">
                   <div>
-                    <h2 className="text-xl font-semibold text-white">{note.topic}</h2>
-                    <time className="text-sm text-purple-200" dateTime={note.dateAdded}>
+                    <h2 className="font-display text-2xl font-semibold text-white">{note.topic}</h2>
+                    <time className="text-xs uppercase tracking-wider text-purple-200" dateTime={note.dateAdded}>
                       {new Date(note.dateAdded).toLocaleDateString()}
                     </time>
                   </div>
@@ -145,7 +143,7 @@ export default function UpscNotesPage() {
                     </div>
                   )}
                 </header>
-                <p className="p-4 text-white whitespace-pre-wrap leading-relaxed">{note.content}</p>
+                <p className="p-5 sm:p-6 text-white whitespace-pre-wrap leading-relaxed">{note.content}</p>
               </article>
             ))}
           </div>

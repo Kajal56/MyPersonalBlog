@@ -54,7 +54,7 @@ export default function RestaurantsPage() {
     <div className="max-w-6xl mx-auto">
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-white mb-2">🍽️ Restaurants</h1>
+          <h1 className="page-title mb-2">🍽️ Restaurants</h1>
           <p className="text-white">My dining experiences and favorites</p>
         </div>
         <button
@@ -81,7 +81,7 @@ export default function RestaurantsPage() {
           <p className="text-gray-600">Start documenting your dining experiences!</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-6 max-w-2xl mx-auto">
+        <div className="grid grid-cols-1 gap-6 max-w-3xl mx-auto">
           {restaurants.map((restaurant) => (
             <EntryCard
               key={restaurant.id}
