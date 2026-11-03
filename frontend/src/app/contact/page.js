@@ -54,7 +54,7 @@ export default function ContactPage() {
   <div className="flex flex-col items-center py-6 sm:py-12 px-4">
     <div className="w-full max-w-lg">
       <h1 className="page-title text-4xl sm:text-5xl mb-3 text-center animate-fade-up">Contact Me</h1>
-      <p className="text-lg text-purple-200/80 mb-6 text-center animate-fade-up" style={{ '--i': 1 }}>
+      <p className="text-lg text-muted mb-6 text-center animate-fade-up" style={{ '--i': 1 }}>
         Connect with me on social media or send a message below!
       </p>
       <div className="flex justify-center gap-4 mb-8 animate-fade-up" style={{ '--i': 2 }}>
@@ -71,30 +71,30 @@ export default function ContactPage() {
           <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14C2.2 0 0 2.2 0 5v14c0 2.8 2.2 5 5 5h14c2.8 0 5-2.2 5-5V5c0-2.8-2.2-5-5-5zM7.1 19H3.6V9h3.5v10zm-1.8-11.3c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm14.7 11.3h-3.5v-5.4c0-1.3-.5-2.2-1.7-2.2-1 0-1.6.7-1.9 1.4-.1.2-.1.5-.1.8V19h-3.5s.1-10 0-10h3.5v1.4c.5-.8 1.3-1.9 3.2-1.9 2.3 0 4 1.5 4 4.7V19z"/></svg>
         </a>
       </div>
-      <form className="glass-card animate-fade-up space-y-4 w-full p-6 sm:p-8" style={{ '--i': 3 }} onSubmit={handleSubmit}>
+      <form className="card animate-fade-up space-y-4 w-full p-6 sm:p-8" style={{ '--i': 3 }} onSubmit={handleSubmit}>
         <input name="name" type="text" placeholder="Your Name" value={form.name} onChange={handleChange} className="input-field" />
         <input name="email" type="email" placeholder="Your Email" value={form.email} onChange={handleChange} className="input-field" />
         <textarea name="message" placeholder="Your Message" value={form.message} onChange={handleChange} className="input-field" rows={4} />
         <button type="submit" disabled={submitting} className="btn-primary w-full">
           {submitting ? 'Sending...' : 'Send Message'}
         </button>
-        {success && <div className="text-green-400 text-center mt-2">{success}</div>}
-        {error && <div className="text-red-400 text-center mt-2">{error}</div>}
+        {success && <div className="text-success text-center mt-2">{success}</div>}
+        {error && <div className="text-danger text-center mt-2">{error}</div>}
       </form>
       {isAdminMode && (
         <div className="mt-10">
-          <h2 className="text-2xl font-bold mb-4 text-white">Contact Messages</h2>
+          <h2 className="text-2xl font-bold mb-4 text-ink">Contact Messages</h2>
           {loadingMessages ? (
-            <div className="text-white">Loading messages...</div>
+            <div className="text-ink">Loading messages...</div>
           ) : messages.length === 0 ? (
-            <div className="text-white">No messages yet.</div>
+            <div className="text-ink">No messages yet.</div>
           ) : (
             <div className="space-y-4">
               {messages.map(msg => (
-                <div key={msg.id} className="glass-card p-4">
-                  <div className="font-semibold text-white">{msg.name || 'Anonymous'}</div>
-                  <div className="text-white text-sm">{msg.message}</div>
-                  <div className="text-xs text-white mt-1">{msg.email || 'No email'} | {new Date(msg.dateSent).toLocaleString()}</div>
+                <div key={msg.id} className="card p-4">
+                  <div className="font-semibold text-ink">{msg.name || 'Anonymous'}</div>
+                  <div className="text-ink text-sm">{msg.message}</div>
+                  <div className="text-xs text-ink mt-1">{msg.email || 'No email'} | {new Date(msg.dateSent).toLocaleString()}</div>
                 </div>
               ))}
             </div>

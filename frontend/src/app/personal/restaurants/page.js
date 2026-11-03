@@ -2,12 +2,12 @@
 
 import { useState, useEffect } from 'react'
 import { apiService } from '../../../services/apiService'
-import ReviewTile from '../../../components/ReviewTile'
-import { formatDate } from '../../../utils/text'
+import ReviewTile, { reviewListLayout } from '../../../components/ReviewTile'
 import AddEntryModal from '../../../components/AddEntryModal'
 
 export default function RestaurantsPage() {
   const [restaurants, setRestaurants] = useState([])
+  const layout = reviewListLayout(restaurants.length)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [showAddModal, setShowAddModal] = useState(false)
@@ -56,7 +56,7 @@ export default function RestaurantsPage() {
       <div className="max-w-5xl mx-auto flex flex-wrap gap-4 justify-between items-center mb-8">
         <div>
           <h1 className="page-title mb-2">🍽️ Restaurants</h1>
-          <p className="text-purple-200/80">My dining experiences and favorites</p>
+          <p className="text-muted">My dining experiences and favorites</p>
         </div>
         <button
           onClick={() => setShowAddModal(true)}
@@ -69,21 +69,21 @@ export default function RestaurantsPage() {
 
       {loading ? (
         <div className="text-center py-12">
-          <div className="text-lg text-gray-600">Loading restaurants...</div>
+          <div className="text-lg text-muted">Loading restaurants...</div>
         </div>
       ) : error ? (
         <div className="text-center py-12">
-          <div className="text-lg text-red-600">{error}</div>
+          <div className="text-lg text-danger">{error}</div>
         </div>
       ) : restaurants.length === 0 ? (
         <div className="text-center py-12">
           <div className="text-6xl mb-4">🍽️</div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">No restaurants yet</h3>
-          <p className="text-gray-600">Start documenting your dining experiences!</p>
+          <h3 className="text-xl font-semibold text-ink mb-2">No restaurants yet</h3>
+          <p className="text-muted">Start documenting your dining experiences!</p>
         </div>
       ) : (
         <div className="max-w-5xl mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className={layout.gridClassName}>
             {restaurants.map((restaurant) => (
               <ReviewTile
                 key={restaurant.id}
@@ -92,8 +92,8 @@ export default function RestaurantsPage() {
                 subtitle={[restaurant.cuisine, restaurant.location && `📍 ${restaurant.location}`].filter(Boolean).join(' · ')}
                 rating={restaurant.rating}
                 excerpt={restaurant.favoriteDish && `Favourite dish: ${restaurant.favoriteDish}`}
-                meta={restaurant.dateVisited ? `Visited ${formatDate(restaurant.dateVisited)}` : null}
                 tags={restaurant.tags}
+                wide={layout.wide}
                 onEdit={() => handleEdit(restaurant)}
                 onDelete={() => handleDelete(restaurant.id)}
               />

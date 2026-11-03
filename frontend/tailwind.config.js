@@ -1,6 +1,10 @@
 /** @type {import('tailwindcss').Config} */
+
+// Theme colours are CSS variables (RGB triplets) defined per theme in globals.css
+const token = (name) => `rgb(var(--${name}) / <alpha-value>)`
+
 module.exports = {
-  darkMode: 'class',
+  darkMode: ['selector', '[data-theme="dark"]'],
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -13,13 +17,23 @@ module.exports = {
         display: ['var(--font-display)', 'Georgia', 'serif'],
       },
       colors: {
-        primary: {
-          50: '#eff6ff',
-          500: '#3b82f6',
-          600: '#2563eb',
-          700: '#1d4ed8',
-        }
-      }
+        canvas: token('canvas'),
+        surface: token('surface'),
+        sunken: token('sunken'),
+        line: { DEFAULT: token('line'), strong: token('line-strong') },
+        ink: token('ink'),
+        muted: token('muted'),
+        faint: token('faint'),
+        accent: {
+          DEFAULT: token('accent'),
+          hover: token('accent-hover'),
+          ink: token('accent-ink'),
+          soft: token('accent-soft'),
+        },
+        'on-accent': token('on-accent'),
+        danger: { DEFAULT: token('danger'), soft: token('danger-soft') },
+        success: token('success'),
+      },
     },
   },
   plugins: [],

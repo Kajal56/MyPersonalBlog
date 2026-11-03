@@ -6,13 +6,13 @@ export default function AboutPage() {
   return (
     <div className="w-full max-w-3xl mx-auto py-4 sm:py-8 px-2 sm:px-4">
         <h1 className="page-title text-4xl sm:text-5xl mb-3 text-center animate-fade-up">About Me</h1>
-        <p className="mb-10 text-center text-purple-200/80 animate-fade-up" style={{ '--i': 1 }}>
+        <p className="mb-10 text-center text-muted animate-fade-up" style={{ '--i': 1 }}>
           Software engineer by day, Kathak dancer at heart.
         </p>
 
-        <section className="glass-card animate-fade-up p-6 sm:p-8 mb-6" style={{ '--i': 2 }}>
-          <h2 className="font-display text-2xl font-semibold text-white mb-4">Hello there 👋</h2>
-          <p className="text-base sm:text-lg leading-relaxed text-purple-50 mb-5">
+        <section className="card animate-fade-up p-6 sm:p-8 mb-6" style={{ '--i': 2 }}>
+          <h2 className="font-display text-2xl font-semibold text-ink mb-4">Hello there 👋</h2>
+          <p className="text-base sm:text-lg leading-relaxed text-ink mb-5">
             I&apos;m Kajal — a software engineer who loves building, learning, and connecting with
             like-minded people. I&apos;m from a small town in Haryana, and my interests revolve around
             dance — I started with Bhangra, explored Bollywood and hip-hop, and am now pursuing
@@ -21,20 +21,20 @@ export default function AboutPage() {
             Piano on a big stage one day — that matters to me the most. Badminton is another hobby I
             love (I never said I&apos;m good at it :/).
           </p>
-          <p className="text-base sm:text-lg leading-relaxed text-purple-50">
+          <p className="text-base sm:text-lg leading-relaxed text-ink">
             I built this site to share my thoughts on movies, books, and travels — you&apos;ll find
             suggestion buttons throughout, so please share your recommendations! For the more personal
             side — my venting place and notes are under{" "}
             <Link
               href="/personal/feed"
-              className="text-purple-300 hover:text-purple-100 underline underline-offset-2"
+              className="text-accent-ink hover:text-ink underline underline-offset-2"
             >
               Writing
             </Link>
             , and my watchlist, reading list and travels under{" "}
             <Link
               href="/personal/movies"
-              className="text-purple-300 hover:text-purple-100 underline underline-offset-2"
+              className="text-accent-ink hover:text-ink underline underline-offset-2"
             >
               Reviews
             </Link>
@@ -42,9 +42,9 @@ export default function AboutPage() {
           </p>
         </section>
 
-        <section id="professional" className="glass-card animate-fade-up p-6 sm:p-8 mb-10" style={{ '--i': 3 }}>
-          <h2 className="font-display text-2xl font-semibold text-white mb-4">Worky-worky 💻</h2>
-          <p className="text-base sm:text-lg leading-relaxed text-purple-50 mb-6">
+        <section id="professional" className="card animate-fade-up p-6 sm:p-8 mb-10" style={{ '--i': 3 }}>
+          <h2 className="font-display text-2xl font-semibold text-ink mb-4">Worky-worky 💻</h2>
+          <p className="text-base sm:text-lg leading-relaxed text-ink mb-6">
             I did my schooling in Haryana and graduated from IIT Bombay, Computer Science and
             Engineering Department, with Honors — databases, networks, compilers, operating systems,
             the usual CSE stack — but algorithm design is what I&apos;ve always enjoyed most. I&apos;ve

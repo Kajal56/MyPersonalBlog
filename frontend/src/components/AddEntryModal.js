@@ -162,16 +162,16 @@ export default function AddEntryModal({ type, onClose, onEntryAdded, editEntry =
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center p-4 z-50" style={{paddingBottom: 'env(safe-area-inset-bottom)'}}>
-      <div className="bg-[#0a0011] rounded-lg w-full max-w-md max-h-[90vh] overflow-y-auto shadow-2xl border border-[#181825]">
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50" style={{paddingBottom: 'env(safe-area-inset-bottom)'}}>
+      <div className="bg-surface rounded-lg w-full max-w-md max-h-[90vh] overflow-y-auto shadow-2xl border border-line">
         <div className="p-4 sm:p-6">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-lg sm:text-xl font-bold text-white">
+            <h2 className="text-lg sm:text-xl font-bold text-ink">
               {isEditing ? `Edit ${type.slice(0, -1)}` : `Add New ${type.slice(0, -1)}`}
             </h2>
             <button
               onClick={onClose}
-              className="text-purple-200 hover:text-white text-2xl leading-none"
+              className="text-muted hover:text-ink text-2xl leading-none"
               aria-label="Close modal"
             >
               &times;
@@ -180,22 +180,22 @@ export default function AddEntryModal({ type, onClose, onEntryAdded, editEntry =
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
-              <div className="bg-red-900 border border-red-700 text-red-200 px-4 py-3 rounded">
+              <div className="bg-danger-soft border border-danger text-danger px-4 py-3 rounded">
                 {error}
               </div>
             )}
             
             {fields.map((field) => (
               <div key={field.name}>
-                <label className="block text-sm font-medium text-purple-200 mb-2">
+                <label className="block text-sm font-medium text-muted mb-2">
                   {field.label}
-                  {field.required && <span className="text-red-400">*</span>}
+                  {field.required && <span className="text-danger">*</span>}
                 </label>
                 {field.type === 'textarea' ? (
                   <textarea
                     required={field.required}
                     value={formData[field.name] || ''}
-                    className="w-full px-3 py-2 bg-[#191a2e] text-white placeholder-blue-200 rounded-md outline-none focus:ring-2 focus:ring-blue-700 text-sm resize-vertical min-h-[80px]"
+                    className="w-full px-3 py-2 bg-surface text-ink placeholder-faint rounded-md outline-none focus:ring-2 focus:ring-accent/30 text-sm resize-vertical min-h-[80px]"
                     rows={3}
                     onChange={(e) => handleInputChange(field.name, e.target.value)}
                   />
@@ -206,7 +206,7 @@ export default function AddEntryModal({ type, onClose, onEntryAdded, editEntry =
                     min={field.min}
                     max={field.max}
                     value={formData[field.name] || ''}
-                    className="w-full px-3 py-2 bg-[#191a2e] text-white placeholder-blue-200 rounded-md outline-none focus:ring-2 focus:ring-blue-700 text-sm"
+                    className="w-full px-3 py-2 bg-surface text-ink placeholder-faint rounded-md outline-none focus:ring-2 focus:ring-accent/30 text-sm"
                     onChange={(e) => handleInputChange(field.name, e.target.value)}
                   />
                 )}
@@ -217,14 +217,14 @@ export default function AddEntryModal({ type, onClose, onEntryAdded, editEntry =
               <button
                 type="button"
                 onClick={onClose}
-                className="flex-1 px-4 py-2 border border-purple-900 rounded-md text-purple-200 hover:bg-purple-900 transition-colors"
+                className="flex-1 px-4 py-2 border border-line rounded-md text-muted hover:bg-sunken transition-colors"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="flex-1 px-4 py-2 bg-gradient-to-r from-[#7D2AE8] to-[#6600CC] text-white rounded-md hover:from-[#6600CC] hover:to-[#7D2AE8] disabled:opacity-50 transition-all"
+                className="flex-1 px-4 py-2 text-on-accent rounded-md disabled:opacity-50 transition-all bg-accent hover:bg-accent-hover"
               >
                 {isSubmitting ? (isEditing ? 'Updating...' : 'Adding...') : (isEditing ? 'Update Entry' : 'Add Entry')}
               </button>

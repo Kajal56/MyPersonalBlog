@@ -37,11 +37,11 @@ export default function PersonalTabs() {
       <div
         ref={highlight.containerRef}
         {...highlight.containerProps}
-        className="relative flex gap-1 min-w-max rounded-lg border border-white/10 bg-white/5 p-1 backdrop-blur-sm"
+        className="group/tabs relative flex gap-1 min-w-max rounded-lg border border-line bg-sunken p-1 backdrop-blur-sm"
       >
         <span
           aria-hidden="true"
-          className={`absolute rounded-md bg-[#6600CC] shadow-md shadow-purple-700/40 ${highlight.highlightClassName}`}
+          className={`absolute rounded-md accent-pill ${highlight.highlightClassName}`}
           style={highlight.highlightStyle}
         />
         {tabs.map(tab => (
@@ -52,8 +52,8 @@ export default function PersonalTabs() {
             {...highlight.itemProps}
             className={`relative z-10 px-3 sm:px-5 py-2 text-xs sm:text-sm font-medium transition-colors duration-300 rounded-md whitespace-nowrap
               ${pathname === tab.href
-                ? 'text-white'
-                : 'text-purple-100/80 hover:text-white'}
+                ? 'text-on-accent group-hover/tabs:text-muted hover:!text-on-accent'
+                : 'text-muted hover:text-on-accent'}
             `}
           >
             {tab.label}
