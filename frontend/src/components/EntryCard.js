@@ -78,7 +78,7 @@ export default function EntryCard({ type, entry, fields, onEdit, onDelete, cardC
   return (
     <>
       <div
-        className={cardClassName || `glass-card card-hover reveal p-5 sm:p-6 w-full ${cardClickable ? 'cursor-pointer' : ''}`}
+        className={cardClassName || `card card-hover reveal p-5 sm:p-6 w-full ${cardClickable ? 'cursor-pointer' : ''}`}
         onClick={handleCardClick}
         onKeyDown={handleKeyDown}
         tabIndex={cardClickable ? 0 : undefined}
@@ -86,7 +86,7 @@ export default function EntryCard({ type, entry, fields, onEdit, onDelete, cardC
         aria-label={cardClickable ? `View details for ${entry.title || entry.name}` : undefined}
       >
         <div className="flex justify-between items-start mb-4">
-          <h3 className={`font-display text-xl sm:text-2xl font-semibold line-clamp-2 flex-1 pr-2 transition-colors duration-200 ${cardClickable ? 'text-purple-100 hover:text-purple-50 hover:underline decoration-purple-300 underline-offset-2' : 'text-white'}`}>
+          <h3 className={`font-display text-xl sm:text-2xl font-semibold line-clamp-2 flex-1 pr-2 transition-colors duration-200 ${cardClickable ? 'text-ink hover:text-ink hover:underline decoration-accent/40 underline-offset-2' : 'text-ink'}`}>
             {entry.title || entry.name}
           </h3>
           {isAdminMode && (
@@ -96,7 +96,7 @@ export default function EntryCard({ type, entry, fields, onEdit, onDelete, cardC
                   e.stopPropagation();
                   handleEdit();
                 }}
-                className="text-purple-200 hover:text-white text-xs sm:text-sm px-2 py-1 bg-purple-950 bg-opacity-70"
+                className="text-muted hover:text-ink text-xs sm:text-sm px-2 py-1 bg-accent-soft bg-opacity-70"
               >
                 Edit
               </button>
@@ -105,7 +105,7 @@ export default function EntryCard({ type, entry, fields, onEdit, onDelete, cardC
                   e.stopPropagation();
                   handleDeleteClick();
                 }}
-                className="text-red-200 hover:text-white text-xs sm:text-sm px-2 py-1 bg-red-950 bg-opacity-70"
+                className="text-danger hover:text-ink text-xs sm:text-sm px-2 py-1 bg-danger-soft bg-opacity-70"
               >
                 Delete
               </button>
@@ -116,17 +116,17 @@ export default function EntryCard({ type, entry, fields, onEdit, onDelete, cardC
         <div className="space-y-3">
           {fields.map((field, index) => (
             <div key={index} className="flex items-start space-x-2">
-              {field.icon && <span className="text-sm mt-0.5 text-purple-300 flex-shrink-0">{field.icon}</span>}
+              {field.icon && <span className="text-sm mt-0.5 text-accent-ink flex-shrink-0">{field.icon}</span>}
               <div className="flex-1 min-w-0">
-                <span className="text-xs font-semibold uppercase tracking-wider text-purple-300/90">{field.label}</span>
-                <p className="mt-0.5 text-sm leading-relaxed text-purple-50 break-words whitespace-pre-line">{field.value}</p>
+                <span className="text-xs font-semibold uppercase tracking-wider text-accent-ink">{field.label}</span>
+                <p className="mt-0.5 text-sm leading-relaxed text-ink break-words whitespace-pre-line">{field.value}</p>
               </div>
             </div>
           ))}
         </div>
 
         {entry.tags && entry.tags.length > 0 && (
-          <div className="mt-5 pt-4 border-t border-white/10">
+          <div className="mt-5 pt-4 border-t border-line">
             <div className="flex flex-wrap gap-1">
               {entry.tags.map((tag, index) => (
                 <span
@@ -146,7 +146,7 @@ export default function EntryCard({ type, entry, fields, onEdit, onDelete, cardC
           onClose={() => setShowDetailModal(false)}
         >
           <div className="space-y-3">
-            <h2 className="text-xl font-bold text-purple-200 mb-2">
+            <h2 className="text-xl font-bold text-muted mb-2">
               {entry.title || entry.name ||
                 (isBookType ? 'Book Review'
                   : isTripType ? 'Trip Details'
@@ -162,10 +162,10 @@ export default function EntryCard({ type, entry, fields, onEdit, onDelete, cardC
                   const isHighlight = highlightLabels.includes(field.label.toLowerCase().replace(/\s/g, ""));
                   return (
                     <div key={idx} className="flex items-start space-x-2">
-                      {field.icon && <span className="text-sm mt-0.5 text-purple-300">{field.icon}</span>}
+                      {field.icon && <span className="text-sm mt-0.5 text-accent-ink">{field.icon}</span>}
                       <div className="flex-1 min-w-0">
-                        <span className="text-sm font-medium text-purple-300">{field.label}:</span>
-                        <p className={`text-sm break-words ${isHighlight ? 'text-purple-100 font-semibold' : 'text-gray-100'}`}>{field.value}</p>
+                        <span className="text-sm font-medium text-accent-ink">{field.label}:</span>
+                        <p className={`text-sm break-words ${isHighlight ? 'text-ink font-semibold' : 'text-ink'}`}>{field.value}</p>
                       </div>
                     </div>
                   );
@@ -173,8 +173,8 @@ export default function EntryCard({ type, entry, fields, onEdit, onDelete, cardC
                 {entry.keyTakeaway && !detailFields.some(f => f.label.toLowerCase().replace(/\s/g,"") === "keytakeaway") && (
                   <div className="flex items-start space-x-2">
                     <div className="flex-1 min-w-0">
-                      <span className="text-sm font-medium text-purple-300">Key Takeaway:</span>
-                      <p className="text-sm text-purple-100 font-semibold break-words whitespace-pre-line">{entry.keyTakeaway}</p>
+                      <span className="text-sm font-medium text-accent-ink">Key Takeaway:</span>
+                      <p className="text-sm text-ink font-semibold break-words whitespace-pre-line">{entry.keyTakeaway}</p>
                     </div>
                   </div>
                 )}
@@ -184,71 +184,71 @@ export default function EntryCard({ type, entry, fields, onEdit, onDelete, cardC
                 {entry.title && (
                   <div className="flex items-start space-x-2">
                     <div className="flex-1 min-w-0">
-                      <span className="text-sm font-medium text-purple-300">Title:</span>
-                      <p className="text-sm text-purple-100 font-semibold break-words">{entry.title}</p>
+                      <span className="text-sm font-medium text-accent-ink">Title:</span>
+                      <p className="text-sm text-ink font-semibold break-words">{entry.title}</p>
                     </div>
                   </div>
                 )}
                 {entry.name && (
                   <div className="flex items-start space-x-2">
                     <div className="flex-1 min-w-0">
-                      <span className="text-sm font-medium text-purple-300">Name:</span>
-                      <p className="text-sm text-purple-100 font-semibold break-words">{entry.name}</p>
+                      <span className="text-sm font-medium text-accent-ink">Name:</span>
+                      <p className="text-sm text-ink font-semibold break-words">{entry.name}</p>
                     </div>
                   </div>
                 )}
                 {entry.author && (
                   <div className="flex items-start space-x-2">
                     <div className="flex-1 min-w-0">
-                      <span className="text-sm font-medium text-purple-300">Author:</span>
-                      <p className="text-sm text-purple-100 font-semibold break-words">{entry.author}</p>
+                      <span className="text-sm font-medium text-accent-ink">Author:</span>
+                      <p className="text-sm text-ink font-semibold break-words">{entry.author}</p>
                     </div>
                   </div>
                 )}
                 {entry.director && (
                   <div className="flex items-start space-x-2">
                     <div className="flex-1 min-w-0">
-                      <span className="text-sm font-medium text-purple-300">Director:</span>
-                      <p className="text-sm text-purple-100 font-semibold break-words">{entry.director}</p>
+                      <span className="text-sm font-medium text-accent-ink">Director:</span>
+                      <p className="text-sm text-ink font-semibold break-words">{entry.director}</p>
                     </div>
                   </div>
                 )}
                 {entry.location && (
                   <div className="flex items-start space-x-2">
                     <div className="flex-1 min-w-0">
-                      <span className="text-sm font-medium text-purple-300">Location:</span>
-                      <p className="text-sm text-purple-100 font-semibold break-words">{entry.location}</p>
+                      <span className="text-sm font-medium text-accent-ink">Location:</span>
+                      <p className="text-sm text-ink font-semibold break-words">{entry.location}</p>
                     </div>
                   </div>
                 )}
                 {entry.rating && (
                   <div className="flex items-start space-x-2">
                     <div className="flex-1 min-w-0">
-                      <span className="text-sm font-medium text-purple-300">Rating:</span>
-                      <p className="text-sm text-purple-100 font-semibold break-words">{entry.rating}</p>
+                      <span className="text-sm font-medium text-accent-ink">Rating:</span>
+                      <p className="text-sm text-ink font-semibold break-words">{entry.rating}</p>
                     </div>
                   </div>
                 )}
                 {entry.keyTakeaway && (
                   <div className="flex items-start space-x-2">
                     <div className="flex-1 min-w-0">
-                      <span className="text-sm font-medium text-purple-300">Key Takeaway:</span>
-                      <p className="text-sm text-purple-100 font-semibold break-words whitespace-pre-line">{entry.keyTakeaway}</p>
+                      <span className="text-sm font-medium text-accent-ink">Key Takeaway:</span>
+                      <p className="text-sm text-ink font-semibold break-words whitespace-pre-line">{entry.keyTakeaway}</p>
                     </div>
                   </div>
                 )}
                 {(!entry.title && !entry.name && !entry.keyTakeaway && !entry.author && !entry.rating && !entry.director && !entry.location) && (
-                  <p className="text-gray-500">No details available for this entry.</p>
+                  <p className="text-muted">No details available for this entry.</p>
                 )}
               </>
             )}
             {entry.tags && entry.tags.length > 0 && (
-              <div className="pt-2 border-t border-purple-900">
+              <div className="pt-2 border-t border-line">
                 <div className="flex flex-wrap gap-2">
                   {entry.tags.map((tag, index) => (
                     <span
                       key={index}
-                      className="px-2 py-1 bg-purple-950 text-purple-300 text-xs"
+                      className="px-2 py-1 bg-accent-soft text-accent-ink text-xs"
                     >
                       {tag}
                     </span>
@@ -257,10 +257,10 @@ export default function EntryCard({ type, entry, fields, onEdit, onDelete, cardC
               </div>
             )}
             {/* Custom navigation buttons */}
-            <div className="flex space-x-2 pt-4 border-t border-purple-900">
+            <div className="flex space-x-2 pt-4 border-t border-line">
               <button
                 onClick={() => setShowDetailModal(false)}
-                className="flex-1 px-4 py-2 bg-purple-900 text-white hover:bg-purple-800 transition-colors"
+                className="flex-1 px-4 py-2 bg-accent-soft text-ink hover:bg-accent-soft transition-colors"
               >
                 Close
               </button>
@@ -273,7 +273,7 @@ export default function EntryCard({ type, entry, fields, onEdit, onDelete, cardC
                   else if (isRestaurantType) router.push('/personal/restaurants');
                   else router.push('/personal/feed');
                 }}
-                className="flex-1 px-4 py-2 bg-gradient-to-r from-purple-800 to-purple-900 text-white hover:from-purple-900 hover:to-purple-800 transition-colors"
+                className="flex-1 px-4 py-2 text-on-accent transition-colors bg-accent hover:bg-accent-hover"
               >
                 {isMovieType ? 'Explore More Movies' 
                   : isBookType ? 'Explore More Books'

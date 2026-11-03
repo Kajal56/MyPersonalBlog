@@ -1,15 +1,23 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { apiService } from '../../../services/apiService'
-import ReviewTile from '../../../components/ReviewTile'
-import { excerpt, formatDate } from '../../../utils/text'
+import ReviewTile, { reviewListLayout } from '../../../components/ReviewTile'
+import { useBookCover } from '../../../components/useBookCover'
+import { excerpt } from '../../../utils/text'
 import { useAdminMode } from '../../../components/AdminModeContext'
 import AddEntryModal from '../../../components/AddEntryModal'
 import SuggestionModal from '../../../components/SuggestionModal'
 
+// Book tile with its cover looked up on Open Library
+function BookTile({ author, ...props }) {
+  const cover = useBookCover(props.title, author)
+  return <ReviewTile {...props} withCover cover={cover} />
+}
+
 export default function BooksPage() {
   const { isAdminMode } = useAdminMode()
   const [books, setBooks] = useState([])
+  const layout = reviewListLayout(books.length)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [showAddModal, setShowAddModal] = useState(false)
@@ -76,12 +84,12 @@ export default function BooksPage() {
       <div className="max-w-5xl mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
         <div className="flex-1">
           <h1 className="page-title mb-2">📚 Books</h1>
-          <p className="text-purple-200/80 text-sm sm:text-base">My reading list and key takeaways</p>
+          <p className="text-muted text-sm sm:text-base">My reading list and key takeaways</p>
         </div>
         {isAdminMode ? (
           <button
             onClick={() => setShowAddModal(true)}
-            className="bg-[#6600CC] hover:bg-[#7D2AE8] text-white px-4 sm:px-6 py-2 sm:py-3 font-medium transition-colors flex items-center space-x-2 text-sm sm:text-base rounded-md"
+            className="bg-accent hover:bg-accent-hover text-on-accent px-4 sm:px-6 py-2 sm:py-3 font-medium transition-colors flex items-center space-x-2 text-sm sm:text-base rounded-md"
           >
             <span>+</span>
             <span>Add Book</span>
@@ -99,31 +107,32 @@ export default function BooksPage() {
 
       {loading ? (
         <div className="text-center py-12">
-          <div className="text-lg text-gray-600 dark:text-gray-300">Loading books...</div>
+          <div className="text-lg text-muted">Loading books...</div>
         </div>
       ) : error ? (
         <div className="text-center py-12">
-          <div className="text-lg text-red-600 dark:text-red-400">{error}</div>
+          <div className="text-lg text-danger">{error}</div>
         </div>
       ) : books.length === 0 ? (
         <div className="text-center py-12">
           <div className="text-6xl mb-4">📚</div>
-          <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">No books yet</h3>
-          <p className="text-gray-600 dark:text-gray-300">Start adding your book reviews!</p>
+          <h3 className="text-xl font-semibold text-ink mb-2">No books yet</h3>
+          <p className="text-muted">Start adding your book reviews!</p>
         </div>
       ) : (
         <div className="max-w-5xl mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className={layout.gridClassName}>
             {books.map((book) => (
-              <ReviewTile
+              <BookTile
+                wide={layout.wide}
                 key={book.id}
                 href={`/personal/books/${book.slug}`}
                 title={book.title}
                 subtitle={book.author && `by ${book.author}`}
                 rating={book.rating}
                 excerpt={excerpt(book.keyTakeaway)}
-                meta={book.dateRead ? `Read ${formatDate(book.dateRead)}` : null}
                 tags={book.tags}
+                author={book.author}
                 onEdit={isAdminMode ? () => handleEdit(book) : undefined}
                 onDelete={isAdminMode ? () => handleDelete(book.id) : undefined}
               />
@@ -152,22 +161,22 @@ export default function BooksPage() {
       {/* Suggestions list for admins */}
       {isAdminMode && (
         <div className="mt-8 sm:mt-12">
-          <h2 className="text-xl sm:text-2xl font-bold mb-4 text-[#7D2AE8] dark:text-[#A78BFA]">Book Suggestions</h2>
+          <h2 className="text-xl sm:text-2xl font-bold mb-4 text-accent-ink">Book Suggestions</h2>
           {loadingSuggestions ? (
-            <div className="text-gray-600 dark:text-gray-300">Loading suggestions...</div>
+            <div className="text-muted">Loading suggestions...</div>
           ) : suggestions.length === 0 ? (
-            <div className="text-gray-600 dark:text-gray-300">No suggestions yet.</div>
+            <div className="text-muted">No suggestions yet.</div>
           ) : (
             <div className="space-y-3 sm:space-y-4">
               {suggestions.map(suggestion => (
-                <div key={suggestion.id} className="bg-[#181825] p-3 sm:p-4 rounded-lg shadow">
+                <div key={suggestion.id} className="bg-surface p-3 sm:p-4 rounded-lg shadow">
                   <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                     <div className="flex-1">
-                      <div className="font-semibold text-white text-base sm:text-lg mb-1">{suggestion.itemName || 'Untitled'}</div>
-                      <div className="text-[#A78BFA] text-sm sm:text-base mb-1">{suggestion.message}</div>
-                      <div className="text-xs text-gray-300 mt-1">
-                        Suggested by: <span className="font-semibold text-white">{suggestion.name || 'Anonymous'}</span> | 
-                        <span className="text-gray-400"> {new Date(suggestion.dateSuggested).toLocaleString()}</span>
+                      <div className="font-semibold text-ink text-base sm:text-lg mb-1">{suggestion.itemName || 'Untitled'}</div>
+                      <div className="text-accent-ink text-sm sm:text-base mb-1">{suggestion.message}</div>
+                      <div className="text-xs text-muted mt-1">
+                        Suggested by: <span className="font-semibold text-ink">{suggestion.name || 'Anonymous'}</span> | 
+                        <span className="text-muted"> {new Date(suggestion.dateSuggested).toLocaleString()}</span>
                       </div>
                     </div>
                     <div className="flex flex-row sm:flex-col items-center sm:items-end gap-2">
@@ -176,7 +185,7 @@ export default function BooksPage() {
                       </span>
                       {!suggestion.isRead && (
                         <button
-                          className="bg-[#6600CC] hover:bg-[#7D2AE8] text-white text-xs px-3 py-1 rounded transition-colors whitespace-nowrap"
+                          className="bg-accent hover:bg-accent-hover text-on-accent text-xs px-3 py-1 rounded transition-colors whitespace-nowrap"
                           onClick={async () => {
                             await apiService.updateSuggestion('books', suggestion.id, { isRead: true })
                             loadSuggestions()

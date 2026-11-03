@@ -89,38 +89,38 @@ export default function FeedPage() {
       <article key={post.id} id={`post-${post.id}`} className="reveal grid scroll-mt-28 grid-cols-[3.5rem_1fr] gap-4 sm:grid-cols-[5rem_1fr] sm:gap-6">
         {/* Journal-style date column */}
         <div className="pt-5 text-center">
-          <div className="font-display text-3xl font-semibold leading-none text-white sm:text-4xl">{date.getDate()}</div>
-          <div className="mt-1 text-[11px] font-semibold uppercase tracking-widest text-purple-300">
+          <div className="font-display text-3xl font-semibold leading-none text-ink sm:text-4xl">{date.getDate()}</div>
+          <div className="mt-1 text-[11px] font-semibold uppercase tracking-widest text-accent-ink">
             {date.toLocaleDateString('en-GB', { month: 'short' })}
           </div>
-          <div className="text-[11px] text-purple-300/60">{date.getFullYear()}</div>
+          <div className="text-[11px] text-faint">{date.getFullYear()}</div>
         </div>
 
-        <div className="glass-card-bright card-hover overflow-hidden">
+        <div className="card card-hover overflow-hidden">
           <div className="p-5 sm:p-6">
             <div className="mb-3 flex items-start justify-between gap-4">
               <div>
-                {post.title && <h3 className="font-display text-2xl font-semibold text-white">{post.title}</h3>}
-                <p className="mt-1 text-xs uppercase tracking-wider text-purple-200/80">
+                {post.title && <h3 className="font-display text-2xl font-semibold text-ink">{post.title}</h3>}
+                <p className="mt-1 text-xs uppercase tracking-wider text-muted">
                   {timeAgo(post.dateAdded)} · {readingTime(post.content)}
                 </p>
               </div>
               {isAdminMode && (
                 <div className="flex shrink-0 space-x-3">
-                  <button onClick={() => handleEdit(post)} className="text-sm font-medium text-purple-200 hover:text-white">Edit</button>
-                  <button onClick={() => handleDeleteClick(post)} className="text-sm font-medium text-red-300 hover:text-white">Delete</button>
+                  <button onClick={() => handleEdit(post)} className="text-sm font-medium text-muted hover:text-ink">Edit</button>
+                  <button onClick={() => handleDeleteClick(post)} className="text-sm font-medium text-danger hover:text-ink">Delete</button>
                 </div>
               )}
             </div>
 
-            <p className="whitespace-pre-wrap leading-relaxed text-white">
+            <p className="whitespace-pre-wrap leading-relaxed text-ink">
               {isLong && !isOpen ? excerpt(post.content, PREVIEW_LENGTH) : post.content}
             </p>
             {isLong && (
               <button
                 onClick={() => toggleExpanded(post.id)}
                 aria-expanded={isOpen}
-                className="mt-3 text-sm font-medium text-purple-100 underline decoration-purple-300/50 underline-offset-4 hover:text-white"
+                className="mt-3 text-sm font-medium text-ink underline decoration-accent/40 underline-offset-4 hover:text-ink"
               >
                 {isOpen ? 'Show less' : 'Keep reading →'}
               </button>
@@ -129,15 +129,15 @@ export default function FeedPage() {
             {post.mediaData && (
               <div className="mt-4 flex justify-center">
                 {post.mediaType === 'video' ? (
-                  <video src={post.mediaData} controls className="h-auto max-h-[70vh] max-w-full rounded-lg border border-white/10 object-contain" />
+                  <video src={post.mediaData} controls className="h-auto max-h-[70vh] max-w-full rounded-lg border border-line object-contain" />
                 ) : (
-                  <img src={post.mediaData} alt="Post media" className="h-auto max-h-[70vh] max-w-full rounded-lg border border-white/10 object-contain" />
+                  <img src={post.mediaData} alt="Post media" className="h-auto max-h-[70vh] max-w-full rounded-lg border border-line object-contain" />
                 )}
               </div>
             )}
 
             {post.tags && post.tags.length > 0 && (
-              <div className="mt-4 flex flex-wrap gap-2 border-t border-white/10 pt-4">
+              <div className="mt-4 flex flex-wrap gap-2 border-t border-line pt-4">
                 {post.tags.map((tag, index) => <span key={index} className="pill-tag">#{tag}</span>)}
               </div>
             )}
@@ -153,12 +153,12 @@ export default function FeedPage() {
           <div className="flex justify-between items-center mb-8">
             <div>
               <h1 className="page-title mb-2">My venting place</h1>
-              <p className="text-purple-200/80">Unfiltered thoughts, as they come.</p>
+              <p className="text-muted">Unfiltered thoughts, as they come.</p>
             </div>
             {isAdminMode && (
               <button
                 onClick={() => setShowAddModal(true)}
-                className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 flex items-center space-x-2 shadow-lg"
+                className="text-on-accent px-6 py-3 rounded-lg font-medium transition-all duration-300 flex items-center space-x-2 shadow-lg bg-accent hover:bg-accent-hover"
               >
                 <span>✨</span>
                 <span>Share Something</span>
@@ -168,20 +168,20 @@ export default function FeedPage() {
 
           {loading ? (
             <div className="text-center py-12">
-              <div className="text-lg text-gray-600 dark:text-gray-300">Loading your posts...</div>
+              <div className="text-lg text-muted">Loading your posts...</div>
             </div>
           ) : error ? (
             <div className="text-center py-12">
-              <div className="text-lg text-red-600 dark:text-red-400">{error}</div>
+              <div className="text-lg text-danger">{error}</div>
             </div>
           ) : posts.length === 0 ? (
             <div className="text-center py-12">
               <div className="text-6xl mb-4">💭</div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">Nothing here yet</h3>
-              <p className="text-gray-600 dark:text-gray-300 mb-4">Share a thought when you&apos;re ready.</p>
+              <h3 className="text-xl font-semibold text-ink mb-2">Nothing here yet</h3>
+              <p className="text-muted mb-4">Share a thought when you&apos;re ready.</p>
               <button
                 onClick={() => setShowAddModal(true)}
-                className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300"
+                className="text-on-accent px-6 py-3 rounded-lg font-medium transition-all duration-300 bg-accent hover:bg-accent-hover"
               >
                 ✨ Create Your First Post
               </button>

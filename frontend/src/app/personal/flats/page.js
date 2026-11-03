@@ -65,13 +65,13 @@ export default function FlatsPage() {
     <div className="max-w-6xl mx-auto">
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">🏠 Flat Hunting</h1>
-          <p className="text-gray-600 dark:text-gray-300">Properties I'm considering for rent</p>
+          <h1 className="text-3xl font-bold text-ink mb-2">🏠 Flat Hunting</h1>
+          <p className="text-muted">Properties I'm considering for rent</p>
         </div>
         {isAdminMode && (
           <button
             onClick={() => setShowAddModal(true)}
-            className="bg-[#6600CC] hover:bg-[#7D2AE8] text-white px-6 py-3 rounded-lg font-medium transition-colors flex items-center space-x-2"
+            className="bg-accent hover:bg-accent-hover text-on-accent px-6 py-3 rounded-lg font-medium transition-colors flex items-center space-x-2"
           >
             <span>+</span>
             <span>Add Flat</span>
@@ -81,17 +81,17 @@ export default function FlatsPage() {
 
       {loading ? (
         <div className="text-center py-12">
-          <div className="text-lg text-gray-600">Loading flats...</div>
+          <div className="text-lg text-muted">Loading flats...</div>
         </div>
       ) : error ? (
         <div className="text-center py-12">
-          <div className="text-lg text-red-600">{error}</div>
+          <div className="text-lg text-danger">{error}</div>
         </div>
       ) : flats.length === 0 ? (
         <div className="text-center py-12">
           <div className="text-6xl mb-4">🏠</div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">No flats yet</h3>
-          <p className="text-gray-600">Start adding properties you're interested in!</p>
+          <h3 className="text-xl font-semibold text-ink mb-2">No flats yet</h3>
+          <p className="text-muted">Start adding properties you're interested in!</p>
         </div>
       ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -111,7 +111,7 @@ export default function FlatsPage() {
                         href={flat.googleMapsLink} 
                         target="_blank" 
                         rel="noopener noreferrer"
-                        className="text-blue-600 hover:text-blue-800 underline"
+                        className="text-accent-ink hover:text-accent-ink underline"
                       >
                         View on Maps 🗺️
                       </a>

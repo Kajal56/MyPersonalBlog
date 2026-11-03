@@ -44,9 +44,9 @@ export default function RecentlyAdded() {
 
   return (
     <div className="mb-8 sm:mb-12">
-      <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6 text-center">Recently Added</h2>
+      <h2 className="text-xl sm:text-2xl font-bold text-ink mb-4 sm:mb-6 text-center">Recently Added</h2>
       {loading ? (
-        <div className="text-center text-white animate-pulse">Loading recent entries...</div>
+        <div className="text-center text-ink animate-pulse">Loading recent entries...</div>
       ) : recentEntries.length > 0 ? (
         <div className="space-y-3 sm:space-y-4">
           {recentEntries.map((entry, index) => (
@@ -54,7 +54,7 @@ export default function RecentlyAdded() {
               key={index}
               className={`pl-2 sm:pl-4 py-2 flex flex-col gap-1 ${
                 entry.slug && entry.type !== 'feed'
-                  ? 'cursor-pointer hover:bg-purple-900/20 rounded transition-colors'
+                  ? 'cursor-pointer hover:bg-sunken rounded transition-colors'
                   : ''
               }`}
               onClick={() => handleRecentEntryClick(entry)}
@@ -62,23 +62,23 @@ export default function RecentlyAdded() {
               <div className="flex items-center justify-between">
                 <h3 className={`font-semibold text-sm sm:text-base ${
                   entry.slug && entry.type !== 'feed'
-                    ? 'text-purple-200 hover:text-white transition-colors'
-                    : 'text-white'
+                    ? 'text-muted hover:text-ink transition-colors'
+                    : 'text-ink'
                 }`}>{entry.title}</h3>
                 <span className={`text-xs capitalize px-2 py-1 ${
                   entry.slug && entry.type !== 'feed'
-                    ? 'text-purple-300 bg-purple-950/30 rounded'
-                    : 'text-purple-300'
+                    ? 'text-accent-ink bg-accent-soft rounded'
+                    : 'text-accent-ink'
                 }`}>{entry.type}</span>
               </div>
-              <p className="text-purple-200 text-xs">
+              <p className="text-muted text-xs">
                 Added {new Date(entry.dateAdded).toLocaleDateString()}
               </p>
             </div>
           ))}
         </div>
       ) : (
-        <div className="text-white text-center">No recent entries yet.</div>
+        <div className="text-ink text-center">No recent entries yet.</div>
       )}
     </div>
   )

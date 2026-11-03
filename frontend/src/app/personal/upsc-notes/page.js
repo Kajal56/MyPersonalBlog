@@ -14,7 +14,7 @@ const SUBJECTS = ['Polity', 'Economy', 'History', 'Geography', 'Environment', 'S
 // Note text with URLs rendered as inline link chips
 function NoteBody({ content, clamped }) {
   return (
-    <p className={`whitespace-pre-wrap leading-relaxed text-white ${clamped ? 'line-clamp-6' : ''}`}>
+    <p className={`whitespace-pre-wrap leading-relaxed text-ink ${clamped ? 'line-clamp-6' : ''}`}>
       {splitLinks(content).map((part, i) =>
         part.isLink ? (
           <a
@@ -22,7 +22,7 @@ function NoteBody({ content, clamped }) {
             href={part.text}
             target="_blank"
             rel="noopener noreferrer"
-            className="mx-0.5 inline-flex items-center rounded border border-white/15 bg-black/25 px-2 py-0.5 align-baseline text-xs font-medium text-purple-100 transition-colors hover:border-purple-300/60 hover:text-white"
+            className="mx-0.5 inline-flex items-center rounded border border-line bg-sunken px-2 py-0.5 align-baseline text-xs font-medium text-ink transition-colors hover:border-accent/60 hover:text-ink"
           >
             {linkLabel(part.text)}
           </a>
@@ -163,12 +163,12 @@ export default function UpscNotesPage() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
           <div>
             <h1 className="page-title mb-2">UPSC Notes</h1>
-            <p className="text-purple-200">Topics, thoughts, and notes from my UPSC preparation.</p>
+            <p className="text-muted">Topics, thoughts, and notes from my UPSC preparation.</p>
           </div>
           {isAdminMode && (
             <button
               onClick={openCreateForm}
-              className="self-start bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 shadow-lg"
+              className="self-start text-on-accent px-6 py-3 rounded-lg font-medium transition-all duration-300 shadow-lg bg-accent hover:bg-accent-hover"
             >
               + Add Note
             </button>
@@ -176,16 +176,16 @@ export default function UpscNotesPage() {
         </div>
 
         {error && (
-          <div role="alert" className="mb-6 text-red-300">{error}</div>
+          <div role="alert" className="mb-6 text-danger">{error}</div>
         )}
 
         {loading ? (
-          <div className="text-center py-12 text-purple-200">Loading UPSC notes...</div>
+          <div className="text-center py-12 text-muted">Loading UPSC notes...</div>
         ) : notes.length === 0 ? (
           <div className="text-center py-12">
             <div className="text-6xl mb-4">📝</div>
-            <h2 className="text-xl font-semibold text-white mb-2">No notes yet</h2>
-            <p className="text-purple-200">
+            <h2 className="text-xl font-semibold text-ink mb-2">No notes yet</h2>
+            <p className="text-muted">
               {isAdminMode ? 'Add a topic and share your thoughts on it.' : 'Notes will appear here when they are added.'}
             </p>
           </div>
@@ -203,11 +203,11 @@ export default function UpscNotesPage() {
                     aria-pressed={active}
                     className={`rounded border px-3 py-1.5 text-sm transition-colors ${
                       active
-                        ? 'border-purple-300/60 bg-[#6600CC] text-white shadow-md shadow-purple-700/30'
-                        : 'border-white/10 bg-white/5 text-purple-100/85 hover:border-purple-400/50 hover:text-white'
+                        ? 'border-transparent accent-pill text-on-accent'
+                        : 'border-line bg-sunken text-ink/85 hover:border-accent/60 hover:text-ink'
                     }`}
                   >
-                    {tag || 'All'} <span className={active ? 'text-purple-200' : 'text-purple-300/60'}>· {count}</span>
+                    {tag || 'All'} <span className={active ? 'text-on-accent/80' : 'text-faint'}>· {count}</span>
                   </button>
                 )
               })}
@@ -218,17 +218,17 @@ export default function UpscNotesPage() {
               const isLong = note.content.length > LONG_NOTE
               const isOpen = openNotes.has(note.id)
               return (
-              <article key={note.id} id={`note-${note.id}`} className="glass-card-bright card-hover reveal scroll-mt-28 overflow-hidden">
-                <header className="px-5 pt-5 pb-4 sm:px-6 border-b border-white/10 flex justify-between items-start gap-4">
+              <article key={note.id} id={`note-${note.id}`} className="card card-hover reveal scroll-mt-28 overflow-hidden">
+                <header className="px-5 pt-5 pb-4 sm:px-6 border-b border-line flex justify-between items-start gap-4">
                   <div>
-                    <h2 className="font-display text-2xl font-semibold text-white">{note.topic}</h2>
-                    <p className="mt-1 text-xs uppercase tracking-wider text-purple-200">
+                    <h2 className="font-display text-2xl font-semibold text-ink">{note.topic}</h2>
+                    <p className="mt-1 text-xs uppercase tracking-wider text-muted">
                       <time dateTime={note.dateAdded}>{formatDate(note.dateAdded)}</time> · {readingTime(note.content)}
                     </p>
                     {note.tags?.length > 0 && (
                       <div className="mt-3 flex flex-wrap gap-1.5">
                         {note.tags.map(tag => (
-                          <button key={tag} type="button" onClick={() => setActiveTag(tag)} className="pill-tag hover:border-purple-300/60 hover:text-white">
+                          <button key={tag} type="button" onClick={() => setActiveTag(tag)} className="pill-tag hover:border-accent/60 hover:text-ink">
                             {tag}
                           </button>
                         ))}
@@ -237,10 +237,10 @@ export default function UpscNotesPage() {
                   </div>
                   {isAdminMode && (
                     <div className="flex gap-3 shrink-0">
-                      <button onClick={() => openEditForm(note)} className="text-purple-200 hover:text-white text-sm font-medium">
+                      <button onClick={() => openEditForm(note)} className="text-muted hover:text-ink text-sm font-medium">
                         Edit
                       </button>
-                      <button onClick={() => setDeletingNote(note)} className="text-red-300 hover:text-white text-sm font-medium">
+                      <button onClick={() => setDeletingNote(note)} className="text-danger hover:text-ink text-sm font-medium">
                         Delete
                       </button>
                     </div>
@@ -256,7 +256,7 @@ export default function UpscNotesPage() {
                         return next
                       })}
                       aria-expanded={isOpen}
-                      className="mt-3 text-sm font-medium text-purple-100 underline decoration-purple-300/50 underline-offset-4 hover:text-white"
+                      className="mt-3 text-sm font-medium text-ink underline decoration-accent/40 underline-offset-4 hover:text-ink"
                     >
                       {isOpen ? 'Show less' : 'Keep reading →'}
                     </button>
@@ -271,18 +271,18 @@ export default function UpscNotesPage() {
       </div>
 
       {isAdminMode && showForm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 p-4">
-          <div className="w-full max-w-lg max-h-[90vh] overflow-y-auto bg-[#0a0011] border border-purple-900 rounded-lg p-6">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="w-full max-w-lg max-h-[90vh] overflow-y-auto bg-surface border border-line rounded-lg p-6">
             <div className="flex justify-between items-center mb-5">
-              <h2 className="text-xl font-bold text-white">{editingNote ? 'Edit UPSC Note' : 'Add UPSC Note'}</h2>
-              <button onClick={closeForm} className="text-purple-200 hover:text-white text-2xl" aria-label="Close">
+              <h2 className="text-xl font-bold text-ink">{editingNote ? 'Edit UPSC Note' : 'Add UPSC Note'}</h2>
+              <button onClick={closeForm} className="text-muted hover:text-ink text-2xl" aria-label="Close">
                 &times;
               </button>
             </div>
             <form onSubmit={handleSubmit} className="space-y-4">
-              {formError && <p role="alert" className="text-red-300">{formError}</p>}
+              {formError && <p role="alert" className="text-danger">{formError}</p>}
               <div>
-                <label htmlFor="upsc-topic" className="block text-sm font-medium text-purple-100 mb-2">Topic</label>
+                <label htmlFor="upsc-topic" className="block text-sm font-medium text-ink mb-2">Topic</label>
                 <input
                   id="upsc-topic"
                   required
@@ -290,11 +290,11 @@ export default function UpscNotesPage() {
                   value={form.topic}
                   onChange={event => setForm(current => ({ ...current, topic: event.target.value }))}
                   placeholder="e.g. Federalism"
-                  className="w-full px-4 py-3 rounded-md border border-gray-700 bg-gray-900 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-4 py-3 rounded-md border border-line bg-sunken text-ink focus:outline-none focus:ring-2 focus:ring-accent/30"
                 />
               </div>
               <div>
-                <label htmlFor="upsc-content" className="block text-sm font-medium text-purple-100 mb-2">Your thoughts</label>
+                <label htmlFor="upsc-content" className="block text-sm font-medium text-ink mb-2">Your thoughts</label>
                 <textarea
                   id="upsc-content"
                   required
@@ -302,11 +302,11 @@ export default function UpscNotesPage() {
                   value={form.content}
                   onChange={event => setForm(current => ({ ...current, content: event.target.value }))}
                   placeholder="Write your thoughts or notes about this topic..."
-                  className="w-full px-4 py-3 rounded-md border border-gray-700 bg-gray-900 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-4 py-3 rounded-md border border-line bg-sunken text-ink focus:outline-none focus:ring-2 focus:ring-accent/30"
                 />
               </div>
               <div>
-                <span className="block text-sm font-medium text-purple-100 mb-2">Subjects</span>
+                <span className="block text-sm font-medium text-ink mb-2">Subjects</span>
                 <div className="flex flex-wrap gap-2">
                   {[...new Set([...SUBJECTS, ...form.tags])].map(tag => {
                     const selected = form.tags.includes(tag)
@@ -317,7 +317,7 @@ export default function UpscNotesPage() {
                         onClick={() => toggleFormTag(tag)}
                         aria-pressed={selected}
                         className={`rounded border px-2.5 py-1 text-xs transition-colors ${
-                          selected ? 'border-purple-300/60 bg-[#6600CC] text-white' : 'border-gray-700 text-purple-100 hover:border-purple-400'
+                          selected ? 'border-transparent accent-pill text-on-accent' : 'border-line text-ink hover:border-accent/60'
                         }`}
                       >
                         {selected ? '✓ ' : ''}{tag}
@@ -336,17 +336,17 @@ export default function UpscNotesPage() {
                     }
                   }}
                   placeholder="Add another tag and press Enter"
-                  className="mt-3 w-full px-4 py-2 rounded-md border border-gray-700 bg-gray-900 text-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="mt-3 w-full px-4 py-2 rounded-md border border-line bg-sunken text-ink text-sm focus:outline-none focus:ring-2 focus:ring-accent/30"
                 />
               </div>
               <div className="flex justify-end gap-3">
-                <button type="button" onClick={closeForm} className="px-4 py-2 text-gray-200 hover:text-white">
+                <button type="button" onClick={closeForm} className="px-4 py-2 text-ink hover:text-ink">
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={saving}
-                  className="px-5 py-2 rounded-md bg-purple-700 hover:bg-purple-600 text-white disabled:opacity-60"
+                  className="btn-primary px-5 py-2"
                 >
                   {saving ? 'Saving...' : editingNote ? 'Save Changes' : 'Save Note'}
                 </button>

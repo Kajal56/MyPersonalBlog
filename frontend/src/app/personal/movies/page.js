@@ -1,8 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import ReviewTile from '../../../components/ReviewTile'
-import { excerpt, formatDate } from '../../../utils/text'
+import ReviewTile, { reviewListLayout } from '../../../components/ReviewTile'
+import { excerpt } from '../../../utils/text'
 import AddEntryButton from '../../../components/AddEntryButton'
 import AddEntryModal from '../../../components/AddEntryModal'
 import SuggestionModal from '../../../components/SuggestionModal'
@@ -11,6 +11,7 @@ import { useAdminMode } from '../../../components/AdminModeContext'
 
 export default function MoviesPage() {
   const [movies, setMovies] = useState([])
+  const layout = reviewListLayout(movies.length)
   const { isAdminMode } = useAdminMode()
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -95,12 +96,12 @@ export default function MoviesPage() {
       <div className="max-w-5xl mx-auto flex flex-wrap gap-4 justify-between items-center mb-8">
         <div>
           <h1 className="page-title mb-2">🎬 Movies</h1>
-          <p className="text-purple-200">My movie watchlist and reviews</p>
+          <p className="text-muted">My movie watchlist and reviews</p>
         </div>
         {isAdminMode ? (
           <button
             onClick={() => setShowAddModal(true)}
-            className="bg-purple-800 hover:bg-purple-900 text-white px-6 py-3 font-medium transition-colors flex items-center space-x-2"
+            className="bg-accent-soft hover:bg-sunken text-ink px-6 py-3 font-medium transition-colors flex items-center space-x-2"
           >
             <span>+</span>
             <span>Add Movie</span>
@@ -118,21 +119,21 @@ export default function MoviesPage() {
 
       {loading ? (
         <div className="text-center py-12">
-          <div className="text-lg text-purple-300">Loading movies...</div>
+          <div className="text-lg text-accent-ink">Loading movies...</div>
         </div>
       ) : error ? (
         <div className="text-center py-12">
-          <div className="text-lg text-red-400">{error}</div>
+          <div className="text-lg text-danger">{error}</div>
         </div>
       ) : movies.length === 0 ? (
         <div className="text-center py-12">
           <div className="text-6xl mb-4">🎬</div>
-          <h3 className="text-xl font-semibold text-white mb-2">No movies yet</h3>
-          <p className="text-purple-200">Start adding your movie reviews!</p>
+          <h3 className="text-xl font-semibold text-ink mb-2">No movies yet</h3>
+          <p className="text-muted">Start adding your movie reviews!</p>
         </div>
       ) : (
         <div className="max-w-5xl mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className={layout.gridClassName}>
             {movies.map((movie) => (
               <ReviewTile
                 key={movie.id}
@@ -140,8 +141,8 @@ export default function MoviesPage() {
                 title={movie.title}
                 rating={movie.rating}
                 excerpt={excerpt(movie.favoriteAspect)}
-                meta={movie.dateWatched ? `Watched ${formatDate(movie.dateWatched)}` : null}
                 tags={movie.tags}
+                wide={layout.wide}
                 onEdit={isAdminMode ? () => handleEdit(movie) : undefined}
                 onDelete={isAdminMode ? () => handleDelete(movie.id) : undefined}
               />
@@ -169,28 +170,28 @@ export default function MoviesPage() {
       {/* Suggestions list for admins */}
       {isAdminMode && (
         <div className="mt-12">
-          <h2 className="text-2xl font-bold mb-4 text-purple-300">Movie Suggestions</h2>
+          <h2 className="text-2xl font-bold mb-4 text-accent-ink">Movie Suggestions</h2>
           {loadingSuggestions ? (
-            <div className="text-purple-300">Loading suggestions...</div>
+            <div className="text-accent-ink">Loading suggestions...</div>
           ) : suggestions.length === 0 ? (
-            <div className="text-purple-300">No suggestions yet.</div>
+            <div className="text-accent-ink">No suggestions yet.</div>
           ) : (
             <div className="space-y-4">
               {suggestions.map(suggestion => (
-                <div key={suggestion.id} className="bg-purple-950 bg-opacity-50 p-4 shadow">
+                <div key={suggestion.id} className="bg-accent-soft bg-opacity-50 p-4 shadow">
                   <div className="flex justify-between items-center">
                     <div>
-                      <div className="font-semibold text-white text-lg mb-1">{suggestion.itemName || 'Untitled'}</div>
-                      <div className="text-purple-200 text-base mb-1">{suggestion.message}</div>
-                      <div className="text-xs text-purple-300 mt-1">Suggested by: <span className="font-semibold text-white">{suggestion.name || 'Anonymous'}</span> | <span className="text-purple-400">{new Date(suggestion.dateSuggested).toLocaleString()}</span></div>
+                      <div className="font-semibold text-ink text-lg mb-1">{suggestion.itemName || 'Untitled'}</div>
+                      <div className="text-muted text-base mb-1">{suggestion.message}</div>
+                      <div className="text-xs text-accent-ink mt-1">Suggested by: <span className="font-semibold text-ink">{suggestion.name || 'Anonymous'}</span> | <span className="text-accent-ink">{new Date(suggestion.dateSuggested).toLocaleString()}</span></div>
                     </div>
                     <div className="flex flex-col items-end">
-                      <span className={`px-2 py-1 text-xs font-semibold mb-2 ${suggestion.isRead ? 'bg-green-900 text-green-300' : 'bg-yellow-900 text-yellow-300'}`}>
+                      <span className={`px-2 py-1 text-xs font-semibold mb-2 ${suggestion.isRead ? 'bg-green-900 text-green-300' : 'bg-yellow-900 text-accent-ink'}`}>
                         {suggestion.isRead ? 'Read' : 'Unread'}
                       </span>
                       {!suggestion.isRead && (
                         <button
-                          className="bg-purple-800 hover:bg-purple-900 text-white text-xs px-3 py-1 transition-colors"
+                          className="bg-accent-soft hover:bg-sunken text-ink text-xs px-3 py-1 transition-colors"
                           onClick={async () => {
                             await apiService.updateSuggestion('movies', suggestion.id, { isRead: true })
                             loadSuggestions()

@@ -15,6 +15,7 @@ export default function BookDetailPage() {
       config={(book) => ({
         kicker: '📚 Book',
         title: book.title,
+        coverLookup: { title: book.title, author: book.author },
         subtitle: book.author && `by ${book.author}`,
         meta: [
           { label: 'Rating', value: book.rating, rating: book.rating },

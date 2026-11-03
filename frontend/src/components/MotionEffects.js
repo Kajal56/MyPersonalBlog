@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 
 // Site-wide motion helpers:
 // - `.reveal` elements fade up when they scroll into view (staggered per batch)
-// - `.glass-card` / `.glass-card-bright` get a spotlight that follows the cursor
+// - `.card` elements get a soft spotlight that follows the cursor
 export default function MotionEffects() {
   useEffect(() => {
     const root = document.documentElement
@@ -32,7 +32,7 @@ export default function MotionEffects() {
     mutations.observe(document.body, { childList: true, subtree: true })
 
     const handlePointerMove = (e) => {
-      const card = e.target.closest?.('.glass-card, .glass-card-bright')
+      const card = e.target.closest?.('.card')
       if (!card) return
       const rect = card.getBoundingClientRect()
       card.style.setProperty('--mx', `${e.clientX - rect.left}px`)
@@ -41,9 +41,9 @@ export default function MotionEffects() {
     document.addEventListener('pointermove', handlePointerMove, { passive: true })
 
     return () => {
+      document.removeEventListener('pointermove', handlePointerMove)
       observer.disconnect()
       mutations.disconnect()
-      document.removeEventListener('pointermove', handlePointerMove)
       root.classList.remove('reveal-ready')
     }
   }, [])
