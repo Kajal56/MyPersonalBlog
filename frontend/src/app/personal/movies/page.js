@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import EntryCard from '../../../components/EntryCard'
+import ReviewTile from '../../../components/ReviewTile'
+import { excerpt, formatDate } from '../../../utils/text'
 import AddEntryButton from '../../../components/AddEntryButton'
 import AddEntryModal from '../../../components/AddEntryModal'
 import SuggestionModal from '../../../components/SuggestionModal'
@@ -91,7 +92,7 @@ export default function MoviesPage() {
 
   return (
     <div className="max-w-6xl mx-auto">
-      <div className="max-w-3xl mx-auto flex flex-wrap gap-4 justify-between items-center mb-8">
+      <div className="max-w-5xl mx-auto flex flex-wrap gap-4 justify-between items-center mb-8">
         <div>
           <h1 className="page-title mb-2">🎬 Movies</h1>
           <p className="text-purple-200">My movie watchlist and reviews</p>
@@ -130,22 +131,22 @@ export default function MoviesPage() {
           <p className="text-purple-200">Start adding your movie reviews!</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-6 max-w-3xl mx-auto">
-          {movies.map((movie) => (
-            <EntryCard
-              key={movie.id}
-              type="movies"
-              entry={movie}
-              fields={[ 
-                { label: 'Rating', value: `${movie.rating}/10`, icon: '⭐' },
-                { label: 'What I liked most', value: movie.favoriteAspect },
-                { label: 'Date watched', value: new Date(movie.dateWatched).toLocaleDateString() }
-              ]}
-              onEdit={isAdminMode ? handleEdit : undefined}
-              onDelete={isAdminMode ? handleDelete : undefined}
-              isAdminMode={isAdminMode}
-            />
-          ))}
+        <div className="max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {movies.map((movie) => (
+              <ReviewTile
+                key={movie.id}
+                href={`/personal/movies/${movie.slug}`}
+                title={movie.title}
+                rating={movie.rating}
+                excerpt={excerpt(movie.favoriteAspect)}
+                meta={movie.dateWatched ? `Watched ${formatDate(movie.dateWatched)}` : null}
+                tags={movie.tags}
+                onEdit={isAdminMode ? () => handleEdit(movie) : undefined}
+                onDelete={isAdminMode ? () => handleDelete(movie.id) : undefined}
+              />
+            ))}
+          </div>
         </div>
       )}
 

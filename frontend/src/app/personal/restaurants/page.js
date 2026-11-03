@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import { apiService } from '../../../services/apiService'
-import EntryCard from '../../../components/EntryCard'
+import ReviewTile from '../../../components/ReviewTile'
+import { formatDate } from '../../../utils/text'
 import AddEntryModal from '../../../components/AddEntryModal'
 
 export default function RestaurantsPage() {
@@ -52,14 +53,14 @@ export default function RestaurantsPage() {
 
   return (
     <div className="max-w-6xl mx-auto">
-      <div className="flex justify-between items-center mb-8">
+      <div className="max-w-5xl mx-auto flex flex-wrap gap-4 justify-between items-center mb-8">
         <div>
           <h1 className="page-title mb-2">🍽️ Restaurants</h1>
-          <p className="text-white">My dining experiences and favorites</p>
+          <p className="text-purple-200/80">My dining experiences and favorites</p>
         </div>
         <button
           onClick={() => setShowAddModal(true)}
-          className="bg-[#6600CC] hover:bg-[#7D2AE8] text-white px-6 py-3 rounded-lg font-medium transition-colors flex items-center space-x-2"
+          className="btn-primary"
         >
           <span>+</span>
           <span>Add Restaurant</span>
@@ -81,23 +82,23 @@ export default function RestaurantsPage() {
           <p className="text-gray-600">Start documenting your dining experiences!</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-6 max-w-3xl mx-auto">
-          {restaurants.map((restaurant) => (
-            <EntryCard
-              key={restaurant.id}
-              type="restaurants"
-              entry={restaurant}
-              fields={[
-                { label: 'Location', value: restaurant.location, icon: '📍' },
-                { label: 'Cuisine', value: restaurant.cuisine },
-                { label: 'Rating', value: `${restaurant.rating}/10`, icon: '⭐' },
-                { label: 'Favorite dish', value: restaurant.favoriteDish },
-                { label: 'Date visited', value: new Date(restaurant.dateVisited).toLocaleDateString() }
-              ]}
-              onEdit={handleEdit}
-              onDelete={handleDelete}
-            />
-          ))}
+        <div className="max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {restaurants.map((restaurant) => (
+              <ReviewTile
+                key={restaurant.id}
+                href={`/personal/restaurants/${restaurant.slug}`}
+                title={restaurant.name}
+                subtitle={[restaurant.cuisine, restaurant.location && `📍 ${restaurant.location}`].filter(Boolean).join(' · ')}
+                rating={restaurant.rating}
+                excerpt={restaurant.favoriteDish && `Favourite dish: ${restaurant.favoriteDish}`}
+                meta={restaurant.dateVisited ? `Visited ${formatDate(restaurant.dateVisited)}` : null}
+                tags={restaurant.tags}
+                onEdit={() => handleEdit(restaurant)}
+                onDelete={() => handleDelete(restaurant.id)}
+              />
+            ))}
+          </div>
         </div>
       )}
 

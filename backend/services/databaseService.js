@@ -434,35 +434,46 @@ class DatabaseService {
   }
 
   // Recent entries across all types
+  // Latest items across public sections, for the home page "Latest from me".
+  // Restaurants and flats are admin-only, so they're left out.
   async getRecentEntries(limit = 5) {
-    const [movies, books, trips, restaurants] = await Promise.all([
+    const excerpt = (text, length = 160) => {
+      if (!text) return null;
+      const flat = text.replace(/\s+/g, ' ').trim();
+      return flat.length > length ? `${flat.slice(0, length).trimEnd()}…` : flat;
+    };
+    const recent = { take: limit, orderBy: { dateAdded: 'desc' } };
+
+    const [movies, books, trips, posts, notes] = await Promise.all([
       this.prisma.movie.findMany({
-        take: limit,
-        orderBy: { dateAdded: 'desc' },
-        select: { id: true, title: true, dateAdded: true, slug: true }
+        ...recent,
+        select: { id: true, title: true, slug: true, rating: true, favoriteAspect: true, dateAdded: true }
       }),
       this.prisma.book.findMany({
-        take: limit,
-        orderBy: { dateAdded: 'desc' },
-        select: { id: true, title: true, dateAdded: true, slug: true }
+        ...recent,
+        select: { id: true, title: true, slug: true, author: true, rating: true, keyTakeaway: true, dateAdded: true }
       }),
       this.prisma.trip.findMany({
-        take: limit,
-        orderBy: { dateAdded: 'desc' },
-        select: { id: true, title: true, dateAdded: true, slug: true }
+        ...recent,
+        select: { id: true, title: true, slug: true, destination: true, highlight: true, dateAdded: true }
       }),
-      this.prisma.restaurant.findMany({
-        take: limit,
-        orderBy: { dateAdded: 'desc' },
-        select: { id: true, name: true, dateAdded: true, slug: true }
+      // mediaData can be large, so only the text fields are selected
+      this.prisma.feedPost.findMany({
+        ...recent,
+        select: { id: true, title: true, content: true, dateAdded: true }
+      }),
+      this.prisma.upscNote.findMany({
+        ...recent,
+        select: { id: true, topic: true, content: true, dateAdded: true }
       })
     ]);
 
     const allEntries = [
-      ...movies.map(item => ({ ...item, type: 'movie' })),
-      ...books.map(item => ({ ...item, type: 'book' })),
-      ...trips.map(item => ({ ...item, type: 'trip' })),
-      ...restaurants.map(item => ({ ...item, title: item.name, type: 'restaurant' }))
+      ...movies.map(({ favoriteAspect, ...m }) => ({ ...m, type: 'movie', excerpt: excerpt(favoriteAspect) })),
+      ...books.map(({ keyTakeaway, ...b }) => ({ ...b, type: 'book', excerpt: excerpt(keyTakeaway) })),
+      ...trips.map(({ highlight, ...t }) => ({ ...t, type: 'trip', excerpt: excerpt(highlight) })),
+      ...posts.map(({ content, ...p }) => ({ ...p, title: p.title || 'A thought', type: 'thought', excerpt: excerpt(content) })),
+      ...notes.map(({ topic, content, ...n }) => ({ ...n, title: topic, type: 'upsc', excerpt: excerpt(content) }))
     ];
 
     return allEntries
@@ -598,11 +609,23 @@ class DatabaseService {
     });
   }
 
+  // Trimmed, de-duplicated (case-insensitive) subject tags, capped at 8
+  cleanUpscTags(tags) {
+    if (!Array.isArray(tags)) return [];
+    const seen = new Set();
+    return tags
+      .filter(tag => typeof tag === 'string')
+      .map(tag => tag.trim().slice(0, 40))
+      .filter(tag => tag && !seen.has(tag.toLowerCase()) && seen.add(tag.toLowerCase()))
+      .slice(0, 8);
+  }
+
   async createUpscNote(data) {
     return this.prisma.upscNote.create({
       data: {
         topic: data.topic.trim(),
-        content: data.content.trim()
+        content: data.content.trim(),
+        tags: this.cleanUpscTags(data.tags)
       }
     });
   }
@@ -612,7 +635,8 @@ class DatabaseService {
       where: { id },
       data: {
         topic: data.topic.trim(),
-        content: data.content.trim()
+        content: data.content.trim(),
+        tags: this.cleanUpscTags(data.tags)
       }
     });
   }

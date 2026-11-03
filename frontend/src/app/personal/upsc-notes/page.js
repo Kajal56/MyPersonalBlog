@@ -1,9 +1,38 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { apiService } from '../../../services/apiService'
 import { useAdminMode } from '../../../components/AdminModeContext'
 import ConfirmDialog from '../../../components/ConfirmDialog'
+import { formatDate, linkLabel, readingTime, splitLinks } from '../../../utils/text'
+
+const LONG_NOTE = 420
+
+// Quick picks in the admin form; any custom tag can be typed too
+const SUBJECTS = ['Polity', 'Economy', 'History', 'Geography', 'Environment', 'Science & Tech', 'Society', 'International Relations', 'Ethics', 'Current Affairs']
+
+// Note text with URLs rendered as inline link chips
+function NoteBody({ content, clamped }) {
+  return (
+    <p className={`whitespace-pre-wrap leading-relaxed text-white ${clamped ? 'line-clamp-6' : ''}`}>
+      {splitLinks(content).map((part, i) =>
+        part.isLink ? (
+          <a
+            key={i}
+            href={part.text}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mx-0.5 inline-flex items-center rounded border border-white/15 bg-black/25 px-2 py-0.5 align-baseline text-xs font-medium text-purple-100 transition-colors hover:border-purple-300/60 hover:text-white"
+          >
+            {linkLabel(part.text)}
+          </a>
+        ) : (
+          <span key={i}>{part.text}</span>
+        )
+      )}
+    </p>
+  )
+}
 
 export default function UpscNotesPage() {
   const { isAdminMode } = useAdminMode()
@@ -13,13 +42,24 @@ export default function UpscNotesPage() {
   const [showForm, setShowForm] = useState(false)
   const [editingNote, setEditingNote] = useState(null)
   const [deletingNote, setDeletingNote] = useState(null)
-  const [form, setForm] = useState({ topic: '', content: '' })
+  const [form, setForm] = useState({ topic: '', content: '', tags: [] })
+  const [customTag, setCustomTag] = useState('')
+  const [activeTag, setActiveTag] = useState(null)
   const [saving, setSaving] = useState(false)
   const [formError, setFormError] = useState('')
+  const [openNotes, setOpenNotes] = useState(() => new Set())
 
   useEffect(() => {
     loadNotes()
   }, [])
+
+  // Links from the home page point at #note-<id>: open that note and bring it into view
+  useEffect(() => {
+    if (loading || !window.location.hash.startsWith('#note-')) return
+    const id = window.location.hash.slice('#note-'.length)
+    setOpenNotes(prev => new Set(prev).add(id))
+    requestAnimationFrame(() => document.getElementById(`note-${id}`)?.scrollIntoView({ behavior: 'smooth' }))
+  }, [loading])
 
   const loadNotes = async () => {
     try {
@@ -34,16 +74,42 @@ export default function UpscNotesPage() {
     }
   }
 
+  // Tags in use, most common first, for the filter bar
+  const tagCounts = useMemo(() => {
+    const counts = new Map()
+    notes.forEach(note => (note.tags || []).forEach(tag => counts.set(tag, (counts.get(tag) || 0) + 1)))
+    return [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+  }, [notes])
+
+  const visibleNotes = activeTag ? notes.filter(note => note.tags?.includes(activeTag)) : notes
+
+  const toggleFormTag = (tag) => {
+    setForm(current => ({
+      ...current,
+      tags: current.tags.includes(tag) ? current.tags.filter(t => t !== tag) : [...current.tags, tag],
+    }))
+  }
+
+  const addCustomTags = () => {
+    const extra = customTag.split(',').map(t => t.trim()).filter(Boolean)
+    if (extra.length) {
+      setForm(current => ({ ...current, tags: [...new Set([...current.tags, ...extra])] }))
+    }
+    setCustomTag('')
+  }
+
   const openCreateForm = () => {
     setEditingNote(null)
-    setForm({ topic: '', content: '' })
+    setForm({ topic: '', content: '', tags: [] })
+    setCustomTag('')
     setFormError('')
     setShowForm(true)
   }
 
   const openEditForm = (note) => {
     setEditingNote(note)
-    setForm({ topic: note.topic, content: note.content })
+    setForm({ topic: note.topic, content: note.content, tags: note.tags || [] })
+    setCustomTag('')
     setFormError('')
     setShowForm(true)
   }
@@ -59,11 +125,13 @@ export default function UpscNotesPage() {
     setSaving(true)
     setFormError('')
 
+    const pending = customTag.split(',').map(t => t.trim()).filter(Boolean)
+    const payload = { ...form, tags: [...new Set([...form.tags, ...pending])] }
     try {
       if (editingNote) {
-        await apiService.updateUpscNote(editingNote.id, form)
+        await apiService.updateUpscNote(editingNote.id, payload)
       } else {
-        await apiService.createUpscNote(form)
+        await apiService.createUpscNote(payload)
       }
       closeForm()
       await loadNotes()
@@ -91,7 +159,7 @@ export default function UpscNotesPage() {
 
   return (
     <div className="max-w-6xl mx-auto">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
           <div>
             <h1 className="page-title mb-2">UPSC Notes</h1>
@@ -122,15 +190,50 @@ export default function UpscNotesPage() {
             </p>
           </div>
         ) : (
-          <div className="space-y-6">
-            {notes.map(note => (
-              <article key={note.id} className="glass-card-bright card-hover reveal overflow-hidden">
+          <>
+          {tagCounts.length > 0 && (
+            <div className="mb-8 flex flex-wrap gap-2" role="group" aria-label="Filter by subject">
+              {[[null, notes.length], ...tagCounts].map(([tag, count]) => {
+                const active = activeTag === tag
+                return (
+                  <button
+                    key={tag || 'all'}
+                    type="button"
+                    onClick={() => setActiveTag(active && tag ? null : tag)}
+                    aria-pressed={active}
+                    className={`rounded border px-3 py-1.5 text-sm transition-colors ${
+                      active
+                        ? 'border-purple-300/60 bg-[#6600CC] text-white shadow-md shadow-purple-700/30'
+                        : 'border-white/10 bg-white/5 text-purple-100/85 hover:border-purple-400/50 hover:text-white'
+                    }`}
+                  >
+                    {tag || 'All'} <span className={active ? 'text-purple-200' : 'text-purple-300/60'}>· {count}</span>
+                  </button>
+                )
+              })}
+            </div>
+          )}
+          <div className="grid grid-cols-1 items-start gap-6 md:grid-cols-2">
+            {visibleNotes.map(note => {
+              const isLong = note.content.length > LONG_NOTE
+              const isOpen = openNotes.has(note.id)
+              return (
+              <article key={note.id} id={`note-${note.id}`} className="glass-card-bright card-hover reveal scroll-mt-28 overflow-hidden">
                 <header className="px-5 pt-5 pb-4 sm:px-6 border-b border-white/10 flex justify-between items-start gap-4">
                   <div>
                     <h2 className="font-display text-2xl font-semibold text-white">{note.topic}</h2>
-                    <time className="text-xs uppercase tracking-wider text-purple-200" dateTime={note.dateAdded}>
-                      {new Date(note.dateAdded).toLocaleDateString()}
-                    </time>
+                    <p className="mt-1 text-xs uppercase tracking-wider text-purple-200">
+                      <time dateTime={note.dateAdded}>{formatDate(note.dateAdded)}</time> · {readingTime(note.content)}
+                    </p>
+                    {note.tags?.length > 0 && (
+                      <div className="mt-3 flex flex-wrap gap-1.5">
+                        {note.tags.map(tag => (
+                          <button key={tag} type="button" onClick={() => setActiveTag(tag)} className="pill-tag hover:border-purple-300/60 hover:text-white">
+                            {tag}
+                          </button>
+                        ))}
+                      </div>
+                    )}
                   </div>
                   {isAdminMode && (
                     <div className="flex gap-3 shrink-0">
@@ -143,10 +246,27 @@ export default function UpscNotesPage() {
                     </div>
                   )}
                 </header>
-                <p className="p-5 sm:p-6 text-white whitespace-pre-wrap leading-relaxed">{note.content}</p>
+                <div className="p-5 sm:p-6">
+                  <NoteBody content={note.content} clamped={isLong && !isOpen} />
+                  {isLong && (
+                    <button
+                      onClick={() => setOpenNotes(prev => {
+                        const next = new Set(prev)
+                        next.has(note.id) ? next.delete(note.id) : next.add(note.id)
+                        return next
+                      })}
+                      aria-expanded={isOpen}
+                      className="mt-3 text-sm font-medium text-purple-100 underline decoration-purple-300/50 underline-offset-4 hover:text-white"
+                    >
+                      {isOpen ? 'Show less' : 'Keep reading →'}
+                    </button>
+                  )}
+                </div>
               </article>
-            ))}
+              )
+            })}
           </div>
+          </>
         )}
       </div>
 
@@ -183,6 +303,40 @@ export default function UpscNotesPage() {
                   onChange={event => setForm(current => ({ ...current, content: event.target.value }))}
                   placeholder="Write your thoughts or notes about this topic..."
                   className="w-full px-4 py-3 rounded-md border border-gray-700 bg-gray-900 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                />
+              </div>
+              <div>
+                <span className="block text-sm font-medium text-purple-100 mb-2">Subjects</span>
+                <div className="flex flex-wrap gap-2">
+                  {[...new Set([...SUBJECTS, ...form.tags])].map(tag => {
+                    const selected = form.tags.includes(tag)
+                    return (
+                      <button
+                        key={tag}
+                        type="button"
+                        onClick={() => toggleFormTag(tag)}
+                        aria-pressed={selected}
+                        className={`rounded border px-2.5 py-1 text-xs transition-colors ${
+                          selected ? 'border-purple-300/60 bg-[#6600CC] text-white' : 'border-gray-700 text-purple-100 hover:border-purple-400'
+                        }`}
+                      >
+                        {selected ? '✓ ' : ''}{tag}
+                      </button>
+                    )
+                  })}
+                </div>
+                <input
+                  type="text"
+                  value={customTag}
+                  onChange={event => setCustomTag(event.target.value)}
+                  onKeyDown={event => {
+                    if (event.key === 'Enter' || event.key === ',') {
+                      event.preventDefault()
+                      addCustomTags()
+                    }
+                  }}
+                  placeholder="Add another tag and press Enter"
+                  className="mt-3 w-full px-4 py-2 rounded-md border border-gray-700 bg-gray-900 text-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
                 />
               </div>
               <div className="flex justify-end gap-3">

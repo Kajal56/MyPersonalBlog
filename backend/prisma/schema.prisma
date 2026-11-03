@@ -96,6 +96,8 @@ model UpscNote {
   id        String   @id @default(cuid())
   topic     String
   content   String
+  // Subject tags such as "Polity" or "Economy", used for filtering
+  tags      String[] @default([])
   dateAdded DateTime @default(now())
 
   @@map("upsc_notes")
